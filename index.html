@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watergen | Pure Air to Water</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #1a202c;
+            overflow-x: hidden;
+        }
+
+        .bubble-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 50%;
+            bottom: -100px;
+            animation: rise var(--duration) infinite ease-in;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-120vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .watergen-container {
+            perspective: 1000px;
+        }
+
+        /* Hide scrollbar but allow scrolling */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Bubbles -->
+    <div class="bubble-bg" id="bubble-container"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center glass shadow-sm">
+        <div class="text-2xl font-extrabold tracking-tighter text-blue-600">WATERGEN</div>
+        <div class="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
+            <a href="#" class="hover:text-blue-600 transition-colors">Technology</a>
+            <a href="#" class="hover:text-blue-600 transition-colors">Sustainability</a>
+            <a href="#" class="hover:text-blue-600 transition-colors">Products</a>
+            <a href="#" class="hover:text-blue-600 transition-colors">Contact</a>
+        </div>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md">
+            GET STARTED
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+            <div class="z-10 mt-[-10vh]">
+                <h1 class="text-5xl md:text-8xl font-extrabold mb-4 tracking-tight text-gray-900" id="hero-title">
+                    Drinking Water <br><span class="text-blue-600">From Thin Air.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto font-medium" id="hero-subtitle">
+                    Harvesting the humidity in the atmosphere to provide clean, mineralized drinking water everywhere on Earth.
+                </p>
+            </div>
+
+            <!-- Central Watergen Object -->
+            <div class="watergen-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none" id="main-object">
+                <svg viewBox="0 0 400 600" class="w-[300px] md:w-[450px] opacity-10 filter drop-shadow-[0_20px_50px_rgba(59,130,246,0.2)]">
+                    <defs>
+                        <linearGradient id="metal" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#cbd5e0" />
+                            <stop offset="50%" style="stop-color:#edf2f7" />
+                            <stop offset="100%" style="stop-color:#a0aec0" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Device Body -->
+                    <rect x="100" y="100" width="200" height="400" rx="20" fill="url(#metal)" stroke="#cbd5e0" stroke-width="2" />
+                    <!-- Screen/Interface -->
+                    <rect x="120" y="140" width="160" height="100" rx="10" fill="#2d3748" />
+                    <circle cx="200" cy="190" r="30" fill="#4299e1" opacity="0.6" />
+                    <!-- Water Outlet -->
+                    <rect x="185" y="420" width="30" height="10" rx="5" fill="#4a5568" />
+                    <!-- Decorative Lines -->
+                    <line x1="120" y1="300" x2="280" y2="300" stroke="#718096" stroke-width="1" opacity="0.3" />
+                    <line x1="120" y1="340" x2="280" y2="340" stroke="#718096" stroke-width="1" opacity="0.3" />
+                    <line x1="120" y1="380" x2="280" y2="380" stroke="#718096" stroke-width="1" opacity="0.3" />
+                </svg>
+            </div>
+            
+            <div class="absolute bottom-10 animate-bounce text-blue-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Product Details / Scroll Content -->
+        <section class="relative z-20 min-h-screen py-32 px-8 flex flex-col items-center justify-center bg-gradient-to-b from-white to-[#f8faff]">
+            <div class="grid md:grid-cols-2 gap-16 max-w-6xl w-full">
+                <div class="glass p-10 rounded-3xl shadow-xl shadow-blue-500/5" id="feature-1">
+                    <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 text-blue-600">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1a1 1 0 112 0v1a1 1 0 11-2 0zM13.536 14.95a1 1 0 010-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414 0zM6.464 14.95l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414z"></path></svg>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4 text-gray-900">Patented Technology</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        GENius is the world's most energy-efficient Atmospheric Water Generator (AWG) technology, producing fresh drinking water from the air's humidity.
+                    </p>
+                </div>
+                <div class="glass p-10 rounded-3xl shadow-xl shadow-blue-500/5" id="feature-2">
+                    <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 text-blue-600">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4 text-gray-900">Scalable Solutions</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        From home appliances to industrial scale generators, we provide solutions that can generate up to 6,000 liters of water per day.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-32 text-center max-w-4xl" id="impact-text">
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-8 text-gray-900">Pure. Safe. Limitless.</h2>
+                <p class="text-xl text-gray-500">
+                    No piping required. No infrastructure needed. Just pure air converted into the highest quality drinking water at the point of use.
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-12 border-t border-gray-100 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white">
+            &copy; 2025 WATERGEN GLOBAL. ALL RIGHTS RESERVED.
+        </footer>
+    </main>
+
+    <script>
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Create Bubbles (Updated colors for white background)
+        function createBubbles() {
+            const container = document.getElementById('bubble-container');
+            const count = 35;
+
+            for (let i = 0; i < count; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                
+                const size = Math.random() * 50 + 15 + 'px';
+                const left = Math.random() * 100 + '%';
+                const delay = Math.random() * 8 + 's';
+                const duration = Math.random() * 12 + 10 + 's';
+                
+                bubble.style.width = size;
+                bubble.style.height = size;
+                bubble.style.left = left;
+                bubble.style.animationDelay = delay;
+                bubble.style.setProperty('--duration', duration);
+                
+                container.appendChild(bubble);
+            }
+        }
+
+        window.onload = () => {
+            createBubbles();
+
+            // Initial Hero Animation
+            gsap.from("#hero-title", {
+                duration: 1.5,
+                y: 50,
+                opacity: 0,
+                ease: "power4.out"
+            });
+
+            gsap.from("#hero-subtitle", {
+                duration: 1.5,
+                y: 30,
+                opacity: 0,
+                delay: 0.3,
+                ease: "power4.out"
+            });
+
+            // The Enlarge Effect on Scroll
+            gsap.to("#main-object", {
+                scrollTrigger: {
+                    trigger: "body",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1.2,
+                },
+                scale: 5,
+                opacity: 0.03,
+                rotate: 8,
+                y: '15vh',
+                ease: "none"
+            });
+
+            // Parallax titles
+            gsap.to("#hero-title", {
+                scrollTrigger: {
+                    trigger: "body",
+                    start: "top top",
+                    end: "50% top",
+                    scrub: true
+                },
+                y: -100,
+                opacity: 0
+            });
+
+            // Feature cards entry
+            gsap.from("#feature-1, #feature-2", {
+                scrollTrigger: {
+                    trigger: "#feature-1",
+                    start: "top 85%",
+                },
+                y: 80,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "back.out(1.2)"
+            });
+
+            // Impact text entry
+            gsap.from("#impact-text", {
+                scrollTrigger: {
+                    trigger: "#impact-text",
+                    start: "top 85%",
+                },
+                y: 40,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power2.out"
+            });
+        };
+    </script>
+</body>
+</html>
