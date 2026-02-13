@@ -38,20 +38,10 @@
         }
 
         @keyframes rise {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.8;
-            }
-            90% {
-                opacity: 0.4;
-            }
-            100% {
-                transform: translateY(-120vh) scale(1.2);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
         }
 
         .glass {
@@ -81,6 +71,16 @@
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
+        }
+
+        /* Subtle float animation for the product image */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        #main-object-img {
+            animation: float 5s ease-in-out infinite;
         }
     </style>
 </head>
@@ -139,7 +139,7 @@
     <main class="pt-24">
         <!-- Hero Section -->
         <section class="relative h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-            <div class="z-10 mt-[-5vh]">
+            <div class="z-10 mt-[-10vh]">
                 <h1 class="text-5xl md:text-8xl font-extrabold mb-4 tracking-tight text-gray-900" id="hero-title">
                     Agua Potable <br><span class="text-blue-600">Filtrada del Aire.</span>
                 </h1>
@@ -148,24 +148,9 @@
                 </p>
             </div>
 
-            <!-- Central Technology Object -->
-            <div class="product_technology-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none" id="main-object">
-                <svg viewBox="0 0 400 600" class="w-[300px] md:w-[450px] opacity-10 filter drop-shadow-[0_20px_50px_rgba(59,130,246,0.2)]">
-                    <defs>
-                        <linearGradient id="metal" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#cbd5e0" />
-                            <stop offset="50%" style="stop-color:#edf2f7" />
-                            <stop offset="100%" style="stop-color:#a0aec0" />
-                        </linearGradient>
-                    </defs>
-                    <rect x="100" y="100" width="200" height="400" rx="20" fill="url(#metal)" stroke="#cbd5e0" stroke-width="2" />
-                    <rect x="120" y="140" width="160" height="100" rx="10" fill="#2d3748" />
-                    <circle cx="200" cy="190" r="30" fill="#4299e1" opacity="0.6" />
-                    <rect x="185" y="420" width="30" height="10" rx="5" fill="#4a5568" />
-                    <line x1="120" y1="300" x2="280" y2="300" stroke="#718096" stroke-width="1" opacity="0.3" />
-                    <line x1="120" y1="340" x2="280" y2="340" stroke="#718096" stroke-width="1" opacity="0.3" />
-                    <line x1="120" y1="380" x2="280" y2="380" stroke="#718096" stroke-width="1" opacity="0.3" />
-                </svg>
+            <!-- Central Technology Image -->
+            <div class="product_technology-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0" id="main-object">
+                <img src="Watergen-Mobile-Box-1024x1024.png" alt="Watergen Climactiva" id="main-object-img" class="w-[300px] md:w-[500px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
             </div>
             
             <div class="absolute bottom-10 animate-bounce text-blue-400">
@@ -321,7 +306,7 @@
                 ease: "power4.out"
             });
 
-            // The Enlarge Effect on Scroll
+            // The Enlarge & Fade Effect on Scroll
             gsap.to("#main-object", {
                 scrollTrigger: {
                     trigger: "body",
@@ -329,10 +314,10 @@
                     end: "bottom bottom",
                     scrub: 1.2,
                 },
-                scale: 5,
-                opacity: 0.03,
-                rotate: 8,
-                y: '15vh',
+                scale: 4,
+                opacity: 0, // Machine disappears completely as the user scrolls down
+                rotate: 5,
+                y: '10vh',
                 ease: "none"
             });
 
