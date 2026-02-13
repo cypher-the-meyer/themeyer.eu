@@ -143,8 +143,8 @@
                 </p>
             </div>
 
-            <!-- ENHANCED: Higher Opacity White Box Layer (Z-Index 5: Middle Layer) -->
-            <div id="hero-glass-box" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] md:w-[700px] h-[350px] md:h-[450px] bg-white/85 backdrop-blur-md border border-white/60 rounded-[2.5rem] shadow-2xl pointer-events-none z-[5]"></div>
+            <!-- UPDATED: Full Width and Height Hero Glass Overlay -->
+            <div id="hero-glass-box" class="absolute inset-0 w-full h-full bg-white/85 backdrop-blur-md pointer-events-none z-[5]"></div>
 
             <!-- Central Technology Image (Z-Index 0: Base Layer) -->
             <div class="product_technology-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0" id="main-object">
@@ -294,7 +294,7 @@
                 ease: "none"
             });
 
-            // Fade and move the white container box on scroll
+            // Fade the full-screen glass overlay on scroll
             gsap.to("#hero-glass-box", {
                 scrollTrigger: {
                     trigger: "body",
@@ -302,9 +302,7 @@
                     end: "40% top",
                     scrub: true,
                 },
-                scale: 1.1,
                 opacity: 0,
-                y: -50,
                 ease: "power2.inOut"
             });
 
