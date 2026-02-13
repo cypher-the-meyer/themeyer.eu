@@ -1,23 +1,3 @@
-The issue is that your code is looking for a local file named GEN-M-PRO.png in the same folder as your HTML file, but the image is actually hosted on GitHub.
-
-To fix this, you need to use the Raw URL of the image from GitHub. I have updated the code below to point directly to your hosted image.
-
-The Fix
-I replaced this line:
-
-HTML
-
-<img src="GEN-M-PRO.png" ... >
-With this line (using the Raw GitHub source):
-
-HTML
-
-<img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/GEN-M-PRO.png" ... >
-Corrected Code
-Here is the complete, working file:
-
-HTML
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,27 +86,34 @@ HTML
 </head>
 <body>
 
+    <!-- Background Bubbles -->
     <div class="bubble-bg" id="bubble-container"></div>
 
+    <!-- Top Banner (Certifications) -->
     <div class="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
         <span class="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">Global Certifications & Standards</span>
         <div class="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
+            <!-- ISO 27001 -->
             <div class="flex items-center space-x-1 flex-shrink-0">
                 <div class="w-1 h-3 bg-blue-500"></div>
                 <span class="text-[9px] font-bold text-white tracking-widest uppercase">ISO 27001</span>
             </div>
+            <!-- ISO 9001 -->
             <div class="flex items-center space-x-1 flex-shrink-0">
                 <div class="w-1 h-3 bg-blue-500"></div>
                 <span class="text-[9px] font-bold text-white tracking-widest uppercase">ISO 9001</span>
             </div>
+            <!-- ASSE LEC 2004 -->
             <div class="flex items-center space-x-1 flex-shrink-0">
                 <div class="w-1 h-3 bg-blue-500"></div>
                 <span class="text-[9px] font-bold text-white tracking-widest uppercase">ASSE LEC 2004</span>
             </div>
+            <!-- ETL Certified -->
             <div class="flex items-center space-x-1 flex-shrink-0">
                 <div class="w-1 h-3 bg-blue-500"></div>
                 <span class="text-[9px] font-bold text-white tracking-widest uppercase">ETL CERTIFIED</span>
             </div>
+            <!-- PCI DSS -->
             <div class="flex items-center space-x-1 flex-shrink-0">
                 <div class="w-1 h-3 bg-blue-500"></div>
                 <span class="text-[9px] font-bold text-white tracking-widest uppercase">PCI DSS</span>
@@ -134,6 +121,7 @@ HTML
         </div>
     </div>
 
+    <!-- Navigation -->
     <nav class="fixed left-0 w-full z-50 px-8 py-4 flex justify-between items-center glass shadow-sm">
         <div class="text-2xl font-extrabold tracking-tighter text-blue-600">The Meyer</div>
         <div class="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
@@ -147,8 +135,11 @@ HTML
         </button>
     </nav>
 
+    <!-- Main Content -->
     <main class="pt-24">
+        <!-- Hero Section -->
         <section class="relative h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+            <!-- Text Content (Z-Index 10: Highest Layer) -->
             <div class="z-10 mt-[-10vh]">
                 <h1 class="text-5xl md:text-8xl font-extrabold mb-4 tracking-tight text-gray-900" id="hero-title">
                     Agua Potable <br><span class="text-blue-600">Filtrada del Aire.</span>
@@ -158,6 +149,10 @@ HTML
                 </p>
             </div>
 
+            <!-- NEW: Mid Opacity White Box Layer (Z-Index 5: Middle Layer) - Full Screen/Total Size -->
+            <div class="absolute inset-0 w-full h-full bg-white/30 backdrop-blur-sm pointer-events-none z-[5]"></div>
+
+            <!-- Central Technology Image (Z-Index 0: Base Layer) -->
             <div class="product_technology-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0" id="main-object">
                 <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/GEN-M-PRO.png" alt="The Meyer GEN-M Pro" id="main-object-img" class="w-[300px] md:w-[500px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
             </div>
@@ -169,6 +164,7 @@ HTML
             </div>
         </section>
 
+        <!-- Product Details / Scroll Content -->
         <section class="relative z-20 min-h-screen py-32 px-8 flex flex-col items-center justify-center bg-gradient-to-b from-white to-[#f8faff]">
             <div class="grid md:grid-cols-2 gap-16 max-w-6xl w-full">
                 <div class="glass p-10 rounded-3xl shadow-xl shadow-blue-500/5" id="feature-1">
@@ -199,6 +195,7 @@ HTML
             </div>
         </section>
 
+        <!-- Articles & Press Section -->
         <section class="py-24 px-8 bg-white relative z-20" id="articles-section">
             <div class="max-w-6xl mx-auto">
                 <div class="flex items-center space-x-4 mb-12">
@@ -207,13 +204,17 @@ HTML
                     <div class="h-px bg-gray-200 flex-grow"></div>
                 </div>
                 
+                <!-- Logos Row -->
                 <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-700" id="articles-logos">
+                    <!-- Forbes -->
                     <svg class="h-6 w-auto fill-gray-900" viewBox="0 0 120 40">
                         <text x="0" y="30" font-family="serif" font-weight="900" font-size="28" letter-spacing="-1">Forbes</text>
                     </svg>
+                    <!-- WSJ -->
                     <svg class="h-5 w-auto fill-gray-900" viewBox="0 0 100 40">
                         <text x="0" y="30" font-family="serif" font-weight="900" font-size="28">WSJ</text>
                     </svg>
+                    <!-- CNBC (Accurate Peacock) -->
                     <svg class="h-10 w-auto" viewBox="0 0 100 60" fill="currentColor">
                         <g transform="translate(50,30) scale(0.6)">
                             <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(-60)" opacity="0.9"/>
@@ -226,9 +227,11 @@ HTML
                         </g>
                         <text x="32" y="55" font-family="sans-serif" font-weight="900" font-size="14" letter-spacing="1">CNBC</text>
                     </svg>
+                    <!-- Time -->
                     <svg class="h-6 w-auto fill-red-600" viewBox="0 0 100 40">
                         <text x="0" y="30" font-family="serif" font-weight="900" font-size="30" letter-spacing="1">TIME</text>
                     </svg>
+                    <!-- HuffPost -->
                     <svg class="h-5 w-auto fill-green-800" viewBox="0 0 160 40">
                         <text x="0" y="30" font-family="sans-serif" font-weight="900" font-size="22" letter-spacing="-0.5">HUFFPOST</text>
                     </svg>
@@ -254,6 +257,7 @@ HTML
             </div>
         </section>
 
+        <!-- Footer -->
         <footer class="py-12 border-t border-gray-100 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white">
             &copy; 2025 THE MEYER EU. ALL RIGHTS RESERVED. Rompiendo el horizonte a través del estándar global de integridad
         </footer>
