@@ -24,7 +24,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1; /* Pushed to back */
+            z-index: 0;
             overflow: hidden;
         }
 
@@ -86,7 +86,7 @@
 </head>
 <body>
 
-    <!-- Background Bubbles (Z-Index -1) -->
+    <!-- Background Bubbles -->
     <div class="bubble-bg" id="bubble-container"></div>
 
     <!-- Top Banner (Certifications) -->
@@ -139,7 +139,6 @@
     <main class="pt-24">
         <!-- Hero Section -->
         <section class="relative h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-            
             <!-- Text Content (Z-Index 10: Highest Layer) -->
             <div class="z-10 mt-[-10vh]">
                 <h1 class="text-5xl md:text-8xl font-extrabold mb-4 tracking-tight text-gray-900" id="hero-title">
@@ -150,8 +149,8 @@
                 </p>
             </div>
 
-            <!-- Full Screen Mid Opacity White Layer (Z-Index 5: Middle Layer) -->
-            <div class="absolute inset-0 w-full h-full bg-white/30 backdrop-blur-sm pointer-events-none z-[5]"></div>
+            <!-- NEW: Mid Opacity White Box Layer (Z-Index 5: Middle Layer) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] md:w-[700px] h-[350px] md:h-[450px] bg-white/30 backdrop-blur-sm border border-white/40 rounded-[2.5rem] shadow-xl pointer-events-none z-[5]"></div>
 
             <!-- Central Technology Image (Z-Index 0: Base Layer) -->
             <div class="product_technology-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0" id="main-object">
