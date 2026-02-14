@@ -314,18 +314,6 @@
                 ease: "power2.inOut"
             });
 
-            // Bubbles now fade along with the sections since they are positioned relative to the section
-            gsap.to("#bubble-container", {
-                scrollTrigger: {
-                    trigger: "body",
-                    start: "top top",
-                    end: "40% top",
-                    scrub: true,
-                },
-                opacity: 0,
-                ease: "power2.inOut"
-            });
-
             gsap.to("#hero-title, #hero-subtitle", {
                 scrollTrigger: {
                     trigger: "body",
