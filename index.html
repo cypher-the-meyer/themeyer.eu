@@ -24,8 +24,6 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            /* Bubbles at front of hero elements */
-            z-index: 40; 
             overflow: hidden;
         }
 
@@ -131,10 +129,8 @@
     <main class="pt-24">
         <!-- Hero Section -->
         <section class="relative h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-            <!-- Bubbles Container (Now scoped to this section) -->
-            <div class="bubble-bg" id="bubble-container"></div>
-
-            <!-- Text Content (Z-Index 10) -->
+            
+            <!-- Text Content (Z-Index 10: Sits above the glass box) -->
             <div class="z-10 mt-[-10vh]">
                 <h1 class="text-5xl md:text-8xl font-extrabold mb-4 tracking-tight text-gray-900" id="hero-title">
                     Agua Potable <br><span class="text-blue-600">Filtrada del Aire.</span>
@@ -145,7 +141,10 @@
             </div>
 
             <!-- Hero Glass Overlay (Z-Index 5) -->
-            <div id="hero-glass-box" class="absolute inset-0 w-full h-full bg-white/85 backdrop-blur-md pointer-events-none z-[5]"></div>
+            <div id="hero-glass-box" class="absolute inset-0 w-full h-full bg-white/85 backdrop-blur-md pointer-events-none z-[5]">
+                <!-- Bubbles Container (Now correctly contained INSIDE the glass layer) -->
+                <div class="bubble-bg" id="bubble-container"></div>
+            </div>
 
             <!-- Central Technology Image (Z-Index 0: Base Layer) -->
             <div class="product_technology-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0" id="main-object">
@@ -305,7 +304,7 @@
                 ease: "none"
             });
 
-            // Fade the full-screen glass overlay on scroll
+            // Fade the full-screen glass overlay on scroll (Bubbles now fade with it)
             gsap.to("#hero-glass-box", {
                 scrollTrigger: {
                     trigger: "body",
