@@ -7,7 +7,21 @@
     <!-- Primary Meta Tags -->
     <title>Nosotros | The Meyer eu</title>
     <meta name="title" content="Nosotros | The Meyer eu">
-    <meta name="description" content="Conozca nuestra visión y la tecnología que está revolucionando el acceso al agua potable a nivel mundial.">
+    <meta name="description" content="Conozca nuestra visión y la tecnología que está revolucionando el acceso al agua potable a nivel mundial. Abrimos nuevos horizontes operativos mediante la planeación, distribución e instalación de tecnología de vanguardia.">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://themeyer.eu/">
+    <meta property="og:title" content="The Meyer eu | High-tech Contractor">
+    <meta property="og:description" content="Abrimos nuevos horizontes operativos mediante la planeación, distribución e instalación de tecnología de vanguardia. Una firma regida por el estándar global de innovación e integridad.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://themeyer.eu/">
+    <meta property="twitter:title" content="The Meyer eu | High-tech Contractor">
+    <meta property="twitter:description" content="Abrimos nuevos horizontes operativos mediante la planeación, distribución e instalación de tecnología de vanguardia. Una firma regida por el estándar global de innovación e integridad.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -86,9 +100,7 @@
             box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 0 10px 10px -5px rgba(37, 99, 235, 0.04);
         }
         
-        /* UPDATED: Simplified logo styling to ensure visibility */
         .press-logo {
-            /* Removed filters that might hide images */
             transition: transform 0.3s ease;
             max-width: 100%;
             max-height: 100%;
@@ -97,11 +109,23 @@
         .press-card:hover .press-logo {
             transform: scale(1.05);
         }
+
+        /* Mobile Menu Transitions */
+        #mobile-menu {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #mobile-menu.hidden-menu {
+            transform: translateX(100%);
+        }
+
+        nav {
+            top: 40px; 
+        }
     </style>
 </head>
 <body>
 
-    <!-- Top Banner -->
+    <!-- Top Banner (Certifications) -->
     <div class="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
         <span class="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">Global Certifications & Standards</span>
         <div class="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
@@ -115,27 +139,60 @@
             </div>
             <div class="flex items-center space-x-1 flex-shrink-0">
                 <div class="w-1 h-3 bg-blue-500"></div>
+                <span class="text-[9px] font-bold text-white tracking-widest uppercase">ASSE LEC 2004</span>
+            </div>
+            <div class="flex items-center space-x-1 flex-shrink-0">
+                <div class="w-1 h-3 bg-blue-500"></div>
                 <span class="text-[9px] font-bold text-white tracking-widest uppercase">ETL CERTIFIED</span>
+            </div>
+            <div class="flex items-center space-x-1 flex-shrink-0">
+                <div class="w-1 h-3 bg-blue-500"></div>
+                <span class="text-[9px] font-bold text-white tracking-widest uppercase">PCI DSS</span>
             </div>
         </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="fixed top-10 left-0 w-full z-50 px-8 py-4 flex justify-between items-center glass shadow-sm">
-        <a href="index.html" class="block">
+    <nav class="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm">
+        <!-- Logo -->
+        <a href="index.html" class="block z-50">
             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" class="h-10 md:h-12 w-auto object-contain">
         </a>
         
+        <!-- Desktop Links -->
         <div class="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
             <a href="Tecnologias.html" class="hover:text-blue-600 transition-colors">Tecnologias</a>
             <a href="#" class="hover:text-blue-600 transition-colors">Sustentabilidad</a>
             <a href="Nosotros.html" class="text-blue-600 transition-colors">Nosotros</a>
             <a href="#contacto" class="hover:text-blue-600 transition-colors">Contacto</a>
         </div>
-        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md">
-            DEMO
-        </button>
+
+        <div class="flex items-center space-x-4">
+            <button class="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md">
+                DEMO
+            </button>
+            
+            <!-- Hamburger Button -->
+            <button id="menu-btn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110]">
+                <span class="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
+                <span class="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
+                <span class="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+            </button>
+        </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden hidden-menu flex flex-col items-center justify-center space-y-8">
+        <div class="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
+            <a href="Tecnologias.html" class="mobile-link hover:text-blue-600 transition-colors">Tecnologias</a>
+            <a href="#" class="mobile-link hover:text-blue-600 transition-colors">Sustentabilidad</a>
+            <a href="Nosotros.html" class="mobile-link hover:text-blue-600 transition-colors">Nosotros</a>
+            <a href="#contacto" class="mobile-link hover:text-blue-600 transition-colors">Contacto</a>
+        </div>
+        <button class="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl">
+            SOLICITAR DEMO
+        </button>
+    </div>
 
     <main class="pt-40">
         <!-- Hero Section Title -->
@@ -241,7 +298,7 @@
             </div>
         </section>
 
-        <!-- Contact/Interest Form Section -->
+        <!-- Contact Form Section -->
         <section class="py-24 px-8 bg-[#f8faff] relative z-20" id="contacto">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-16">
@@ -298,8 +355,35 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
+        // Mobile Menu Toggle Logic
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+        const line3 = document.getElementById('line3');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isOpen = !mobileMenu.classList.contains('hidden-menu');
+            if (isOpen) {
+                mobileMenu.classList.add('hidden-menu');
+                line1.style.transform = "none";
+                line2.style.opacity = "1";
+                line3.style.transform = "none";
+            } else {
+                mobileMenu.classList.remove('hidden-menu');
+                line1.style.transform = "translateY(8px) rotate(45deg)";
+                line2.style.opacity = "0";
+                line3.style.transform = "translateY(-8px) rotate(-45deg)";
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
         function createBubbles() {
             const container = document.getElementById('bubble-container');
+            if (!container) return;
             const count = 25;
             for (let i = 0; i < count; i++) {
                 const bubble = document.createElement('div');
@@ -331,31 +415,6 @@
                 opacity: 0,
                 duration: 1.2,
                 ease: "power4.out"
-            });
-
-            // Scroll animations: Press Section
-            gsap.from("#press-tag-anim", {
-                scrollTrigger: { trigger: "#press-grid", start: "top 90%" },
-                y: 20, opacity: 0, duration: 0.8
-            });
-            gsap.from("#press-title-anim", {
-                scrollTrigger: { trigger: "#press-grid", start: "top 90%" },
-                y: 20, opacity: 0, duration: 0.8, delay: 0.2
-            });
-            gsap.from("#press-subtitle-anim", {
-                scrollTrigger: { trigger: "#press-grid", start: "top 90%" },
-                y: 20, opacity: 0, duration: 0.8, delay: 0.4
-            });
-            gsap.from(".press-card", {
-                scrollTrigger: {
-                    trigger: "#press-grid",
-                    start: "top 80%",
-                },
-                y: 40,
-                opacity: 0,
-                stagger: 0.15,
-                duration: 1,
-                ease: "power2.out"
             });
 
             // Scroll animations: Form
