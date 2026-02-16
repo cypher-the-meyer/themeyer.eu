@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecnologías | The Meyer EU</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #1a202c;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .tech-hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .image-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .tech-image {
+            width: 350px;
+            height: auto;
+            filter: drop-shadow(0 25px 50px rgba(0,0,0,0.1));
+            will-change: transform, opacity;
+        }
+
+        /* Spotlight/Highlight Glow */
+        .spotlight {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: 1;
+            opacity: 0;
+            transform: scale(0.5);
+            pointer-events: none;
+        }
+
+        @media (min-width: 768px) {
+            .tech-image {
+                width: 550px;
+            }
+        }
+
+        .content-box {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 2rem;
+            text-align: center;
+            transition: opacity 0.6s ease;
+        }
+
+        /* Dimming effect for background content */
+        .dimmed {
+            opacity: 0.3;
+            filter: blur(2px);
+        }
+
+        nav {
+            top: 40px; 
+        }
+
+        .logo-strip {
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Banner -->
+    <div class="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8">
+        <span class="text-[9px] font-bold text-blue-400 uppercase tracking-[0.2em]">Our Technology Stack 2025</span>
+        <div class="flex items-center space-x-6 opacity-60">
+            <span class="text-[9px] font-bold text-white tracking-widest uppercase">Atmospheric Generation</span>
+            <span class="text-[9px] font-bold text-white tracking-widest uppercase">Energy Optimization</span>
+            <span class="text-[9px] font-bold text-white tracking-widest uppercase">Smart Filtration</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed left-0 w-full z-50 px-8 py-4 flex justify-between items-center glass shadow-sm">
+        <div class="text-2xl font-extrabold tracking-tighter text-blue-600">The Meyer</div>
+        <div class="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
+            <a href="#" class="text-blue-600">Tecnologias</a>
+            <a href="#" class="hover:text-blue-600 transition-colors">Sustentabilidad</a>
+            <a href="#" class="hover:text-blue-600 transition-colors">Nosotros</a>
+            <a href="#" class="hover:text-blue-600 transition-colors">Contacto</a>
+        </div>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105">
+            PRODUCTOS
+        </button>
+    </nav>
+
+    <main>
+        <!-- Hero 1: GEN-M PRO -->
+        <section class="tech-hero bg-slate-50" id="section-1">
+            <div class="spotlight" id="spotlight-1"></div>
+            <div class="image-container" id="container-1">
+                <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/GEN-M-PRO.png" 
+                     alt="GEN-M Pro" class="tech-image" id="img-1">
+            </div>
+            <div class="content-box" id="content-1">
+                <span class="text-blue-600 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Serie Residencial & Comercial</span>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">GEN-M <span class="text-blue-600">PRO</span></h1>
+                <p class="text-lg text-gray-500 max-w-xl mx-auto font-medium">
+                    Diseñado para la máxima eficiencia en hogares y oficinas. Genera hasta 50 litros de agua pura al día directamente del aire.
+                </p>
+                <div class="mt-8 flex justify-center gap-4">
+                    <div class="px-4 py-2 bg-white rounded-lg border border-gray-100 shadow-sm text-xs font-bold uppercase tracking-tighter">50L / DIA</div>
+                    <div class="px-4 py-2 bg-white rounded-lg border border-gray-100 shadow-sm text-xs font-bold uppercase tracking-tighter">Plug & Play</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logo Strip 1 -->
+        <div class="py-10 bg-white flex items-center justify-center border-y border-gray-50 logo-strip">
+            <div class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-20 grayscale">
+                <svg class="h-5 w-auto fill-gray-900" viewBox="0 0 120 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="28" letter-spacing="-1">Forbes</text></svg>
+                <svg class="h-4 w-auto fill-gray-900" viewBox="0 0 100 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="28">WSJ</text></svg>
+                <svg class="h-7 w-auto fill-gray-900" viewBox="0 0 100 60"><text x="0" y="40" font-family="sans-serif" font-weight="900" font-size="24">CNBC</text></svg>
+                <svg class="h-5 w-auto fill-gray-900" viewBox="0 0 100 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="30">TIME</text></svg>
+            </div>
+        </div>
+
+        <!-- Hero 2: GEN-L -->
+        <section class="tech-hero bg-white" id="section-2">
+            <div class="spotlight" id="spotlight-2"></div>
+            <div class="image-container" id="container-2">
+                <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/GEN-M-PRO.png" 
+                     alt="GEN-L Industrial" class="tech-image opacity-80 hue-rotate-15" id="img-2">
+            </div>
+            <div class="content-box" id="content-2">
+                <span class="text-blue-600 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Serie Industrial</span>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">GEN-L <span class="text-blue-600">Industrial</span></h1>
+                <p class="text-lg text-gray-500 max-w-xl mx-auto font-medium">
+                    La solución para grandes comunidades e industria. Producción a escala masiva sin necesidad de infraestructuras de tuberías tradicionales.
+                </p>
+                <div class="mt-8 flex justify-center gap-4">
+                    <div class="px-4 py-2 bg-white rounded-lg border border-gray-100 shadow-sm text-xs font-bold uppercase tracking-tighter">6000L / DIA</div>
+                    <div class="px-4 py-2 bg-white rounded-lg border border-gray-100 shadow-sm text-xs font-bold uppercase tracking-tighter">Multi-Unidad</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logo Strip 2 -->
+        <div class="py-10 bg-slate-50 flex items-center justify-center border-y border-gray-100 logo-strip">
+            <div class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-20 grayscale">
+                <svg class="h-5 w-auto fill-gray-900" viewBox="0 0 120 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="22" letter-spacing="1">ISO 9001</text></svg>
+                <svg class="h-5 w-auto fill-gray-900" viewBox="0 0 120 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="22" letter-spacing="1">ETL CERTIFIED</text></svg>
+                <svg class="h-5 w-auto fill-gray-900" viewBox="0 0 120 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="22" letter-spacing="1">PCI DSS</text></svg>
+                <svg class="h-5 w-auto fill-gray-900" viewBox="0 0 120 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="22" letter-spacing="1">UN GLOBAL</text></svg>
+            </div>
+        </div>
+
+        <!-- Hero 3: Mobile Box -->
+        <section class="tech-hero bg-slate-50" id="section-3">
+            <div class="spotlight" id="spotlight-3"></div>
+            <div class="image-container" id="container-3">
+                <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/GEN-M-PRO.png" 
+                     alt="Mobile Box" class="tech-image grayscale contrast-125" id="img-3">
+            </div>
+            <div class="content-box" id="content-3">
+                <span class="text-blue-600 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Respuesta de Emergencia</span>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">Mobile <span class="text-blue-600">Box</span></h1>
+                <p class="text-lg text-gray-500 max-w-xl mx-auto font-medium">
+                    Agua inmediata en cualquier lugar del mundo. Unidades transportables optimizadas para misiones de rescate y zonas de desastre.
+                </p>
+                <div class="mt-8 flex justify-center gap-4">
+                    <div class="px-4 py-2 bg-white rounded-lg border border-gray-100 shadow-sm text-xs font-bold uppercase tracking-tighter">Off-Road Ready</div>
+                    <div class="px-4 py-2 bg-white rounded-lg border border-gray-100 shadow-sm text-xs font-bold uppercase tracking-tighter">Solar Compatible</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-100 text-center text-gray-400 text-[10px] font-bold tracking-widest bg-white">
+        &copy; 2025 THE MEYER EU. GLOBAL TECHNOLOGY DIVISION.
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.onload = () => {
+            
+            // Shared Spotlight and Pop Function
+            const setupTechAnimation = (id, section, directionIn, directionOut) => {
+                const img = `#img-${id}`;
+                const spotlight = `#spotlight-${id}`;
+                const content = `#content-${id}`;
+
+                // Entrance logic
+                if (directionIn === 'center') {
+                    gsap.set(img, { x: 0, opacity: 1, scale: 1 });
+                } else {
+                    gsap.set(img, { x: directionIn === 'right' ? 800 : -800, opacity: 0, scale: 0.7 });
+                }
+
+                // Scroll Trigger Timeline
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.5,
+                    }
+                });
+
+                // Phase 1: Moving to Center + POP + HIGHLIGHT
+                tl.to(img, { 
+                    x: 0, 
+                    opacity: 1, 
+                    scale: 1.1, // Pop up slightly larger
+                    duration: 1, 
+                    ease: "power2.out" 
+                })
+                .to(spotlight, { 
+                    opacity: 1, 
+                    scale: 1, 
+                    duration: 0.5 
+                }, "-=0.5")
+                .to(content, { 
+                    opacity: 0.1, // Dim content to highlight image
+                    scale: 0.95,
+                    duration: 0.5 
+                }, "-=0.5");
+
+                // Phase 2: Settling in Center (Brief pause effect via scrub)
+                tl.to(img, { scale: 1, duration: 0.5 });
+
+                // Phase 3: Moving Out
+                tl.to(img, { 
+                    x: directionOut === 'left' ? -800 : 800, 
+                    opacity: 0, 
+                    scale: 0.7, 
+                    duration: 1,
+                    ease: "power2.in" 
+                })
+                .to(spotlight, { 
+                    opacity: 0, 
+                    scale: 0.5, 
+                    duration: 0.5 
+                }, "-=1")
+                .to(content, { 
+                    opacity: 1, 
+                    scale: 1,
+                    duration: 0.5 
+                }, "-=1");
+            };
+
+            // Setup specific animations for each section
+            setupTechAnimation(1, "#section-1", "center", "left");
+            setupTechAnimation(2, "#section-2", "right", "left");
+            setupTechAnimation(3, "#section-3", "right", "center");
+
+            // Initial entrance for first section content
+            gsap.from("#content-1", {
+                y: 50,
+                opacity: 0,
+                duration: 1.5,
+                ease: "power4.out"
+            });
+        };
+    </script>
+</body>
+</html>
