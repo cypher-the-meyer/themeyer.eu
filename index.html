@@ -72,7 +72,6 @@
             perspective: 1000px;
         }
 
-        /* Hide scrollbar but allow scrolling */
         ::-webkit-scrollbar {
             width: 0px;
             background: transparent;
@@ -90,7 +89,6 @@
             scrollbar-width: none;
         }
 
-        /* Subtle float animation for the product image */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
@@ -98,6 +96,14 @@
         }
         #main-object-img {
             animation: float 5s ease-in-out infinite;
+        }
+
+        /* Mobile Menu Transitions */
+        #mobile-menu {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #mobile-menu.hidden-menu {
+            transform: translateX(100%);
         }
     </style>
 </head>
@@ -131,33 +137,53 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="fixed left-0 w-full z-50 px-8 py-4 flex justify-between items-center glass shadow-sm">
-        <!-- Logo Image Replacement -->
-        <a href="#" class="block">
+    <nav class="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm">
+        <!-- Logo -->
+        <a href="#" class="block z-50">
             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" class="h-10 md:h-12 w-auto object-contain">
         </a>
         
+        <!-- Desktop Links -->
         <div class="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-            <!-- Updated link to match the actual file name in the repository (case-sensitive) -->
             <a href="Tecnologias.html" class="hover:text-blue-600 transition-colors">Tecnologias</a>
             <a href="#" class="hover:text-blue-600 transition-colors">Sustentabilidad</a>
             <a href="Nosotros.html" class="hover:text-blue-600 transition-colors">Nosotros</a>
             <a href="#" class="hover:text-blue-600 transition-colors">Contacto</a>
         </div>
-        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md">
-            DEMO
-        </button>
+
+        <div class="flex items-center space-x-4">
+            <button class="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md">
+                DEMO
+            </button>
+            
+            <!-- Hamburger Button -->
+            <button id="menu-btn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110]">
+                <span class="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
+                <span class="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
+                <span class="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+            </button>
+        </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden hidden-menu flex flex-col items-center justify-center space-y-8">
+        <div class="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
+            <a href="Tecnologias.html" class="mobile-link hover:text-blue-600 transition-colors">Tecnologias</a>
+            <a href="#" class="mobile-link hover:text-blue-600 transition-colors">Sustentabilidad</a>
+            <a href="Nosotros.html" class="mobile-link hover:text-blue-600 transition-colors">Nosotros</a>
+            <a href="#" class="mobile-link hover:text-blue-600 transition-colors">Contacto</a>
+        </div>
+        <button class="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl">
+            SOLICITAR DEMO
+        </button>
+    </div>
 
     <!-- Main Content -->
     <main class="pt-24">
         <!-- Hero Section -->
         <section class="relative h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-            
-            <!-- Bubbles Container (Z-Index 20: Layered at the very front of Main Content) -->
             <div class="bubble-bg z-[20]" id="bubble-container"></div>
 
-            <!-- Text Content (Z-Index 10: Behind bubbles, in front of glass) -->
             <div class="z-10 mt-[-10vh]">
                 <h1 class="text-5xl md:text-8xl font-extrabold mb-4 tracking-tight text-gray-900" id="hero-title">
                     Agua Potable <br><span class="text-blue-600">Filtrada del Aire.</span>
@@ -167,10 +193,8 @@
                 </p>
             </div>
 
-            <!-- Hero Glass Overlay (Z-Index 5: Behind both text and bubbles) -->
             <div id="hero-glass-box" class="absolute inset-0 w-full h-full bg-white/85 backdrop-blur-md pointer-events-none z-[5]"></div>
 
-            <!-- Central Technology Image (Z-Index 0: Base Layer) -->
             <div class="product_technology-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0" id="main-object">
                 <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/GEN-M-PRO.png" alt="The Meyer GEN-M Pro" id="main-object-img" class="w-[300px] md:w-[500px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
             </div>
@@ -213,14 +237,14 @@
             </div>
         </section>
 
-        <!-- HERO #1 Visual Background Section (Atmospheric Image) -->
+        <!-- Visual Sections -->
         <section class="relative h-[60vh] md:h-[80vh] w-full overflow-hidden z-20">
             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/Watergen.png" 
                  alt="The Meyer Atmospheric Visual Hero 1" 
                  class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000">
         </section>
 
-        <!-- Articles & Press Section -->
+        <!-- Articles -->
         <section class="py-24 px-8 bg-white relative z-20" id="articles-section">
             <div class="max-w-6xl mx-auto">
                 <div class="flex items-center space-x-4 mb-12">
@@ -229,23 +253,12 @@
                     <div class="h-px bg-gray-200 flex-grow"></div>
                 </div>
                 
-                <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-700" id="articles-logos">
-                    <svg class="h-6 w-auto fill-gray-900" viewBox="0 0 120 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="28" letter-spacing="-1">Forbes</text></svg>
-                    <svg class="h-5 w-auto fill-gray-900" viewBox="0 0 100 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="28">WSJ</text></svg>
-                    <svg class="h-10 w-auto" viewBox="0 0 100 60" fill="currentColor">
-                        <g transform="translate(50,30) scale(0.6)">
-                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(-60)" opacity="0.9"/>
-                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(-30)" opacity="0.9"/>
-                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(0)" opacity="0.9"/>
-                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(30)" opacity="0.9"/>
-                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(60)" opacity="0.9"/>
-                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(90)" opacity="0.9"/>
-                            <path d="M-3,5 L3,5 L0,12 Z" fill="#000"/>
-                        </g>
-                        <text x="32" y="55" font-family="sans-serif" font-weight="900" font-size="14" letter-spacing="1">CNBC</text>
-                    </svg>
-                    <svg class="h-6 w-auto fill-red-600" viewBox="0 0 100 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="30" letter-spacing="1">TIME</text></svg>
-                    <svg class="h-5 w-auto fill-green-800" viewBox="0 0 160 40"><text x="0" y="30" font-family="sans-serif" font-weight="900" font-size="22" letter-spacing="-0.5">HUFFPOST</text></svg>
+                <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+                    <!-- Placeholder Logos -->
+                    <span class="text-2xl font-black text-gray-900 italic">Forbes</span>
+                    <span class="text-2xl font-black text-gray-900">WSJ</span>
+                    <span class="text-2xl font-black text-gray-900 uppercase">CNBC</span>
+                    <span class="text-2xl font-black text-red-600">TIME</span>
                 </div>
 
                 <div class="mt-16 grid md:grid-cols-3 gap-8">
@@ -268,21 +281,44 @@
             </div>
         </section>
 
-        <!-- Visual Background Section (Atmospheric Image) -->
-        <section class="relative h-[60vh] md:h-[80vh] w-full overflow-hidden z-20">
-            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/0b68ec063e980b8465797461ec8d57331f75cefb.png" 
-                 alt="The Meyer Atmospheric Visual" 
-                 class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000">
-        </section>
-
         <!-- Footer -->
-        <footer class="py-12 border-t border-gray-100 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20">
-            &copy; 2025 THE MEYER EU. ALL RIGHTS RESERVED. Abriendo un horizonte a través del estándar global de la inovacion e integridad.
+        <footer class="py-12 border-t border-gray-100 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20 px-4">
+            &copy; 2025 THE MEYER EU. ALL RIGHTS RESERVED. <br class="md:hidden"> Abriendo un horizonte a través del estándar global de la inovacion e integridad.
         </footer>
     </main>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
+
+        // Mobile Menu Logic
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+        const line3 = document.getElementById('line3');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        let menuOpen = false;
+
+        function toggleMenu() {
+            menuOpen = !menuOpen;
+            if (menuOpen) {
+                mobileMenu.classList.remove('hidden-menu');
+                line1.style.transform = 'translateY(7px) rotate(45deg)';
+                line2.style.opacity = '0';
+                line3.style.transform = 'translateY(-7px) rotate(-45deg)';
+                document.body.style.overflow = 'hidden'; // Prevent scroll
+            } else {
+                mobileMenu.classList.add('hidden-menu');
+                line1.style.transform = 'none';
+                line2.style.opacity = '1';
+                line3.style.transform = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
         function createBubbles() {
             const container = document.getElementById('bubble-container');
@@ -303,6 +339,7 @@
         window.onload = () => {
             createBubbles();
 
+            // Initial Hero Animations
             gsap.from("#hero-title", {
                 duration: 1.5,
                 y: 50,
@@ -318,7 +355,7 @@
                 ease: "power4.out"
             });
 
-            // Enlarge and fade effect for image
+            // Scroll Effects
             gsap.to("#main-object", {
                 scrollTrigger: {
                     trigger: "body",
@@ -332,7 +369,6 @@
                 ease: "none"
             });
 
-            // Fade the full-screen glass overlay on scroll
             gsap.to("#hero-glass-box", {
                 scrollTrigger: {
                     trigger: "body",
