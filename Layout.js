@@ -82,10 +82,9 @@ const Layout = ({ children }) => {
         
         {/* Desktop Links - UPDATED */}
         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-          <a href="products.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
+          <a href="pages/Tecnologia.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
           <a href="sustainability.html" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
-          <a href="about.html" className="hover:text-blue-600 transition-colors">Nosotros</a>
-          <a href="#contact" className="hover:text-blue-600 transition-colors">Contacto</a>
+          <a href="/pages/Nosotros.html" className="hover:text-blue-600 transition-colors">Nosotros</a>
         </div>
 
         <div className="flex items-center space-x-4">
@@ -116,7 +115,6 @@ const Layout = ({ children }) => {
           <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Tecnologia.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
           <a href="#" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
           <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Nosotros.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
-          <a href="#" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Contacto</a>
         </div>
         <button className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl">
           SOLICITAR DEMO
