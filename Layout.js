@@ -1,5 +1,41 @@
 import React, { useState } from 'react';
-import './layout.css';
+
+// --- CSS Styles (Simulating layout.css for the Preview) ---
+const Styles = () => (
+  <style>{`
+    .bubble-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bubble {
+      position: absolute;
+      bottom: -100px; /* Start below screen */
+      background: rgba(59, 130, 246, 0.1); /* Blue-ish bubble */
+      border-radius: 50%;
+      animation: rise var(--duration) infinite ease-in;
+    }
+    @keyframes rise {
+      0% { bottom: -100px; transform: translateX(0); }
+      50% { transform: translateX(100px); }
+      100% { bottom: 120%; transform: translateX(-200px); }
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+    }
+    /* Hamburger Menu Animation classes */
+    .menu-open #line1 { transform: rotate(45deg) translate(5px, 5px); }
+    .menu-open #line2 { opacity: 0; }
+    .menu-open #line3 { transform: rotate(-45deg) translate(5px, -5px); }
+    .hidden-menu { display: none; }
+  `}</style>
+);
 
 const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -10,6 +46,7 @@ const Layout = ({ children }) => {
 
   return (
     <div className="relative min-h-screen">
+      <Styles />
       
       {/* --- Background Bubbles --- */}
       <div className="bubble-bg">
@@ -33,7 +70,7 @@ const Layout = ({ children }) => {
       </div>
 
       {/* --- Navigation --- */}
-      <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all">
+      <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all mt-10">
         {/* Logo */}
         <a href="/" className="block z-50">
           <img 
@@ -43,11 +80,11 @@ const Layout = ({ children }) => {
           />
         </a>
         
-        {/* Desktop Links */}
+        {/* Desktop Links - UPDATED */}
         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-          <a href="/Tecnologias.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
+          <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Tecnologia.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
           <a href="#" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
-          <a href="/Nosotros.html" className="hover:text-blue-600 transition-colors">Nosotros</a>
+          <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Nosotros.html" className="hover:text-blue-600 transition-colors">Nosotros</a>
           <a href="#" className="hover:text-blue-600 transition-colors">Contacto</a>
         </div>
 
@@ -75,9 +112,10 @@ const Layout = ({ children }) => {
         className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}
       >
         <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
-          <a href="/Tecnologias.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
+          {/* Mobile Links - UPDATED for consistency */}
+          <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Tecnologia.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
           <a href="#" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
-          <a href="/Nosotros.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
+          <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Nosotros.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
           <a href="#" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Contacto</a>
         </div>
         <button className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl">
@@ -94,4 +132,18 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+// --- Main App Component for Preview ---
+export default function App() {
+  return (
+    <Layout>
+      <div className="max-w-4xl mx-auto text-center mt-20">
+        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+          Future of Technology
+        </h1>
+        <p className="text-xl text-gray-600 leading-relaxed">
+          Welcome to The Meyer. Please use the navigation links above to visit our specific technology pages on GitHub.
+        </p>
+      </div>
+    </Layout>
+  );
+}
