@@ -1,0 +1,435 @@
+import React, { useState, useEffect, useRef } from 'react';
+
+// --- STYLES ---
+const CustomStyles = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #ffffff;
+      color: #1a202c;
+      overflow-x: hidden;
+    }
+
+    .bubble-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      border-radius: 50%;
+      bottom: -100px;
+      animation: rise var(--duration) infinite ease-in;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.4; }
+      100% { transform: translateY(-110%) scale(1.2); opacity: 0; }
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Form Styles */
+    input, select, textarea {
+      background: rgba(249, 250, 251, 0.8);
+      border: 1px solid rgba(229, 231, 235, 1);
+      transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+
+    /* Press Logo Hover Effects */
+    .press-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .press-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(37, 99, 235, 0.3);
+      box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 0 10px 10px -5px rgba(37, 99, 235, 0.04);
+    }
+    
+    .press-logo {
+      transition: transform 0.3s ease;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .press-card:hover .press-logo {
+      transform: scale(1.05);
+    }
+
+    /* Mobile Menu Transitions */
+    #mobile-menu {
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hidden-menu {
+      transform: translateX(100%);
+    }
+  `}</style>
+);
+
+// --- LAYOUT COMPONENT ---
+const Layout = ({ children }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+    document.body.style.overflow = !menuOpen ? 'hidden' : 'auto';
+  };
+
+  return (
+    <>
+      {/* Top Banner (Certifications) */}
+      <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
+        <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
+          Global Certifications & Standards
+        </span>
+        <div className="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
+          {['ISO 27001', 'ISO 9001', 'ASSE LEC 2004', 'ETL CERTIFIED', 'PCI DSS'].map((cert) => (
+            <div key={cert} className="flex items-center space-x-1 flex-shrink-0">
+              <div className="w-1 h-3 bg-blue-500"></div>
+              <span className="text-[9px] font-bold text-white tracking-widest uppercase">{cert}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm top-[40px]">
+        {/* Logo */}
+        <a href="#" className="block z-50">
+          <img 
+            src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
+            alt="The Meyer Logo" 
+            className="h-10 md:h-12 w-auto object-contain" 
+          />
+        </a>
+        
+        {/* Desktop Links */}
+        <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
+          <a href="#" className="hover:text-blue-600 transition-colors">Tecnologias</a>
+          <a href="#" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
+          <a href="#" className="text-blue-600 transition-colors">Nosotros</a>
+          <a href="#contacto" className="hover:text-blue-600 transition-colors">Contacto</a>
+        </div>
+
+        <div className="flex items-center space-x-4">
+          <button className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md">
+            DEMO
+          </button>
+          
+          {/* Hamburger Button */}
+          <button 
+            onClick={toggleMenu}
+            className="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110]"
+          >
+            <span 
+              className={`block w-6 h-0.5 bg-gray-900 transition-transform duration-300 ${menuOpen ? 'translate-y-[8px] rotate-45' : ''}`}
+            ></span>
+            <span 
+              className={`block w-6 h-0.5 bg-gray-900 transition-opacity duration-300 ${menuOpen ? 'opacity-0' : 'opacity-100'}`}
+            ></span>
+            <span 
+              className={`block w-6 h-0.5 bg-gray-900 transition-transform duration-300 ${menuOpen ? '-translate-y-[8px] -rotate-45' : ''}`}
+            ></span>
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div 
+        id="mobile-menu" 
+        className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${menuOpen ? '' : 'hidden-menu'}`}
+      >
+        <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
+          <a href="#" onClick={toggleMenu} className="hover:text-blue-600 transition-colors">Tecnologias</a>
+          <a href="#" onClick={toggleMenu} className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
+          <a href="#" onClick={toggleMenu} className="hover:text-blue-600 transition-colors">Nosotros</a>
+          <a href="#contacto" onClick={toggleMenu} className="hover:text-blue-600 transition-colors">Contacto</a>
+        </div>
+        <button className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl">
+          SOLICITAR DEMO
+        </button>
+      </div>
+
+      {/* Main Content Injection */}
+      <main className="pt-40">
+        {children}
+      </main>
+    </>
+  );
+};
+
+// --- MAIN APP CONTENT ---
+const App = () => {
+  const bubbleContainerRef = useRef(null);
+
+  // GSAP Animation Loader & Logic
+  useEffect(() => {
+    // 1. Create Bubbles
+    const createBubbles = () => {
+      const container = bubbleContainerRef.current;
+      if (!container) return;
+      container.innerHTML = ''; 
+      
+      const count = 25;
+      for (let i = 0; i < count; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        const size = Math.random() * 40 + 10 + 'px';
+        bubble.style.width = size;
+        bubble.style.height = size;
+        bubble.style.left = Math.random() * 100 + '%';
+        bubble.style.animationDelay = Math.random() * 8 + 's';
+        bubble.style.setProperty('--duration', Math.random() * 12 + 10 + 's');
+        container.appendChild(bubble);
+      }
+    };
+    createBubbles();
+
+    // 2. Load GSAP scripts dynamically
+    const loadScripts = () => {
+      if (window.gsap && window.ScrollTrigger) {
+        initAnimations();
+        return;
+      }
+
+      const gsapScript = document.createElement('script');
+      gsapScript.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
+      gsapScript.onload = () => {
+        const stScript = document.createElement('script');
+        stScript.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js";
+        stScript.onload = () => {
+          window.gsap.registerPlugin(window.ScrollTrigger);
+          initAnimations();
+        };
+        document.body.appendChild(stScript);
+      };
+      document.body.appendChild(gsapScript);
+    };
+
+    const initAnimations = () => {
+      const gsap = window.gsap;
+      const ScrollTrigger = window.ScrollTrigger;
+
+      // Initial animations
+      gsap.from("#title-anim", { duration: 1, y: 30, opacity: 0, ease: "power3.out" });
+      gsap.from("#subtitle-anim", { duration: 1, y: 20, opacity: 0, delay: 0.3, ease: "power3.out" });
+
+      // Scroll animations: About Card
+      gsap.from("#about-card", {
+        scrollTrigger: {
+          trigger: "#about-card",
+          start: "top 85%",
+        },
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out"
+      });
+
+      // Scroll animations: Form
+      gsap.from("#form-container", {
+        scrollTrigger: {
+          trigger: "#form-container",
+          start: "top 85%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power2.out"
+      });
+    };
+
+    loadScripts();
+  }, []);
+
+  return (
+    <>
+      <CustomStyles />
+      <Layout>
+        {/* Hero Section Title */}
+        <section className="relative py-12 px-8 overflow-hidden text-center">
+          <div className="bubble-bg z-0" ref={bubbleContainerRef}></div>
+          <div className="relative z-10">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-4" id="title-anim">
+              Nuestra <span className="text-blue-600">Misión.</span>
+            </h1>
+            <p className="text-gray-500 max-w-2xl mx-auto font-medium" id="subtitle-anim">
+              Innovación con propósito: redefiniendo el acceso global al agua potable a través del aire.
+            </p>
+          </div>
+        </section>
+
+        {/* Watergen About Card Section */}
+        <section className="py-20 px-8 bg-[#f8faff] relative z-20">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-blue-500/5 border border-white" id="about-card">
+              <div className="overflow-hidden rounded-2xl aspect-video md:aspect-square">
+                <img 
+                  src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/ATP.jpg" 
+                  alt="Watergen Innovation" 
+                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="flex flex-col justify-center">
+                <span className="text-blue-600 font-bold text-xs uppercase tracking-widest mb-4">Partner Tecnológico</span>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
+                  Watergen: Water from Air
+                </h2>
+                <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                  Watergen is a global leader in the atmospheric water generation (AWG) market, dedicated to providing high-quality drinking water to people everywhere. Our mission is to eliminate the need for carbon-intensive supply chains and environmentally damaging plastic waste.
+                </p>
+                <div className="flex items-center space-x-2">
+                  <a href="https://watergen.com/about/" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-bold flex items-center group">
+                    Leer más sobre Watergen 
+                    <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Articles & Press Section */}
+        <section className="py-24 px-8 bg-white relative z-20" id="articles-section">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center space-x-4 mb-12">
+              <div className="h-px bg-gray-200 flex-grow"></div>
+              <h2 className="text-sm font-bold tracking-[0.3em] uppercase text-blue-600">Articulos y Reportajes</h2>
+              <div className="h-px bg-gray-200 flex-grow"></div>
+            </div>
+            
+            <div className="flex flex-wrap items-center justify-center gap-10 md:gap-20 opacity-40 grayscale hover:grayscale-0 transition-all duration-700" id="articles-logos">
+              
+              {/* Expansión Logo */}
+              <a href="https://expansion.mx/tecnologia/2019/04/19/watergen-la-startup-que-hace-agua-del-aire" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform duration-300">
+                <svg className="h-6 w-auto fill-[#E30613]" viewBox="0 0 170 40">
+                  <text x="0" y="30" fontFamily="sans-serif" fontWeight="900" fontSize="32" letterSpacing="-1">Expansión</text>
+                </svg>
+              </a>
+
+              {/* El Financiero Logo */}
+              <a href="https://elfinanciero.com.mx/ciencia/esta-startup-israeli-convierte-el-aire-en-agua" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform duration-300">
+                <svg className="h-6 w-auto" viewBox="0 0 220 40">
+                  <text x="0" y="30" fontFamily="sans-serif" fontWeight="900" fontSize="24" letterSpacing="1" fill="#005596">EL FINANCIERO</text>
+                </svg>
+              </a>
+
+              {/* El Economista Logo */}
+              <a href="https://eleconomista.com.ar/internacional/el-ecosistema-high-tech-israel-n47518" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform duration-300">
+                <svg className="h-7 w-auto" viewBox="0 0 240 40">
+                  <text x="0" y="30" fontFamily="serif" fontWeight="bold" fontSize="28" fill="#005596">El Economista</text>
+                  <rect x="0" y="35" width="220" height="2" fill="#005596" />
+                </svg>
+              </a>
+
+              {/* La Nación Logo */}
+              <a href="https://www.lanacion.com.ar/economia/negocios/buquebus-estreno-un-sistema-que-produce-agua-del-aire-nid15072023" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform duration-300">
+                <svg className="h-7 w-auto" viewBox="0 0 180 40">
+                  <text x="0" y="30" fontFamily="'Times New Roman', serif" fontWeight="bold" fontSize="28" letterSpacing="0.5" fill="#005596">LA NACION</text>
+                </svg>
+              </a>
+            </div>
+
+            <div className="mt-16 grid md:grid-cols-3 gap-8">
+              {[
+                { cat: 'Sustentabilidad', title: 'El futuro del agua en zonas áridas', desc: 'Cómo la tecnología AWG está cambiando el paradigma de la escasez hídrica global...' },
+                { cat: 'Innovación', title: 'Eficiencia Energética en GENius', desc: 'Análisis técnico sobre la optimización del consumo eléctrico en la generación atmosférica...' },
+                { cat: 'Reportaje', title: 'Infraestructura del Mañana', desc: 'The Meyer lidera el despliegue de soluciones hídricas sin necesidad de tuberías...' },
+              ].map((article, index) => (
+                <div key={index} className="p-8 border border-gray-100 rounded-2xl hover:shadow-lg transition-shadow cursor-pointer group">
+                  <span className="text-xs font-bold text-blue-500 block mb-4 uppercase tracking-wider">{article.cat}</span>
+                  <h4 className="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors">{article.title}</h4>
+                  <p className="text-gray-500 text-sm">{article.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Form Section */}
+        <section className="py-24 px-8 bg-[#f8faff] relative z-20" id="contacto">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">¿Interesado en nuestra tecnología?</h2>
+              <p className="text-gray-500">Complete el formulario y nuestro equipo técnico se pondrá en contacto.</p>
+            </div>
+
+            <div className="glass p-8 md:p-12 rounded-[2rem] border border-gray-100 shadow-xl" id="form-container">
+              <form action="#" method="POST" className="grid md:grid-cols-2 gap-6" onSubmit={(e) => e.preventDefault()}>
+                <div className="col-span-2 md:col-span-1">
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Nombre Completo</label>
+                  <input type="text" name="name" placeholder="Ej. Juan Pérez" required className="w-full px-5 py-4 rounded-xl text-gray-900" />
+                </div>
+                <div className="col-span-2 md:col-span-1">
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Empresa</label>
+                  <input type="text" name="company" placeholder="Nombre de su organización" required className="w-full px-5 py-4 rounded-xl text-gray-900" />
+                </div>
+                <div className="col-span-2 md:col-span-1">
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Posición / Cargo</label>
+                  <input type="text" name="position" placeholder="Ej. Director de Operaciones" required className="w-full px-5 py-4 rounded-xl text-gray-900" />
+                </div>
+                <div className="col-span-2 md:col-span-1">
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Tecnología de Interés</label>
+                  <select name="technology" required defaultValue="" className="w-full px-5 py-4 rounded-xl text-gray-900 appearance-none bg-no-repeat bg-right pr-10">
+                    <option value="" disabled>Seleccione una opción</option>
+                    <option value="watergen">Watergen (Atmospheric Water)</option>
+                    <option value="wishpro">Wishpro (Advanced Skincare)</option>
+                    <option value="sas">SAS (High-Tech Solutions)</option>
+                  </select>
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Mensaje Adicional (Opcional)</label>
+                  <textarea rows="4" placeholder="Cuéntenos sobre su proyecto..." className="w-full px-5 py-4 rounded-xl text-gray-900"></textarea>
+                </div>
+                <div className="col-span-2 mt-4">
+                  <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 rounded-2xl shadow-lg shadow-blue-600/20 transform hover:-translate-y-1 transition-all">
+                    ENVIAR SOLICITUD DE INFORMACIÓN
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="py-12 border-t border-gray-100 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20 px-4">
+          &copy; 2025 THE MEYER EU. ALL RIGHTS RESERVED. <br className="md:hidden" /> Abriendo un horizonte a través del estándar global de la inovacion e integridad.
+        </footer>
+      </Layout>
+    </>
+  );
+};
+
+export default App;
