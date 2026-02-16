@@ -82,10 +82,10 @@ const Layout = ({ children }) => {
         
         {/* Desktop Links - UPDATED */}
         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-          <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Tecnologia.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
-          <a href="#" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
-          <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Nosotros.html" className="hover:text-blue-600 transition-colors">Nosotros</a>
-          <a href="#" className="hover:text-blue-600 transition-colors">Contacto</a>
+          <a href="products.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
+          <a href="sustainability.html" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
+          <a href="about.html" className="hover:text-blue-600 transition-colors">Nosotros</a>
+          <a href="#contact" className="hover:text-blue-600 transition-colors">Contacto</a>
         </div>
 
         <div className="flex items-center space-x-4">
