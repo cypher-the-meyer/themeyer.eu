@@ -179,48 +179,50 @@
             </div>
         </section>
 
-        <!-- Press / Media Section -->
-        <section class="py-24 px-8 bg-white relative z-20">
+        <!-- Articles & Press Section -->
+        <section class="py-24 px-8 bg-white relative z-20" id="articles-section">
             <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-16">
-                    <span class="text-blue-600 font-bold text-xs uppercase tracking-widest mb-4 block" id="press-tag-anim">Impacto Global</span>
-                    <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4" id="press-title-anim">Nuestra Tecnología en los Medios</h2>
-                    <p class="text-gray-500 max-w-xl mx-auto" id="press-subtitle-anim">Reconocidos por las principales editoriales de negocios y tecnología del mundo.</p>
+                <div class="flex items-center space-x-4 mb-12">
+                    <div class="h-px bg-gray-200 flex-grow"></div>
+                    <h2 class="text-sm font-bold tracking-[0.3em] uppercase text-blue-600">Articulos y Reportajes</h2>
+                    <div class="h-px bg-gray-200 flex-grow"></div>
+                </div>
+                
+                <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-700" id="articles-logos">
+                    <svg class="h-6 w-auto fill-gray-900" viewBox="0 0 120 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="28" letter-spacing="-1">Forbes</text></svg>
+                    <svg class="h-5 w-auto fill-gray-900" viewBox="0 0 100 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="28">WSJ</text></svg>
+                    <svg class="h-10 w-auto" viewBox="0 0 100 60" fill="currentColor">
+                        <g transform="translate(50,30) scale(0.6)">
+                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(-60)" opacity="0.9"/>
+                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(-30)" opacity="0.9"/>
+                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(0)" opacity="0.9"/>
+                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(30)" opacity="0.9"/>
+                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(60)" opacity="0.9"/>
+                            <path d="M-10,-40 C-15,-40 -20,-30 -20,-20 C-20,-10 -15,0 -10,0 L0,0 C5,0 10,-10 10,-20 C10,-30 5,-40 0,-40 Z" transform="rotate(90)" opacity="0.9"/>
+                            <path d="M-3,5 L3,5 L0,12 Z" fill="#000"/>
+                        </g>
+                        <text x="32" y="55" font-family="sans-serif" font-weight="900" font-size="14" letter-spacing="1">CNBC</text>
+                    </svg>
+                    <svg class="h-6 w-auto fill-red-600" viewBox="0 0 100 40"><text x="0" y="30" font-family="serif" font-weight="900" font-size="30" letter-spacing="1">TIME</text></svg>
+                    <svg class="h-5 w-auto fill-green-800" viewBox="0 0 160 40"><text x="0" y="30" font-family="sans-serif" font-weight="900" font-size="22" letter-spacing="-0.5">HUFFPOST</text></svg>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="press-grid">
-                    <!-- Expansion -->
-                    <a href="https://expansion.mx/tecnologia/2019/04/19/watergen-la-startup-que-hace-agua-del-aire" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
-                        <!-- Updated container height and removed grayscale from image -->
-                        <div class="h-20 w-full flex items-center justify-center mb-6 px-2">
-                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/grupo_expansion_curvas-01.ad.png" alt="Expansión" class="max-h-full max-w-full object-contain press-logo">
-                        </div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Ver Artículo</span>
-                    </a>
-
-                    <!-- El Economista -->
-                    <a href="https://eleconomista.com.ar/internacional/el-ecosistema-high-tech-israel-n47518" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
-                        <div class="h-20 w-full flex items-center justify-center mb-6 px-2">
-                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/eleconomista-1.png" alt="El Economista" class="max-h-full max-w-full object-contain press-logo">
-                        </div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Ver Artículo</span>
-                    </a>
-
-                    <!-- El Pais -->
-                    <a href="https://elpais.com/" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
-                         <div class="h-20 w-full flex items-center justify-center mb-6 px-2">
-                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/elpais.png" alt="El Pais" class="max-h-full max-w-full object-contain press-logo">
-                        </div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Ver Artículo</span>
-                    </a>
-
-                    <!-- El Financiero -->
-                    <a href="https://www.elfinanciero.com.mx/ciencia/esta-startup-israeli-convierten-el-aire-en-agua/" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
-                         <div class="h-20 w-full flex items-center justify-center mb-6 px-2">
-                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/elfinanciero.jpg" alt="El Financiero" class="max-h-full max-w-full object-contain press-logo">
-                        </div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Ver Artículo</span>
-                    </a>
+                <div class="mt-16 grid md:grid-cols-3 gap-8">
+                    <div class="p-8 border border-gray-100 rounded-2xl hover:shadow-lg transition-shadow cursor-pointer group">
+                        <span class="text-xs font-bold text-blue-500 block mb-4 uppercase tracking-wider">Sustentabilidad</span>
+                        <h4 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors">El futuro del agua en zonas áridas</h4>
+                        <p class="text-gray-500 text-sm">Cómo la tecnología AWG está cambiando el paradigma de la escasez hídrica global...</p>
+                    </div>
+                    <div class="p-8 border border-gray-100 rounded-2xl hover:shadow-lg transition-shadow cursor-pointer group">
+                        <span class="text-xs font-bold text-blue-500 block mb-4 uppercase tracking-wider">Innovación</span>
+                        <h4 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors">Eficiencia Energética en GENius</h4>
+                        <p class="text-gray-500 text-sm">Análisis técnico sobre la optimización del consumo eléctrico en la generación atmosférica...</p>
+                    </div>
+                    <div class="p-8 border border-gray-100 rounded-2xl hover:shadow-lg transition-shadow cursor-pointer group">
+                        <span class="text-xs font-bold text-blue-500 block mb-4 uppercase tracking-wider">Reportaje</span>
+                        <h4 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors">Infraestructura del Mañana</h4>
+                        <p class="text-gray-500 text-sm">The Meyer lidera el despliegue de soluciones hídricas sin necesidad de tuberías...</p>
+                    </div>
                 </div>
             </div>
         </section>
