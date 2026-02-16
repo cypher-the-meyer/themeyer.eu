@@ -75,6 +75,16 @@
             background: #fff;
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
+
+        /* Press Logo Hover Effects */
+        .press-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .press-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(37, 99, 235, 0.3);
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 0 10px 10px -5px rgba(37, 99, 235, 0.04);
+        }
     </style>
 </head>
 <body>
@@ -157,8 +167,45 @@
             </div>
         </section>
 
+        <!-- NEW: Press / Media Section -->
+        <section class="py-24 px-8 bg-white relative z-20">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-blue-600 font-bold text-xs uppercase tracking-widest mb-4 block" id="press-tag-anim">Impacto Global</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4" id="press-title-anim">Nuestra Tecnología en los Medios</h2>
+                    <p class="text-gray-500 max-w-xl mx-auto" id="press-subtitle-anim">Reconocidos por las principales editoriales de negocios y tecnología del mundo.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="press-grid">
+                    <!-- Expansion -->
+                    <a href="https://expansion.mx/tecnologia/2019/04/19/watergen-la-startup-que-hace-agua-del-aire" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
+                        <div class="mb-4 text-xl font-black text-gray-400 group-hover:text-[#E32619] transition-colors uppercase italic tracking-tighter">Expansión</div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ver Artículo</span>
+                    </a>
+
+                    <!-- El Economista -->
+                    <a href="https://eleconomista.com.ar/internacional/el-ecosistema-high-tech-israel-n47518" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
+                        <div class="mb-4 text-lg font-extrabold text-gray-400 group-hover:text-[#004A80] transition-colors leading-tight">El Economista</div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ver Artículo</span>
+                    </a>
+
+                    <!-- La Nacion -->
+                    <a href="https://www.lanacion.com.ar/economia/negocios/buquebus-estreno-un-sistema-que-produce-agua-del-aire-nid15072023/" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
+                        <div class="mb-4 text-xl font-serif font-bold text-gray-400 group-hover:text-black transition-colors">LA NACION</div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ver Artículo</span>
+                    </a>
+
+                    <!-- El Financiero -->
+                    <a href="https://www.elfinanciero.com.mx/ciencia/esta-startup-israeli-convierten-el-aire-en-agua/" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
+                        <div class="mb-4 text-lg font-black text-gray-400 group-hover:text-[#E31E24] transition-colors tracking-tight">EL FINANCIERO</div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ver Artículo</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact/Interest Form Section -->
-        <section class="py-24 px-8 bg-white relative z-20" id="contacto">
+        <section class="py-24 px-8 bg-[#f8faff] relative z-20" id="contacto">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">¿Interesado en nuestra tecnología?</h2>
@@ -237,11 +284,11 @@
             gsap.from("#title-anim", { duration: 1, y: 30, opacity: 0, ease: "power3.out" });
             gsap.from("#subtitle-anim", { duration: 1, y: 20, opacity: 0, delay: 0.3, ease: "power3.out" });
 
-            // Scroll animations
+            // Scroll animations: About Card
             gsap.from("#about-card", {
                 scrollTrigger: {
                     trigger: "#about-card",
-                    start: "top 80%",
+                    start: "top 85%",
                 },
                 y: 60,
                 opacity: 0,
@@ -249,6 +296,32 @@
                 ease: "power4.out"
             });
 
+            // Scroll animations: Press Section
+            gsap.from("#press-tag-anim", {
+                scrollTrigger: { trigger: "#press-grid", start: "top 90%" },
+                y: 20, opacity: 0, duration: 0.8
+            });
+            gsap.from("#press-title-anim", {
+                scrollTrigger: { trigger: "#press-grid", start: "top 90%" },
+                y: 20, opacity: 0, duration: 0.8, delay: 0.2
+            });
+            gsap.from("#press-subtitle-anim", {
+                scrollTrigger: { trigger: "#press-grid", start: "top 90%" },
+                y: 20, opacity: 0, duration: 0.8, delay: 0.4
+            });
+            gsap.from(".press-card", {
+                scrollTrigger: {
+                    trigger: "#press-grid",
+                    start: "top 80%",
+                },
+                y: 40,
+                opacity: 0,
+                stagger: 0.15,
+                duration: 1,
+                ease: "power2.out"
+            });
+
+            // Scroll animations: Form
             gsap.from("#form-container", {
                 scrollTrigger: {
                     trigger: "#form-container",
