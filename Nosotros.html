@@ -85,6 +85,17 @@
             border-color: rgba(37, 99, 235, 0.3);
             box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 0 10px 10px -5px rgba(37, 99, 235, 0.04);
         }
+        
+        /* Logo Grayscale transition */
+        .press-logo {
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.4s ease;
+        }
+        .press-card:hover .press-logo {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -167,7 +178,7 @@
             </div>
         </section>
 
-        <!-- NEW: Press / Media Section -->
+        <!-- Press / Media Section -->
         <section class="py-24 px-8 bg-white relative z-20">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
@@ -179,26 +190,34 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="press-grid">
                     <!-- Expansion -->
                     <a href="https://expansion.mx/tecnologia/2019/04/19/watergen-la-startup-que-hace-agua-del-aire" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
-                        <div class="mb-4 text-xl font-black text-gray-400 group-hover:text-[#E32619] transition-colors uppercase italic tracking-tighter">Expansión</div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ver Artículo</span>
+                        <div class="h-16 flex items-center justify-center mb-6 w-full">
+                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/grupo_expansion_curvas-01.ad.png" alt="Expansión" class="h-full w-auto object-contain press-logo">
+                        </div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Ver Artículo</span>
                     </a>
 
                     <!-- El Economista -->
                     <a href="https://eleconomista.com.ar/internacional/el-ecosistema-high-tech-israel-n47518" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
-                        <div class="mb-4 text-lg font-extrabold text-gray-400 group-hover:text-[#004A80] transition-colors leading-tight">El Economista</div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ver Artículo</span>
+                        <div class="h-16 flex items-center justify-center mb-6 w-full">
+                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/eleconomista-1.png" alt="El Economista" class="h-full w-auto object-contain press-logo">
+                        </div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Ver Artículo</span>
                     </a>
 
-                    <!-- La Nacion -->
-                    <a href="https://www.lanacion.com.ar/economia/negocios/buquebus-estreno-un-sistema-que-produce-agua-del-aire-nid15072023/" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
-                        <div class="mb-4 text-xl font-serif font-bold text-gray-400 group-hover:text-black transition-colors">LA NACION</div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ver Artículo</span>
+                    <!-- El Pais (Replacing La Nacion) -->
+                    <a href="https://elpais.com/" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
+                         <div class="h-16 flex items-center justify-center mb-6 w-full">
+                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/elpais.png" alt="El Pais" class="h-full w-auto object-contain press-logo">
+                        </div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Ver Artículo</span>
                     </a>
 
                     <!-- El Financiero -->
                     <a href="https://www.elfinanciero.com.mx/ciencia/esta-startup-israeli-convierten-el-aire-en-agua/" target="_blank" class="press-card glass p-8 rounded-3xl flex flex-col items-center justify-center text-center h-48 border border-gray-100 group">
-                        <div class="mb-4 text-lg font-black text-gray-400 group-hover:text-[#E31E24] transition-colors tracking-tight">EL FINANCIERO</div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ver Artículo</span>
+                         <div class="h-16 flex items-center justify-center mb-6 w-full">
+                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/elfinanciero.jpg" alt="El Financiero" class="h-full w-auto object-contain press-logo">
+                        </div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Ver Artículo</span>
                     </a>
                 </div>
             </div>
