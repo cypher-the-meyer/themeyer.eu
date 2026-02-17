@@ -1,100 +1,77 @@
-import React, { useState, useEffect, useRef } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Meyer - Atmospheric Water</title>
 
-// --- STYLES ---
-const CustomStyles = () => (
-  <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #ffffff;
-      color: #1a202c;
-      overflow-x: hidden;
-    }
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #1a202c;
+            overflow-x: hidden;
+        }
 
-    .bubble-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-    }
+        /* Bubbles */
+        .bubble-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; overflow: hidden; z-index: 0;
+        }
+        .bubble {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 50%;
+            bottom: -100px;
+            animation: rise var(--duration) infinite ease-in;
+        }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-110%) scale(1.2); opacity: 0; }
+        }
 
-    .bubble {
-      position: absolute;
-      background: rgba(59, 130, 246, 0.08);
-      border: 1px solid rgba(59, 130, 246, 0.15);
-      border-radius: 50%;
-      bottom: -100px;
-      animation: rise var(--duration) infinite ease-in;
-    }
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
 
-    @keyframes rise {
-      0% { transform: translateY(0) scale(1); opacity: 0; }
-      10% { opacity: 0.8; }
-      90% { opacity: 0.4; }
-      100% { transform: translateY(-110%) scale(1.2); opacity: 0; }
-    }
+        /* Scrollbar hiding */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-    }
+        /* Mobile Menu */
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hidden-menu { transform: translateX(100%); }
+        
+        /* Menu Hamburger Animation */
+        .menu-open #line1 { transform: rotate(45deg) translate(5px, 5px); }
+        .menu-open #line2 { opacity: 0; }
+        .menu-open #line3 { transform: rotate(-45deg) translate(5px, -5px); }
+    </style>
 
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Form Styles */
-    input, select, textarea {
-      background: rgba(249, 250, 251, 0.8);
-      border: 1px solid rgba(229, 231, 235, 1);
-      transition: all 0.3s ease;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #2563eb;
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-    }
-
-    /* Press Logo Hover Effects */
-    .press-card {
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .press-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(37, 99, 235, 0.3);
-      box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 0 10px 10px -5px rgba(37, 99, 235, 0.04);
-    }
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    .press-logo {
-      transition: transform 0.3s ease;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    .press-card:hover .press-logo {
-      transform: scale(1.05);
-    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
 
-    /* Mobile Menu Transitions */
-    #mobile-menu {
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .hidden-menu {
-      transform: translateX(100%);
-    }
-  `}</style>
-);
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Get React hooks from the global object
+        const { useState, useEffect, useRef } = React;
 
 // --- LAYOUT COMPONENT ---
 const Layout = ({ children }) => {
