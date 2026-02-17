@@ -70,16 +70,15 @@ const Layout = ({ children }) => {
       </div>
 
       {/* --- Navigation --- */}
-      <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all mt-10">
-        {/* Logo */}
-        <a href="/" className="block z-50">
-          <img 
-            src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
-            alt="The Meyer Logo" 
-            className="h-10 md:h-12 w-auto object-contain" 
-          />
+        <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-3 flex justify-between items-center glass shadow-sm transition-all mt-10">
+        <a href="/" className="block z-50"> 
+            <img 
+               src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
+              alt="The Meyer Logo" 
+              className="h-10 md:h-12 w-auto object-contain" 
+            />
         </a>
-        
+
         {/* Desktop Links - UPDATED */}
         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
           <a href="pages/Tecnologia.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
