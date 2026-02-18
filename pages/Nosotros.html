@@ -63,7 +63,7 @@
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="http://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -286,20 +286,6 @@
                                         <text x="0" y="30" fontFamily="'Times New Roman', serif" fontWeight="bold" fontSize="28" letterSpacing="0.5" fill="#005596">LA NACION</text>
                                     </svg>
                                 </a>
-                            </div>
-
-                            <div className="grid md:grid-cols-3 gap-8">
-                                {[
-                                    { cat: 'Sustentabilidad', title: 'El futuro del agua en zonas áridas', desc: 'Cómo la tecnología AWG está cambiando el paradigma de la escasez hídrica global...' },
-                                    { cat: 'Innovación', title: 'Eficiencia Energética en GENius', desc: 'Análisis técnico sobre la optimización del consumo eléctrico en la generación atmosférica...' },
-                                    { cat: 'Reportaje', title: 'Infraestructura del Mañana', desc: 'The Meyer lidera el despliegue de soluciones hídricas sin necesidad de tuberías...' },
-                                ].map((article, index) => (
-                                    <div key={index} className="article-card glass p-8 border border-white/50 rounded-2xl hover:shadow-lg hover:bg-white transition-all cursor-pointer group">
-                                        <span className="text-xs font-bold text-blue-500 block mb-4 uppercase tracking-wider">{article.cat}</span>
-                                        <h4 className="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors">{article.title}</h4>
-                                        <p className="text-gray-500 text-sm">{article.desc}</p>
-                                    </div>
-                                ))}
                             </div>
                         </div>
                     </section>
