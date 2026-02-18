@@ -352,19 +352,8 @@
                     ease: "power4.out"
                 });
 
-                // Form Animation
-                // Adjusted to prevent visibility issues
-                gsap.from("#contact-section-container", {
-                    scrollTrigger: {
-                        trigger: "#contact-section-container",
-                        start: "top 90%", // Trigger slightly earlier
-                    },
-                    y: 50,
-                    opacity: 0,
-                    duration: 1,
-                    ease: "power2.out"
-                });
-
+                // REMOVED: Contact Form Animation to ensure visibility
+                
                 // Refresh ScrollTrigger after a short delay to handle loading shifts
                 setTimeout(() => {
                     ScrollTrigger.refresh();
