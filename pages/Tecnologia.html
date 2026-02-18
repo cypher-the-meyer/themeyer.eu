@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Meyer - Tecnologías & Innovación</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #1a202c;
+            overflow-x: hidden;
+        }
+
+        /* Bubbles - Original Blue Style */
+        .bubble-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; overflow: hidden; z-index: 0;
+        }
+        .bubble {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.08); /* Original Blue */
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 50%;
+            bottom: -100px;
+            animation: rise var(--duration) infinite ease-in;
+        }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-110%) scale(1.2); opacity: 0; }
+        }
+
+        /* Glassmorphism - Original Style */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Scrollbar hiding */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Mobile Menu */
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hidden-menu { transform: translateX(100%); }
+        
+        /* Menu Hamburger Animation */
+        .menu-open #line1 { transform: rotate(45deg) translate(5px, 5px); }
+        .menu-open #line2 { opacity: 0; }
+        .menu-open #line3 { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* Form Inputs */
+        .form-input { transition: all 0.3s ease; }
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15); /* Blue shadow focus */
+        }
+        
+    </style>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- LAYOUT COMPONENT ---
+        const Layout = ({ children }) => {
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+            const toggleMenu = () => {
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+            };
+
+            return (
+                <div className="relative min-h-screen">
+                    {/* Background Bubbles */}
+                    <div className="bubble-bg fixed inset-0 h-screen w-full">
+                        <div className="bubble" style={{ width: '300px', height: '300px', left: '10%', '--duration': '15s' }}></div>
+                        <div className="bubble" style={{ width: '200px', height: '200px', left: '60%', '--duration': '12s', animationDelay: '2s' }}></div>
+                        <div className="bubble" style={{ width: '150px', height: '150px', left: '30%', '--duration': '18s', animationDelay: '5s' }}></div>
+                        <div className="bubble" style={{ width: '100px', height: '100px', left: '80%', '--duration': '20s', animationDelay: '1s' }}></div>
+                        <div className="bubble" style={{ width: '250px', height: '250px', left: '45%', '--duration': '14s', animationDelay: '3s' }}></div>
+                    </div>
+
+                    {/* Top Banner */}
+                    <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
+                        <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap flex items-center gap-2">
+                             INNOVACIÓN & TECNOLOGÍA PATENTADA
+                        </span>
+                        <div className="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
+                            {['PATENTED', 'FDA APPROVED', 'ISO 9001', 'ECO-FRIENDLY', 'GLOBAL TECH'].map((cert, index) => (
+                                <div key={index} className="flex items-center space-x-1 flex-shrink-0">
+                                    <div className="w-1 h-3 bg-blue-500"></div>
+                                    <span className="text-[9px] font-bold text-white tracking-widest uppercase">{cert}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
+                        <a href="http://themeyer.eu" className="block z-50">
+                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
+                        </a>
+                        
+                        <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
+                            <a href="/pages/Tecnologias" className="text-blue-600 transition-colors">Tecnologías</a>
+                            <a href="/pages/Sustentabilidad" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
+                            <a href="/pages/Nosotros" className="hover:text-blue-600 transition-colors">Nosotros</a>
+                        </div>
+
+                        <div className="flex items-center space-x-4">
+                            <button className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md">
+                                CONTACTO
+                            </button>
+                            
+                            <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
+                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
+                                <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
+                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+                            </button>
+                        </div>
+                    </nav>
+
+                    {/* Mobile Menu */}
+                    <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
+                        <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
+                            <a href="/pages/Tecnologias" className="mobile-link text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologías</a>
+                            <a href="/pages/Sustentabilidad" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
+                            <a href="/pages/Nosotros" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
+                        </div>
+                    </div>
+
+                    <main className="pt-32 px-4 md:px-8 pb-12">
+                        {children}
+                    </main>
+                </div>
+            );
+        };
+
+        // --- APP COMPONENT ---
+        const App = () => {
+            useEffect(() => {
+                gsap.registerPlugin(ScrollTrigger);
+
+                gsap.from("#title-anim", { duration: 1, y: 30, opacity: 0, ease: "power3.out" });
+                gsap.from("#subtitle-anim", { duration: 1, y: 20, opacity: 0, delay: 0.3, ease: "power3.out" });
+
+                // WishPro Animation
+                gsap.from("#wishpro-card", {
+                    scrollTrigger: { trigger: "#wishpro-card", start: "top 85%" },
+                    y: 60, opacity: 0, duration: 1.2, ease: "power4.out"
+                });
+
+                // Watergen Animation
+                gsap.from("#watergen-card", {
+                    scrollTrigger: { trigger: "#watergen-card", start: "top 85%" },
+                    y: 60, opacity: 0, duration: 1.2, delay: 0.2, ease: "power4.out"
+                });
+
+                setTimeout(() => ScrollTrigger.refresh(), 500);
+            }, []);
+
+            return (
+                <Layout>
+                    {/* Hero Section */}
+                    <section className="relative py-12 px-8 overflow-hidden text-center z-10">
+                        <div className="relative z-10 mt-12 mb-12">
+                            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-4" id="title-anim">
+                                Tecnologías que <span className="text-blue-600">Transforman</span>
+                            </h1>
+                            <p className="text-gray-500 max-w-2xl mx-auto font-medium text-lg leading-relaxed" id="subtitle-anim">
+                                Descubra nuestro portafolio de soluciones patentadas. Desde la revolución dermoestética hasta la generación de recursos vitales.
+                            </p>
+                        </div>
+                    </section>
+
+                    {/* WISHPRO Section */}
+                    <section className="py-8 md:py-16 px-4 md:px-8 relative z-20">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-purple-500/5 border border-white" id="wishpro-card">
+                                <div className="order-2 md:order-1 flex flex-col justify-center">
+                                    <span className="text-purple-600 font-bold text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                                        Estética Avanzada
+                                    </span>
+                                    <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
+                                        WishPro: Infusión Magnética
+                                    </h2>
+                                    <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                                        La única tecnología del mundo que combina pulsos magnéticos con cápsulas de principios activos avanzados. Tratamientos no invasivos con resultados inmediatos.
+                                    </p>
+                                    <ul className="space-y-3 mb-8">
+                                        <li className="flex items-start">
+                                            <span className="text-purple-500 mr-2">✓</span>
+                                            <span className="text-gray-600 font-medium">Tecnología MIT (Magnetic Infusion Technology).</span>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <span className="text-purple-500 mr-2">✓</span>
+                                            <span className="text-gray-600 font-medium">Sin agujas, sin dolor, sin tiempo de recuperación.</span>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <span className="text-purple-500 mr-2">✓</span>
+                                            <span className="text-gray-600 font-medium">Cápsulas unitarias higiénicas y patentadas.</span>
+                                        </li>
+                                    </ul>
+                                    <div className="pt-2">
+                                        <button className="bg-gray-900 hover:bg-purple-700 text-white px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-purple-500/25 transform hover:translate-x-1 flex items-center group">
+                                            <span>MÁS INFORMACIÓN</span>
+                                            <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="order-1 md:order-2 overflow-hidden rounded-2xl aspect-square md:aspect-[4/3] relative group shadow-lg">
+                                    <img 
+                                        src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/Wishpro.png" 
+                                        alt="WishPro Device Treatment" 
+                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-purple-900/40 to-transparent"></div>
+                                    <div className="absolute top-6 right-6 bg-white/90 backdrop-blur text-purple-900 font-bold px-4 py-1 rounded-full text-xs shadow-sm">
+                                        PATENTADO
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* WATERGEN Section */}
+                    <section className="py-8 md:py-16 px-4 md:px-8 relative z-20 mb-12">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-blue-500/5 border border-white" id="watergen-card">
+                                {/* Image First on Desktop */}
+                                <div className="order-1 overflow-hidden rounded-2xl aspect-square md:aspect-[4/3] relative group shadow-lg">
+                                    <img 
+                                        src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/Watergen%20GEN-M%201.jpg" 
+                                        alt="Watergen GEN-M 1 Atmospheric Generator" 
+                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent"></div>
+                                    <div className="absolute bottom-6 left-6 text-white font-bold text-xl drop-shadow-md">
+                                        #DrinkingAir
+                                    </div>
+                                </div>
+                                
+                                <div className="order-2 flex flex-col justify-center">
+                                    <span className="text-blue-600 font-bold text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                                        Sustentabilidad Hídrica
+                                    </span>
+                                    <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
+                                        Watergen: Agua del Aire
+                                    </h2>
+                                    <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                                        La solución definitiva para la escasez de agua. Generadores atmosféricos que crean agua potable, mineralizada y fresca directamente de la humedad del aire.
+                                    </p>
+                                    <ul className="space-y-3 mb-8">
+                                        <li className="flex items-start">
+                                            <span className="text-blue-500 mr-2">✓</span>
+                                            <span className="text-gray-600 font-medium">GENius™ Module: Eficiencia energética inigualable.</span>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <span className="text-blue-500 mr-2">✓</span>
+                                            <span className="text-gray-600 font-medium">Plug & Drink: Sin tuberías, sin botellones.</span>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <span className="text-blue-500 mr-2">✓</span>
+                                            <span className="text-gray-600 font-medium">Escalabilidad: Desde oficinas hasta ciudades.</span>
+                                        </li>
+                                    </ul>
+                                    <div className="pt-2">
+                                        <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-blue-500/30 transform hover:translate-x-1 flex items-center group">
+                                            <span>MÁS INFORMACIÓN</span>
+                                            <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="py-12 border-t border-gray-100 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20 px-4">
+                        &copy; 2025 THE MEYER EU. <br className="md:hidden" /> Innovación para un futuro mejor.
+                    </footer>
+                </Layout>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
