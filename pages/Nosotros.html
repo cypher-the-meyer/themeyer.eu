@@ -203,14 +203,10 @@
                 const { name, value } = e.target;
                 
                 // FORCE SECURE CHARACTERS:
-                // Only update state if the input passes the strict security whitelist.
-                // This effectively prevents the user from typing forbidden characters.
                 if (validateInput(name, value)) {
                     setFormData(prev => ({ ...prev, [name]: value }));
-                    // Clear error message if input is valid
                     setErrors(prev => ({ ...prev, [name]: null }));
                 } else {
-                    // Show security warning
                     setErrors(prev => ({ 
                         ...prev, 
                         [name]: "Carácter no seguro detectado (Ej: ' \" ; < > =)" 
@@ -357,16 +353,22 @@
                 });
 
                 // Form Animation
+                // Adjusted to prevent visibility issues
                 gsap.from("#contact-section-container", {
                     scrollTrigger: {
                         trigger: "#contact-section-container",
-                        start: "top 80%"
+                        start: "top 90%", // Trigger slightly earlier
                     },
                     y: 50,
                     opacity: 0,
                     duration: 1,
                     ease: "power2.out"
                 });
+
+                // Refresh ScrollTrigger after a short delay to handle loading shifts
+                setTimeout(() => {
+                    ScrollTrigger.refresh();
+                }, 500);
 
             }, []);
 
