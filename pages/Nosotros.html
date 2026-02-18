@@ -300,59 +300,6 @@
                         </div>
                     </section>
 
-                    {/* Contact Form Section */}
-                    <section className="py-24 px-4 md:px-8 relative z-20" id="contacto">
-                        <div className="max-w-4xl mx-auto">
-                            <div className="text-center mb-16">
-                                <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">¿Interesado en nuestra tecnología?</h2>
-                                <p className="text-gray-500">Complete el formulario y nuestro equipo técnico se pondrá en contacto.</p>
-                            </div>
-
-                            <div className="glass p-8 md:p-12 rounded-[2rem] border border-gray-100 shadow-xl relative overflow-hidden" id="form-container">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full filter blur-3xl"></div>
-                                <div className="absolute bottom-0 left-0 w-40 h-40 bg-purple-500/10 rounded-full filter blur-3xl"></div>
-                                
-                                <form action="#" method="POST" className="grid md:grid-cols-2 gap-6 relative z-10" onSubmit={(e) => e.preventDefault()}>
-                                    <div className="col-span-2 md:col-span-1">
-                                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Nombre Completo</label>
-                                        <input type="text" name="name" placeholder="Ej. Juan Pérez" required className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-gray-900 bg-white/50" />
-                                    </div>
-                                    <div className="col-span-2 md:col-span-1">
-                                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Empresa</label>
-                                        <input type="text" name="company" placeholder="Nombre de su organización" required className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-gray-900 bg-white/50" />
-                                    </div>
-                                    <div className="col-span-2 md:col-span-1">
-                                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Posición / Cargo</label>
-                                        <input type="text" name="position" placeholder="Ej. Director de Operaciones" required className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-gray-900 bg-white/50" />
-                                    </div>
-                                    <div className="col-span-2 md:col-span-1">
-                                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Tecnología de Interés</label>
-                                        <div className="relative">
-                                            <select name="technology" required defaultValue="" className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-gray-900 bg-white/50 appearance-none">
-                                                <option value="" disabled>Seleccione una opción</option>
-                                                <option value="watergen">Watergen (Atmospheric Water)</option>
-                                                <option value="wishpro">Wishpro (Advanced Skincare)</option>
-                                                <option value="sas">SAS (High-Tech Solutions)</option>
-                                            </select>
-                                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
-                                                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-span-2">
-                                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Mensaje Adicional (Opcional)</label>
-                                        <textarea rows="4" placeholder="Cuéntenos sobre su proyecto..." className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-gray-900 bg-white/50"></textarea>
-                                    </div>
-                                    <div className="col-span-2 mt-4">
-                                        <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 rounded-2xl shadow-lg shadow-blue-600/20 transform hover:-translate-y-1 transition-all">
-                                            ENVIAR SOLICITUD DE INFORMACIÓN
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </section>
-
                     {/* Footer */}
                     <footer className="py-12 border-t border-gray-100 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20 px-4">
                         &copy; 2025 THE MEYER EU. ALL RIGHTS RESERVED. <br className="md:hidden" /> Abriendo un horizonte a través del estándar global de la inovacion e integridad.
