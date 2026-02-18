@@ -82,7 +82,7 @@ const Layout = ({ children }) => {
         {/* Desktop Links - UPDATED */}
         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
           <a href="pages/Tecnologia.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
-          <a href="sustainability.html" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
+          <a href="pages/Sustainability.html" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
           <a href="/pages/Nosotros.html" className="hover:text-blue-600 transition-colors">Nosotros</a>
         </div>
 
