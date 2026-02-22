@@ -176,93 +176,111 @@
 
         // --- CONTACT FORM COMPONENT ---
         const ContactForm = () => {
-            const [formData, setFormData] = useState({
-                name: '', company: '', website: '', email: '', phone: ''
-            });
-            const [errors, setErrors] = useState({});
-            const [isSubmitted, setIsSubmitted] = useState(false);
+            const [status, setStatus] = useState({ loading: false, submitted: false, error: false });
 
-            const validateInput = (name, value) => {
-                const patterns = {
-                    name: /^[a-zA-ZÀ-ÿ\s\.\-]*$/,
-                    company: /^[a-zA-Z0-9À-ÿ\s\.\,\&\-\@]*$/,
-                    phone: /^[0-9\s\+\-\(\)]*$/,
-                    safeText: /^[^'"<>;=]*$/ 
-                };
-                if (name === 'name') return patterns.name.test(value);
-                if (name === 'company') return patterns.company.test(value);
-                if (name === 'phone') return patterns.phone.test(value);
-                if (name === 'email' || name === 'website') return patterns.safeText.test(value);
-                return true;
-            };
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setStatus({ loading: true, submitted: false, error: false });
+                
+                const formData = new FormData(e.target);
+                // Exact URL provided by user
+                const scriptUrl = "https://script.google.com/a/macros/themeyer.eu/s/AKfycbw5P-nASveMggqYviB5jCa5RPoIyUJ13DtLloRF-wedcOyEbkMC5pldqZqFw6DKLryl/exec"; 
 
-            const handleChange = (e) => {
-                const { name, value } = e.target;
-                if (validateInput(name, value)) {
-                    setFormData(prev => ({ ...prev, [name]: value }));
-                    setErrors(prev => ({ ...prev, [name]: null }));
-                } else {
-                    setErrors(prev => ({ ...prev, [name]: "Carácter no seguro." }));
+                try {
+                    // 'no-cors' prevents CORS blocking on redirect from Google Scripts
+                    await fetch(scriptUrl, { 
+                        method: 'POST', 
+                        body: formData,
+                        mode: 'no-cors' 
+                    });
+                    
+                    setStatus({ loading: false, submitted: true, error: false });
+                    e.target.reset();
+                } catch (error) {
+                    console.error("Submission error:", error);
+                    setStatus({ loading: false, submitted: false, error: true });
                 }
             };
 
-            const handleSubmit = (e) => {
-                e.preventDefault();
-                setTimeout(() => setIsSubmitted(true), 500);
-            };
-
-            if (isSubmitted) {
+            if (status.submitted) {
                 return (
-                    <div className="h-full flex flex-col items-center justify-center text-center p-12 min-h-[400px]">
-                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                    <div className="p-12 text-center bg-white/80 backdrop-blur-md rounded-3xl shadow-xl max-w-2xl mx-auto my-12 animate-fade-in border border-green-100">
+                        <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
                         </div>
-                        <h3 className="text-2xl font-bold text-gray-900 mb-2">¡Mensaje Recibido!</h3>
-                        <p className="text-gray-500 max-w-md">Juntos construiremos un futuro más sustentable.</p>
-                        <button onClick={() => setIsSubmitted(false)} className="mt-8 text-blue-600 font-bold hover:underline">Volver</button>
+                        <h2 className="text-2xl font-extrabold text-gray-800 mb-2">¡RECIBIDO!</h2>
+                        <p className="text-gray-500 font-medium">Nos pondremos en contacto con usted a la brevedad para asesorarlo.</p>
+                        <button 
+                            onClick={() => setStatus({ ...status, submitted: false })}
+                            className="mt-8 text-blue-600 font-bold hover:underline transition-all"
+                        >
+                            Enviar otro mensaje
+                        </button>
                     </div>
                 );
             }
 
             return (
-                <div className="p-8 md:p-12">
-                     <div className="flex items-center space-x-4 mb-10">
-                        <div className="h-px bg-blue-200 w-12"></div>
-                        <h2 className="text-sm font-bold tracking-[0.3em] uppercase text-blue-600">Alianzas Verdes</h2>
+                <div className="p-8 md:p-12 glass rounded-3xl shadow-xl max-w-4xl mx-auto my-12 relative z-20 border border-white">
+                    <div className="mb-10 text-center">
+                        <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 mb-2">SOLICITAR ASESORÍA ODS</h2>
+                        <p className="text-gray-500 text-sm mb-4">¿Listo para reducir la huella de carbono de su empresa?</p>
+                        <div className="h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
                     </div>
 
-                    <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">El futuro en tus manos</h3>
-                    <p className="text-gray-500 mb-10">¿Listo para reducir la huella de carbono de su empresa?</p>
+                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        {[
+                            { label: 'NOMBRE', name: 'NOMBRE', type: 'text', placeholder: 'Nombre completo', req: true },
+                            { label: 'ORGANIZACIÓN', name: 'ORGANIZACIÓN', type: 'text', placeholder: 'Empresa o Institución', req: true },
+                            { label: 'WEB', name: 'WEB', type: 'url', placeholder: 'https://...', req: false },
+                            { label: 'TELÉFONO', name: 'TELÉFONO', type: 'tel', placeholder: '+XX XXX XXX XXX', req: true },
+                            { label: 'EMAIL', name: 'EMAIL', type: 'email', placeholder: 'correo@ejemplo.com', req: true },
+                        ].map((field) => (
+                            <div key={field.name} className="flex flex-col">
+                                <label className="text-[10px] font-extrabold text-blue-900 tracking-widest mb-2 ml-1">{field.label}</label>
+                                <input 
+                                    type={field.type} 
+                                    name={field.name} 
+                                    required={field.req}
+                                    placeholder={field.placeholder}
+                                    className="w-full px-5 py-4 rounded-2xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400 shadow-sm"
+                                />
+                            </div>
+                        ))}
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Nombre</label>
-                                <input type="text" name="name" required className="form-input w-full bg-white/50 border border-gray-200 focus:border-blue-500 rounded-xl px-4 py-3 outline-none" value={formData.name} onChange={handleChange} />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Organización</label>
-                                <input type="text" name="company" required className="form-input w-full bg-white/50 border border-gray-200 focus:border-blue-500 rounded-xl px-4 py-3 outline-none" value={formData.company} onChange={handleChange} />
-                            </div>
+                        <div className="flex flex-col">
+                            <label className="text-[10px] font-extrabold text-blue-900 tracking-widest mb-2 ml-1">TECNOLOGÍA DE INTERÉS</label>
+                            <select 
+                                name="TECNOLOGÍA" 
+                                required 
+                                className="w-full px-5 py-4 rounded-2xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all appearance-none shadow-sm cursor-pointer text-gray-700"
+                            >
+                                <option value="" disabled selected>Seleccione una opción...</option>
+                                <option value="Water from Air (Watergen)">Water from Air (Watergen)</option>
+                                <option value="AI & Data Analysis">AI & Data Analysis</option>
+                                <option value="Cloud Integration">Cloud Integration</option>
+                                <option value="Java Enterprise">Java Enterprise</option>
+                                <option value="React Development">React Development</option>
+                                <option value="Consultoría ESG General">Consultoría ESG General</option>
+                            </select>
                         </div>
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Web</label>
-                                <input type="url" name="website" className="form-input w-full bg-white/50 border border-gray-200 focus:border-blue-500 rounded-xl px-4 py-3 outline-none" value={formData.website} onChange={handleChange} />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Teléfono</label>
-                                <input type="tel" name="phone" required className="form-input w-full bg-white/50 border border-gray-200 focus:border-blue-500 rounded-xl px-4 py-3 outline-none" value={formData.phone} onChange={handleChange} />
-                            </div>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Email</label>
-                            <input type="email" name="email" required className="form-input w-full bg-white/50 border border-gray-200 focus:border-blue-500 rounded-xl px-4 py-3 outline-none" value={formData.email} onChange={handleChange} />
-                        </div>
-                        <div className="pt-4">
-                            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-blue-500/30 transform hover:-translate-y-1 transition-all duration-300">
-                                SOLICITAR ASESORÍA ODS
+
+                        <div className="md:col-span-2 mt-6">
+                            <button 
+                                type="submit" 
+                                disabled={status.loading}
+                                className="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-blue-500/25 flex items-center justify-center space-x-2 disabled:bg-blue-400 transform hover:-translate-y-1 hover:shadow-2xl"
+                            >
+                                {status.loading ? (
+                                    <span className="flex items-center">
+                                        <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                        PROCESANDO...
+                                    </span>
+                                ) : "SOLICITAR INFORMACIÓN"}
                             </button>
+                            {status.error && <p className="text-red-500 text-center mt-4 font-bold bg-red-50 p-3 rounded-lg border border-red-100">Hubo un error de conexión. Intente más tarde.</p>}
                         </div>
                     </form>
                 </div>
@@ -369,120 +387,13 @@
                         </div>
                     </section>
 
-import React, { useState } from 'react';
+                    {/* Integrated Contact Form */}
+                    <ContactForm />
+                    
+                </Layout>
+            );
+        };
 
-const ContactForm = () => {
-    const [status, setStatus] = useState({ loading: false, submitted: false, error: false });
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setStatus({ loading: true, submitted: false, error: false });
-        
-        const formData = new FormData(e.target);
-        // IMPORTANT: Replace this with your exact Google Web App URL
-        const scriptUrl = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL"; 
-
-        try {
-            // We use 'no-cors' because Google Scripts redirect, which often triggers CORS errors 
-            // even when the data actually saves correctly.
-            await fetch(scriptUrl, { 
-                method: 'POST', 
-                body: formData,
-                mode: 'no-cors' 
-            });
-            
-            setStatus({ loading: false, submitted: true, error: false });
-            e.target.reset();
-        } catch (error) {
-            console.error("Submission error:", error);
-            setStatus({ loading: false, submitted: false, error: true });
-        }
-    };
-
-    if (status.submitted) {
-        return (
-            <div className="p-12 text-center animate-fade-in">
-                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
-                <h2 className="text-2xl font-extrabold text-gray-800 mb-2">¡RECIBIDO!</h2>
-                <p className="text-gray-500 font-medium">Nos pondremos en contacto con usted a la brevedad.</p>
-                <button 
-                    onClick={() => setStatus({ ...status, submitted: false })}
-                    className="mt-8 text-blue-600 font-bold hover:underline"
-                >
-                    Enviar otro mensaje
-                </button>
-            </div>
-        );
-    }
-
-    return (
-        <div className="p-8 md:p-12">
-            <div className="mb-10 text-center">
-                <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 mb-2">PROYECTO ODS</h2>
-                <div className="h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
-            </div>
-
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                {/* Individual Fields */}
-                {[
-                    { label: 'NOMBRE', name: 'NOMBRE', type: 'text', placeholder: 'Nombre completo', req: true },
-                    { label: 'ORGANIZACIÓN', name: 'ORGANIZACIÓN', type: 'text', placeholder: 'Empresa o Institución', req: false },
-                    { label: 'WEB', name: 'WEB', type: 'url', placeholder: 'https://...', req: false },
-                    { label: 'TELÉFONO', name: 'TELÉFONO', type: 'tel', placeholder: '+XX XXX XXX XXX', req: false },
-                    { label: 'EMAIL', name: 'EMAIL', type: 'email', placeholder: 'correo@ejemplo.com', req: true },
-                ].map((field) => (
-                    <div key={field.name} className="flex flex-col">
-                        <label className="text-[10px] font-extrabold text-blue-900 tracking-widest mb-2 ml-1">{field.label}</label>
-                        <input 
-                            type={field.type} 
-                            name={field.name} 
-                            required={field.req}
-                            placeholder={field.placeholder}
-                            className="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all placeholder:text-gray-300 shadow-sm"
-                        />
-                    </div>
-                ))}
-
-                <div className="flex flex-col">
-                    <label className="text-[10px] font-extrabold text-blue-900 tracking-widest mb-2 ml-1">TECNOLOGÍA</label>
-                    <select 
-                        name="TECNOLOGÍA" 
-                        required 
-                        className="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all appearance-none shadow-sm"
-                    >
-                        <option value="">Seleccione una opción...</option>
-                        <option value="AI & Data">AI & Data Analysis</option>
-                        <option value="Cloud Integration">Cloud Integration</option>
-                        <option value="Java Enterprise">Java Enterprise</option>
-                        <option value="React Dev">React Development</option>
-                    </select>
-                </div>
-
-                <div className="md:col-span-2 mt-6">
-                    <button 
-                        type="submit" 
-                        disabled={status.loading}
-                        className="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-blue-500/25 flex items-center justify-center space-x-2 disabled:bg-gray-400"
-                    >
-                        {status.loading ? (
-                            <span className="flex items-center">
-                                <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                                PROCESANDO...
-                            </span>
-                        ) : "SOLICITAR INFORMACIÓN"}
-                    </button>
-                    {status.error && <p className="text-red-500 text-center mt-4 font-bold">Error en el servidor. Intente más tarde.</p>}
-                </div>
-            </form>
-        </div>
-    );
-};
-
-export default ContactForm;
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
