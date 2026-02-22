@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Meyer - Sustentabilidad & ODS 6</title>
 
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
@@ -63,13 +66,14 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
         }
-        
     </style>
 
+    <!-- React & Babel for in-browser JSX compilation -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
+    <!-- GSAP for animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
@@ -145,42 +149,42 @@
                             <a href="/pages/Nosotros" className="hover:text-blue-600 transition-colors">Nosotros</a>
                         </div>
 
-                          <div className="flex items-center space-x-4">
-                        {/* Desktop CONTACTO Button */}
+                        <div className="flex items-center space-x-4">
+                            {/* Desktop CONTACTO Button */}
+                            <button 
+                                onClick={() => window.location.href = '/pages/contacto'} 
+                                className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
+                            >
+                                CONTACTO
+                            </button>
+                            
+                            <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
+                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
+                                <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
+                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+                            </button>
+                        </div>
+                    </nav>
+
+                    {/* Mobile Menu */}
+                    <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
+                        <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
+                            <a href="pages/Tecnologia.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
+                            <a href="/pages/Sustentabilidad" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
+                            <a href="/pages/Nosotros.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
+                        </div>
+                        
+                        {/* Mobile CONTACTO Button */}
                         <button 
-                            onClick={() => window.location.href = '/pages/contacto'} 
-                            className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
+                            onClick={() => {
+                                toggleMenu();
+                                window.location.href = '/pages/contacto';
+                            }} 
+                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
                         >
                             CONTACTO
                         </button>
-                        
-                        <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
-                            <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
-                            <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
-                            <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
-                        </button>
                     </div>
-                </nav>
-
-                {/* Mobile Menu */}
-                <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
-                    <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
-                        <a href="pages/Tecnologia.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
-                        <a href="/pages/Sustentabilidad" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
-                        <a href="/pages/Nosotros.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
-                    </div>
-                    
-                    {/* Mobile CONTACTO Button */}
-                    <button 
-                        onClick={() => {
-                            toggleMenu();
-                            window.location.href = '/pages/contacto';
-                        }} 
-                        className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
-                    >
-                        CONTACTO
-                    </button>
-                </div>
 
                     <main className="pt-32 px-4 md:px-8">
                         {children}
@@ -263,7 +267,11 @@
 
                     {/* Basic Fields */}
                     {[
-                        { label: 'NOMBRE', name: 'NOMBRE', type: 'text', placeholder: 'Nombre completo', req: true }
+                        { label: 'NOMBRE', name: 'NOMBRE', type: 'text', placeholder: 'Nombre completo', req: true },
+                        { label: 'WEB', name: 'WEB', type: 'url', placeholder: 'https://ejemplo.com', req: false },
+                        { label: 'ORGANIZACIÓN', name: 'ORGANIZACIÓN', type: 'text', placeholder: 'Nombre de su empresa', req: true },
+                        { label: 'TELÉFONO', name: 'TELÉFONO', type: 'tel', placeholder: '+52...', req: true },
+                        { label: 'EMAIL', name: 'EMAIL', type: 'email', placeholder: 'correo@ejemplo.com', req: true }
                     ].map((field, index) => (
                         <div key={index} className="flex flex-col">
                             <label className="mb-1 text-sm font-semibold text-gray-700">
@@ -280,21 +288,22 @@
                     ))}
 
                     {/* Tecnología Select Field */}
-                    <div className="flex flex-col">
-                        <label className="text-[10px] font-extrabold text-blue-900 tracking-widest mb-2 ml-1">TECNOLOGÍA DE INTERÉS</label>
+                    <div className="flex flex-col md:col-span-1">
+                        <label className="mb-1 text-sm font-semibold text-gray-700">
+                            TECNOLOGÍA <span className="text-red-500">*</span>
+                        </label>
                         <select 
                             name="TECNOLOGÍA" 
                             required 
                             defaultValue=""
-                            className="w-full px-5 py-4 rounded-2xl border border-gray-200 bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all appearance-none shadow-sm cursor-pointer text-gray-700"
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all appearance-none cursor-pointer text-gray-700"
                         >
                             <option value="" disabled>Seleccione una opción...</option>
-                            <option value="Water from Air (Watergen)">Water from Air (Watergen)</option>
-                            <option value="AI & Data Analysis">AI & Data Analysis</option>
-                            <option value="Cloud Integration">Cloud Integration</option>
-                            <option value="Java Enterprise">Java Enterprise</option>
+                            <option value="(Water from Air) Watergen">(Water from Air) Watergen</option>
                             <option value="React Development">React Development</option>
-                            <option value="Consultoría ESG General">Consultoría ESG General</option>
+                            <option value="API Cloud Integrations">API Cloud Integrations</option>
+                            <option value="SQL DB">SQL DB</option>
+                            <option value="System Technology Consulting">System Technology Consulting</option>
                         </select>
                     </div>
 
@@ -321,7 +330,6 @@
                                 </span>
                             ) : "SOLICITAR INFORMACIÓN"}
                         </button>
-                        {status.error && <p className="text-red-500 text-center mt-4 font-bold bg-red-50 p-3 rounded-lg border border-red-100">Hubo un error de conexión. Intente más tarde.</p>}
                     </div>
                 </form>
             );
@@ -428,9 +436,12 @@
                     </section>
 
                     {/* Integrated Contact Form */}
-                    <div className="max-w-4xl mx-auto px-4 pb-20">
-                        <h2 className="text-3xl font-bold text-center mb-10">Contáctanos</h2>
-                        <ContactForm />
+                    <div className="max-w-4xl mx-auto px-4 pb-20 relative z-20">
+                        <div className="glass p-8 md:p-12 rounded-[2.5rem] shadow-2xl shadow-blue-500/10 border border-white">
+                            <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-2">Solicitar Información</h2>
+                            <p className="text-center text-gray-500 mb-10">Complete el formulario y nuestro equipo de expertos se pondrá en contacto.</p>
+                            <ContactForm />
+                        </div>
                     </div>
                     
                 </Layout>
