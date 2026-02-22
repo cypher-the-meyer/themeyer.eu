@@ -369,113 +369,120 @@
                         </div>
                     </section>
 
-                    import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 const ContactForm = () => {
-  const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState({ loading: false, submitted: false, error: false });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    const formData = new FormData(e.target);
-    const scriptUrl = "YOUR_GOOGLE_SCRIPT_URL"; // The URL from Step 1
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus({ loading: true, submitted: false, error: false });
+        
+        const formData = new FormData(e.target);
+        // IMPORTANT: Replace this with your exact Google Web App URL
+        const scriptUrl = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL"; 
 
-    try {
-      await fetch(scriptUrl, { method: 'POST', body: formData });
-      alert("¡Gracias! Hemos recibido tu información.");
-      e.target.reset();
-    } catch (error) {
-      alert("Error al enviar. Por favor, inténtalo de nuevo.");
-    } finally {
-      setLoading(false);
+        try {
+            // We use 'no-cors' because Google Scripts redirect, which often triggers CORS errors 
+            // even when the data actually saves correctly.
+            await fetch(scriptUrl, { 
+                method: 'POST', 
+                body: formData,
+                mode: 'no-cors' 
+            });
+            
+            setStatus({ loading: false, submitted: true, error: false });
+            e.target.reset();
+        } catch (error) {
+            console.error("Submission error:", error);
+            setStatus({ loading: false, submitted: false, error: true });
+        }
+    };
+
+    if (status.submitted) {
+        return (
+            <div className="p-12 text-center animate-fade-in">
+                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <h2 className="text-2xl font-extrabold text-gray-800 mb-2">¡RECIBIDO!</h2>
+                <p className="text-gray-500 font-medium">Nos pondremos en contacto con usted a la brevedad.</p>
+                <button 
+                    onClick={() => setStatus({ ...status, submitted: false })}
+                    className="mt-8 text-blue-600 font-bold hover:underline"
+                >
+                    Enviar otro mensaje
+                </button>
+            </div>
+        );
     }
-  };
 
-  return (
-    <div className="p-8 md:p-12 bg-white/40 backdrop-blur-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center uppercase tracking-wider">
-        Contacto
-      </h2>
-      
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Full Name */}
-        <div className="flex flex-col">
-          <label className="text-xs font-bold text-gray-500 mb-1 ml-1">NOMBRE</label>
-          <input 
-            type="text" name="NOMBRE" required 
-            className="w-full px-4 py-3 rounded-2xl border border-white/60 bg-white/50 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition-all"
-          />
-        </div>
+    return (
+        <div className="p-8 md:p-12">
+            <div className="mb-10 text-center">
+                <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 mb-2">PROYECTO ODS</h2>
+                <div className="h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
+            </div>
 
-        {/* Organization */}
-        <div className="flex flex-col">
-          <label className="text-xs font-bold text-gray-500 mb-1 ml-1">ORGANIZACIÓN</label>
-          <input 
-            type="text" name="ORGANIZACIÓN" 
-            className="w-full px-4 py-3 rounded-2xl border border-white/60 bg-white/50 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition-all"
-          />
-        </div>
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                {/* Individual Fields */}
+                {[
+                    { label: 'NOMBRE', name: 'NOMBRE', type: 'text', placeholder: 'Nombre completo', req: true },
+                    { label: 'ORGANIZACIÓN', name: 'ORGANIZACIÓN', type: 'text', placeholder: 'Empresa o Institución', req: false },
+                    { label: 'WEB', name: 'WEB', type: 'url', placeholder: 'https://...', req: false },
+                    { label: 'TELÉFONO', name: 'TELÉFONO', type: 'tel', placeholder: '+XX XXX XXX XXX', req: false },
+                    { label: 'EMAIL', name: 'EMAIL', type: 'email', placeholder: 'correo@ejemplo.com', req: true },
+                ].map((field) => (
+                    <div key={field.name} className="flex flex-col">
+                        <label className="text-[10px] font-extrabold text-blue-900 tracking-widest mb-2 ml-1">{field.label}</label>
+                        <input 
+                            type={field.type} 
+                            name={field.name} 
+                            required={field.req}
+                            placeholder={field.placeholder}
+                            className="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all placeholder:text-gray-300 shadow-sm"
+                        />
+                    </div>
+                ))}
 
-        {/* Website */}
-        <div className="flex flex-col">
-          <label className="text-xs font-bold text-gray-500 mb-1 ml-1">WEB</label>
-          <input 
-            type="url" name="WEB" placeholder="https://..."
-            className="w-full px-4 py-3 rounded-2xl border border-white/60 bg-white/50 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition-all"
-          />
-        </div>
+                <div className="flex flex-col">
+                    <label className="text-[10px] font-extrabold text-blue-900 tracking-widest mb-2 ml-1">TECNOLOGÍA</label>
+                    <select 
+                        name="TECNOLOGÍA" 
+                        required 
+                        className="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-white/50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all appearance-none shadow-sm"
+                    >
+                        <option value="">Seleccione una opción...</option>
+                        <option value="AI & Data">AI & Data Analysis</option>
+                        <option value="Cloud Integration">Cloud Integration</option>
+                        <option value="Java Enterprise">Java Enterprise</option>
+                        <option value="React Dev">React Development</option>
+                    </select>
+                </div>
 
-        {/* Phone */}
-        <div className="flex flex-col">
-          <label className="text-xs font-bold text-gray-500 mb-1 ml-1">TELÉFONO</label>
-          <input 
-            type="tel" name="TELÉFONO" 
-            className="w-full px-4 py-3 rounded-2xl border border-white/60 bg-white/50 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition-all"
-          />
+                <div className="md:col-span-2 mt-6">
+                    <button 
+                        type="submit" 
+                        disabled={status.loading}
+                        className="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-blue-500/25 flex items-center justify-center space-x-2 disabled:bg-gray-400"
+                    >
+                        {status.loading ? (
+                            <span className="flex items-center">
+                                <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                PROCESANDO...
+                            </span>
+                        ) : "SOLICITAR INFORMACIÓN"}
+                    </button>
+                    {status.error && <p className="text-red-500 text-center mt-4 font-bold">Error en el servidor. Intente más tarde.</p>}
+                </div>
+            </form>
         </div>
-
-        {/* Email */}
-        <div className="flex flex-col">
-          <label className="text-xs font-bold text-gray-500 mb-1 ml-1">EMAIL</label>
-          <input 
-            type="email" name="EMAIL" required 
-            className="w-full px-4 py-3 rounded-2xl border border-white/60 bg-white/50 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition-all"
-          />
-        </div>
-
-        {/* Tech Select */}
-        <div className="flex flex-col">
-          <label className="text-xs font-bold text-gray-500 mb-1 ml-1">TECNOLOGÍA</label>
-          <select 
-            name="TECNOLOGÍA" required
-            className="w-full px-4 py-3 rounded-2xl border border-white/60 bg-white/50 focus:bg-white focus:ring-2 focus:ring-blue-400 outline-none transition-all appearance-none"
-          >
-            <option value="">Seleccionar...</option>
-            <option value="React">React</option>
-            <option value="Java">Java</option>
-            <option value="Cloud">Cloud Services</option>
-            <option value="Sostenibilidad">Sostenibilidad / ODS</option>
-          </select>
-        </div>
-
-        {/* Submit Button - Span full width on mobile, half on desktop if desired */}
-        <div className="md:col-span-2 mt-4">
-          <button 
-            type="submit" 
-            disabled={loading}
-            className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-blue-500/30 disabled:opacity-50"
-          >
-            {loading ? "ENVIANDO..." : "ENVIAR SOLICITUD"}
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default ContactForm;
-
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
