@@ -197,19 +197,22 @@
             const handleSubmit = async (e) => {
                 e.preventDefault();
                 setStatus({ loading: true, submitted: false, error: false });
-                
+    
                 const formData = new FormData(e.target);
-                // Exact URL provided by user
-                const scriptUrl = "https://script.google.com/a/macros/themeyer.eu/s/AKfycbw5P-nASveMggqYviB5jCa5RPoIyUJ13DtLloRF-wedcOyEbkMC5pldqZqFw6DKLryl/exec"; 
+    
+                // Convert FormData to URLSearchParams so Google Apps Script can parse it via e.parameter
+                const searchParams = new URLSearchParams(formData);
 
+                // Make sure to use the NEW URL generated after setting "Who has access" to "Anyone"
+                const scriptUrl = "https://script.google.com/macros/s/AKfycbz11i_OCfQ3sWWhuh6rfnIxojEigIzbMLiVBQ4rXhDlOTT3_BD48wureXImypQqHlpR/exec"; 
+    
                 try {
-                    // 'no-cors' prevents CORS blocking on redirect from Google Scripts
                     await fetch(scriptUrl, { 
                         method: 'POST', 
-                        body: formData,
+                        body: searchParams, // Send the searchParams, not the raw formData
                         mode: 'no-cors' 
                     });
-                    
+        
                     setStatus({ loading: false, submitted: true, error: false });
                     e.target.reset();
                 } catch (error) {
@@ -217,7 +220,7 @@
                     setStatus({ loading: false, submitted: false, error: true });
                 }
             };
-
+            
             if (status.submitted) {
                 return (
                     <div className="p-12 text-center bg-white/80 backdrop-blur-md rounded-3xl shadow-xl max-w-2xl mx-auto my-12 animate-fade-in border border-green-100">
