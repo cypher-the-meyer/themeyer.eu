@@ -212,7 +212,16 @@
 
                 setStatus({ loading: true, submitted: false, error: false });
 
-                const searchParams = new URLSearchParams(formData);
+                // --- FORMULA INJECTION PREVENTION ---
+                const searchParams = new URLSearchParams();
+                for (let [key, value] of formData.entries()) {
+                    // If a user types =, +, -, or @ at the start, prepend an apostrophe to neutralize it in Google Sheets
+                    if (typeof value === 'string' && /^[=+\-@]/.test(value)) {
+                        value = "'" + value;
+                    }
+                    searchParams.append(key, value);
+                }
+
                 const scriptUrl = "https://script.google.com/macros/s/AKfycbzaqYJQIIWYBcbq0FCo38ulhTuYxGZxVVUOv1CklQ9mEJ_hheLsjvL3CYG9YUdfRDYl/exec"; 
 
                 try {
