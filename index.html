@@ -104,14 +104,13 @@
                             ))}
                         </div>
                     </div>
-
-                    {/* Navigation */}
+{/* Navigation */}
                     <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
                         <a href="#" className="block z-50">
                             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
                         </a>
                         
-                        {/* FIX 1: Removed duplicate <div> and kept the single correct container for Desktop Links */}
+                        {/* Desktop Links */}
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
                             <a href="pages/Tecnologia.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
                             <a href="/pages/Sustentabilidad" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
@@ -121,18 +120,20 @@
                         <div className="flex items-center space-x-4">
                         {/* Desktop CONTACTO Button */}
                         <button 
-                            onClick={() => window.location.href = '/pages/contacto'} 
+                            onClick={() => window.location.href = '/pages/Nosotros'} 
                             className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
                         >
                             CONTACTO
                         </button>
                         
+                        {/* Mobile Menu Toggle */}
                         <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
                             <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
                             <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
                             <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
                         </button>
                     </div>
+                    </nav>
                 </nav>
 
                 {/* Mobile Menu */}
