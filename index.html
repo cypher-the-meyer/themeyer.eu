@@ -176,10 +176,20 @@
 
                 // Scroll Effects
                 gsap.to("#main-object", {
-                    scrollTrigger: { trigger: "body", start: "top top", end: "50% top", scrub: 1.2 },
-                    scale: 3, opacity: 0, rotate: 5, ease: "none"
+                    scrollTrigger: { 
+                        trigger: "body", 
+                        start: "top top", 
+                        end: "50% top", 
+                        scrub: 1.2 
+                    },
+                    scale: 3, 
+                    opacity: 0, 
+                    rotate: 5, 
+                    xPercent: -50, // This forces GSAP to remember the -50% X translation
+                    yPercent: -50, // This forces GSAP to remember the -50% Y translation
+                    ease: "none"
                 });
-
+                    
                 gsap.to("#hero-glass-box", {
                     scrollTrigger: { trigger: "body", start: "top top", end: "40% top", scrub: true },
                     opacity: 0, ease: "power2.inOut"
