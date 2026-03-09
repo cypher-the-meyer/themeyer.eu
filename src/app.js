@@ -34,7 +34,7 @@ const Layout = ({ children }) => {
             </div>
 
             {/* Navigation */}
-            <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all">
+            <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
                 <a href="#" className="block z-50">
                     <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
                 </a>
@@ -91,39 +91,10 @@ const Layout = ({ children }) => {
 // --- APP COMPONENT ---
 const App = () => {
     useEffect(() => {
-        // Register ScrollTrigger (provided by head script)
+        // Register ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
 
-        // Initial Hero Animations
-        gsap.from("#hero-title", { duration: 1.5, y: 50, opacity: 0, ease: "power4.out" });
-        gsap.from("#hero-subtitle", { duration: 1.5, y: 30, opacity: 0, delay: 0.3, ease: "power4.out" });
-
-        // Scroll Effects
-        gsap.to("#main-object", {
-            scrollTrigger: { 
-                trigger: "body", 
-                start: "top top", 
-                end: "50% top", 
-                scrub: 1.2 
-            },
-            scale: 3, 
-            opacity: 0, 
-            rotate: 5, 
-            xPercent: -50, 
-            yPercent: -50, 
-            ease: "none"
-        });
-            
-        gsap.to("#hero-glass-box", {
-            scrollTrigger: { trigger: "body", start: "top top", end: "40% top", scrub: true },
-            opacity: 0, ease: "power2.inOut"
-        });
-
-        gsap.to("#hero-title, #hero-subtitle", {
-            scrollTrigger: { trigger: "body", start: "top top", end: "40% top", scrub: true },
-            y: -100, opacity: 0
-        });
-
+        // Feature and Impact animations (Keep these for secondary sections)
         gsap.from("#feature-1, #feature-2", {
             scrollTrigger: { trigger: "#feature-1", start: "top 85%" },
             y: 80, opacity: 0, duration: 1, stagger: 0.2, ease: "back.out(1.2)"
@@ -137,8 +108,9 @@ const App = () => {
 
     return (
         <Layout>
-            <section className="relative h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-                <div className="z-10 mt-[-10vh]">
+            <section className="relative h-[80vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+                {/* Hero Content */}
+                <div className="z-10 mt-[-5vh]">
                     <h1 className="text-5xl md:text-8xl font-extrabold mb-4 tracking-tight text-gray-900" id="hero-title">
                         Soluciones Integradas<br /><span className="text-blue-600">de Tecnologia.</span>
                     </h1>
@@ -146,16 +118,22 @@ const App = () => {
                         Abriendo un horizonte a través del estándar global de la inovacion e integridad.
                     </p>
                 </div>
-                <div id="hero-glass-box" className="absolute inset-0 w-full h-full bg-white/85 backdrop-blur-md pointer-events-none z-[5]"></div>
-                <div className="product_technology-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0" id="main-object">
+
+                {/* Glass Backdrop - Adjusted opacity for steady look */}
+                <div id="hero-glass-box" className="absolute inset-0 w-full h-full bg-white/70 backdrop-blur-sm pointer-events-none z-[5]"></div>
+                
+                {/* Background Logo - Faded and Steady */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0 opacity-10" id="main-object">
                     <img 
                       src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
-                      alt="The Meyer Logo" 
+                      alt="The Meyer Logo Backdrop" 
                       id="main-object-img" 
-                      className="w-[100px] md:w-[167px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]" 
+                      className="w-[250px] md:w-[450px] object-contain" 
                     />
                 </div>
-                <div className="absolute bottom-10 animate-bounce text-blue-400 z-10">
+
+                {/* Steady Scroll Indicator */}
+                <div className="absolute bottom-10 text-blue-400 z-10 opacity-50">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                 </div>
             </section>
