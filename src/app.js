@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom/client'; // Required to mount the app
 import { LucideMenu, LucideX, LucideChevronDown } from 'lucide-react';
 
-/**
- * Nota Técnica: Esta versão está otimizada para uma estrutura de pastas profissional (src/).
- * Utilizamos injecção dinâmica de scripts para o GSAP para garantir compatibilidade 
- * total com ambientes de pré-visualização e produção.
- */
-
-// --- ESTILOS (Tailwind + Custom) ---
+// --- STYLES (Tailwind + Custom) ---
 const styleTag = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
   
@@ -54,8 +49,7 @@ const styleTag = `
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 `;
 
-// --- COMPONENTE DE LAYOUT ---
-
+// --- LAYOUT COMPONENT ---
 const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -64,17 +58,15 @@ const Layout = ({ children }) => {
     <div className="relative min-h-screen">
       <style>{styleTag}</style>
       
-      {/* Bolhas de Fundo */}
       <div className="bubble-bg">
         <div className="bubble" style={{ width: '300px', height: '300px', left: '10%', '--duration': '15s' }}></div>
         <div className="bubble" style={{ width: '200px', height: '200px', left: '60%', '--duration': '12s', animationDelay: '2s' }}></div>
         <div className="bubble" style={{ width: '150px', height: '150px', left: '30%', '--duration': '18s', animationDelay: '5s' }}></div>
       </div>
 
-      {/* Faixa Superior (Certificações) */}
       <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
         <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
-          SUSTENTABILIDADE CORPORATIVA & ESG
+          SUSTENTABILIDAD CORPORATIVA & ESG
         </span>
         <div className="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
           {['ISO 27001', 'ISO 9001', 'ASSE LEC 2004', 'ETL CERTIFIED', 'PCI DSS'].map((cert, index) => (
@@ -86,22 +78,20 @@ const Layout = ({ children }) => {
         </div>
       </div>
 
-      {/* Navegação Principal */}
       <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
         <a href="/" className="block z-50">
           <img 
             src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
-            alt="Logótipo The Meyer" 
+            alt="The Meyer Logo" 
             className="h-10 md:h-12 w-auto object-contain" 
             onError={(e) => { e.target.src = 'https://via.placeholder.com/150x50?text=THE+MEYER'; }}
           />
         </a>
         
-        {/* Links Desktop */}
         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
           <a href="#" className="hover:text-blue-600 transition-colors">Tecnologias</a>
-          <a href="#" className="hover:text-blue-600 transition-colors">Sustentabilidade</a>
-          <a href="#" className="hover:text-blue-600 transition-colors">Nós</a>
+          <a href="#" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
+          <a href="#" className="hover:text-blue-600 transition-colors">Nosotros</a>
         </div>
 
         <div className="flex items-center space-x-4">
@@ -115,12 +105,11 @@ const Layout = ({ children }) => {
         </div>
       </nav>
 
-      {/* Menu Mobile */}
       <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-transform duration-500 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
           <a href="#" onClick={toggleMenu}>Tecnologias</a>
-          <a href="#" onClick={toggleMenu}>Sustentabilidade</a>
-          <a href="#" onClick={toggleMenu}>Nós</a>
+          <a href="#" onClick={toggleMenu}>Sustentabilidad</a>
+          <a href="#" onClick={toggleMenu}>Nosotros</a>
         </div>
         <button className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl">
           CONTACTO
@@ -132,19 +121,17 @@ const Layout = ({ children }) => {
       </main>
 
       <footer className="py-12 border-t border-gray-100 text-center text-gray-400 text-[10px] md:text-sm font-semibold tracking-widest bg-white relative z-20 px-4">
-        &copy; 2025 THE MEYER EU. TODOS OS DIREITOS RESERVADOS.
+        &copy; 2025 THE MEYER EU. TODOS LOS DERECHOS RESERVADOS.
       </footer>
     </div>
   );
 };
 
-// --- COMPONENTE PRINCIPAL APP ---
-
-export default function App() {
+// --- MAIN APP COMPONENT ---
+export function App() {
   const mainObjectRef = useRef(null);
 
   useEffect(() => {
-    // Carregamento dinâmico do GSAP para evitar erros de compilação em bundles estáticos
     const loadGSAP = async () => {
       const scripts = [
         "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js",
@@ -164,7 +151,6 @@ export default function App() {
       for (const src of scripts) {
         await loadScript(src);
       }
-
       initAnimations();
     };
 
@@ -174,12 +160,10 @@ export default function App() {
       
       gsap.registerPlugin(ScrollTrigger);
 
-      // Animações Iniciais do Hero
       const tl = gsap.timeline();
       tl.from("#hero-title", { duration: 1.2, y: 60, opacity: 0, ease: "power4.out" })
         .from("#hero-subtitle", { duration: 1.2, y: 30, opacity: 0, ease: "power4.out" }, "-=0.8");
 
-      // Efeito de Scroll no Logótipo Central
       gsap.to(mainObjectRef.current, {
         scrollTrigger: {
           trigger: "body",
@@ -193,14 +177,12 @@ export default function App() {
         ease: "none"
       });
 
-      // Efeito de fade na caixa de vidro do hero
       gsap.to("#hero-glass-box", {
         scrollTrigger: { trigger: "body", start: "top top", end: "40% top", scrub: true },
         opacity: 0,
         ease: "power2.inOut"
       });
 
-      // Entrada dos cartões de funcionalidades
       gsap.from(".feature-card", {
         scrollTrigger: {
           trigger: ".feature-grid",
@@ -225,15 +207,14 @@ export default function App() {
 
   return (
     <Layout>
-      {/* Secção Hero */}
       <section className="relative h-[85vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
         <div className="z-10 relative">
           <h1 className="text-5xl md:text-8xl font-extrabold mb-6 tracking-tight text-gray-900 leading-tight" id="hero-title">
-            Soluções Integradas<br />
+            Soluciones Integradas<br />
             <span className="text-blue-600 inline-block mt-2">de Tecnologia.</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto font-medium" id="hero-subtitle">
-            Abrindo um horizonte através do padrão global de inovação e integridade.
+            Abriendo un horizonte a través del padrão global de inovação e integridade.
           </p>
         </div>
 
@@ -242,7 +223,7 @@ export default function App() {
         <div ref={mainObjectRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0">
           <img 
             src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
-            alt="Elemento Visual The Meyer" 
+            alt="The Meyer Object" 
             className="w-[120px] md:w-[200px] object-contain drop-shadow-[0_35px_60px_rgba(59,130,246,0.3)] opacity-80"
           />
         </div>
@@ -252,7 +233,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Secção de Funcionalidades */}
       <section className="relative z-20 min-h-screen py-32 px-8 flex flex-col items-center justify-center bg-gradient-to-b from-white to-[#f8faff]">
         <div className="feature-grid grid md:grid-cols-2 gap-8 md:gap-16 max-w-6xl w-full">
           <div className="feature-card glass p-10 md:p-14 rounded-[2.5rem] shadow-xl shadow-blue-500/5 hover:shadow-blue-500/10 transition-shadow group">
@@ -260,25 +240,3 @@ export default function App() {
             <h3 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Sistemas</h3>
             <p className="text-gray-500 leading-relaxed text-lg">
               Divisão de sistemas industriais com foco em engenharia e tecnologia patenteada para contratos industriais e governamentais.
-            </p>
-          </div>
-          
-          <div className="feature-card glass p-10 md:p-14 rounded-[2.5rem] shadow-xl shadow-blue-500/5 hover:shadow-blue-500/10 transition-shadow group">
-            <div className="w-12 h-1 bg-blue-600 mb-8 transition-all group-hover:w-24"></div>
-            <h3 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Infraestrutura</h3>
-            <p className="text-gray-500 leading-relaxed text-lg">
-              Divisão de infraestrutura digital com foco em desenvolvimento, tráfego e segurança para empresas tecnológicas e departamentos de TI corporativos.
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-40 text-center max-w-4xl opacity-90">
-          <h2 className="text-4xl md:text-7xl font-extrabold mb-8 text-gray-900 tracking-tighter">
-            Puro. Seguro. Único.
-          </h2>
-          <div className="h-1.5 w-24 bg-blue-600 mx-auto rounded-full"></div>
-        </div>
-      </section>
-    </Layout>
-  );
-}
