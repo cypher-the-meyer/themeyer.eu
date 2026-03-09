@@ -108,33 +108,15 @@ const App = () => {
 
     return (
         <Layout>
-            <section className="relative h-[80vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-                {/* Hero Content */}
-                <div className="z-10 mt-[-5vh]">
-                    <h1 className="text-5xl md:text-8xl font-extrabold mb-4 tracking-tight text-gray-900" id="hero-title">
+            <section className="relative h-[70vh] flex flex-col items-center justify-center text-center px-4">
+                {/* Simple Pure Hero Content */}
+                <div className="max-w-4xl mx-auto">
+                    <h1 className="text-5xl md:text-8xl font-extrabold mb-6 tracking-tight text-gray-900">
                         Soluciones Integradas<br /><span className="text-blue-600">de Tecnologia.</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto font-medium" id="hero-subtitle">
+                    <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto font-medium">
                         Abriendo un horizonte a través del estándar global de la inovacion e integridad.
                     </p>
-                </div>
-
-                {/* Glass Backdrop - Adjusted opacity for steady look */}
-                <div id="hero-glass-box" className="absolute inset-0 w-full h-full bg-white/70 backdrop-blur-sm pointer-events-none z-[5]"></div>
-                
-                {/* Background Logo - Faded and Steady */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0 opacity-10" id="main-object">
-                    <img 
-                      src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
-                      alt="The Meyer Logo Backdrop" 
-                      id="main-object-img" 
-                      className="w-[250px] md:w-[450px] object-contain" 
-                    />
-                </div>
-
-                {/* Steady Scroll Indicator */}
-                <div className="absolute bottom-10 text-blue-400 z-10 opacity-50">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                 </div>
             </section>
 
