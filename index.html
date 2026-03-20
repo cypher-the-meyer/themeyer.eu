@@ -83,12 +83,17 @@
                             <span className="hidden font-black text-2xl tracking-tighter">THE MEYER</span>
                         </a>
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-                            <a href="#" className="hover:text-blue-600">Tecnologias</a>
-                            <a href="#" className="hover:text-blue-600">Sustentabilidad</a>
-                            <a href="#" className="hover:text-blue-600">Nosotros</a>
+                            <a href="pages/Tecnologia.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
+                            <a href="pages/Sustentabilidad.html" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
+                            <a href="pages/Nosotros.html" className="hover:text-blue-600 transition-colors">Nosotros</a>
                         </div>
                         <div className="flex items-center space-x-4">
-                            <button className="hidden sm:block bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-md">CONTACTO</button>
+                            <button 
+                                onClick={() => window.location.href = 'pages/Nosotros.html'}
+                                className="hidden sm:block bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-md hover:bg-blue-700 transition-all active:scale-95"
+                            >
+                                CONTACTO
+                            </button>
                             <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
                                 <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
                                 <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
@@ -98,10 +103,15 @@
                     </nav>
 
                     <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
-                        <a href="#" className="text-xl font-bold uppercase" onClick={toggleMenu}>Tecnologias</a>
-                        <a href="#" className="text-xl font-bold uppercase" onClick={toggleMenu}>Sustentabilidad</a>
-                        <a href="#" className="text-xl font-bold uppercase" onClick={toggleMenu}>Nosotros</a>
-                        <button onClick={toggleMenu} className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold">CONTACTO</button>
+                        <a href="pages/Tecnologia.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Tecnologias</a>
+                        <a href="pages/Sustentabilidad.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Sustentabilidad</a>
+                        <a href="pages/Nosotros.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Nosotros</a>
+                        <button 
+                            onClick={() => { toggleMenu(); window.location.href = 'pages/Nosotros.html'; }} 
+                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
+                        >
+                            CONTACTO
+                        </button>
                     </div>
 
                     <main className="pt-32">{children}</main>
@@ -167,32 +177,34 @@
                     }
                 });
 
-                // Frame animation for all devices
                 tl.to(thinkpad, {
                     frame: frameCount - 1,
                     snap: "frame",
                     ease: "none",
-                    duration: 1,
+                    duration: 0.5,
                     onUpdate: render
-                }, 0);
+                })
+                .to(thinkpad, {
+                    frame: 0,
+                    snap: "frame",
+                    ease: "none",
+                    duration: 0.5,
+                    onUpdate: render
+                });
 
-                // Responsive Media Queries for the text animation
                 const mm = gsap.matchMedia();
 
                 mm.add("(min-width: 768px)", () => {
-                    // Desktop: Animate text in softly starting at frame 12
                     gsap.set(textRef.current, { opacity: 0, x: 100 });
-                    
                     tl.to(textRef.current, {
                         opacity: 1,
                         x: 0,
                         ease: "power2.out",
-                        duration: 0.3
-                    }, 12 / (frameCount - 1));
+                        duration: 0.2
+                    }, 0.35); 
                 });
 
                 mm.add("(max-width: 767px)", () => {
-                    // Mobile: No animation, text appears immediately
                     gsap.set(textRef.current, { opacity: 1, x: 0 });
                 });
 
