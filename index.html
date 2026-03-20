@@ -7,7 +7,24 @@
 
     <!-- UI Core -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="layout.css">
+    <style>
+        body { margin: 0; background-color: #f8fafc; font-family: sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Background Bubbles */
+        .bubble-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
+        .bubble { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0) 70%); animation: float var(--duration) infinite ease-in-out alternate; }
+        @keyframes float { 0% { transform: translateY(0px) scale(1); } 100% { transform: translateY(-100px) scale(1.1); } }
+        
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
+        
+        /* Mobile Menu Animations */
+        .menu-open #line1 { transform: translateY(8px) rotate(45deg); }
+        .menu-open #line2 { opacity: 0; }
+        .menu-open #line3 { transform: translateY(-8px) rotate(-45deg); }
+        .hidden-menu { opacity: 0; pointer-events: none; transform: translateY(-20px); transition: all 0.3s ease; }
+    </style>
 
     <!-- React Framework CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -19,20 +36,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 <body>
-    <!-- React Mount Point -->
     <div id="root"></div>
 
-    <!-- Integrated Application Script -->
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
 
         // --- LAYOUT COMPONENT ---
         const Layout = ({ children }) => {
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-            const toggleMenu = () => {
-                setIsMobileMenuOpen(!isMobileMenuOpen);
-            };
+            const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
             return (
                 <div className="relative min-h-screen">
@@ -44,7 +56,7 @@
                     </div>
 
                     {/* Top Banner */}
-                    <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
+                    <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-4 md:px-8 overflow-hidden">
                         <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
                             SUSTENTABILIDAD CORPORATIVA & ESG
                         </span>
@@ -60,21 +72,18 @@
 
                     {/* Navigation */}
                     <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
-                        <a href="#" className="block z-50">
-                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
+                        <a href="#" className="block z-50 font-black text-2xl tracking-tighter">
+                            THE MEYER
                         </a>
                         
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-                            <a href="/pages/Tecnologia" className="hover:text-blue-600 transition-colors">Tecnologias</a>
-                            <a href="/pages/Sustentabilidad" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
-                            <a href="/pages/Nosotros" className="hover:text-blue-600 transition-colors">Nosotros</a>
+                            <a href="#" className="hover:text-blue-600 transition-colors">Tecnologias</a>
+                            <a href="#" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
+                            <a href="#" className="hover:text-blue-600 transition-colors">Nosotros</a>
                         </div>
 
                         <div className="flex items-center space-x-4">
-                            <button 
-                                onClick={() => window.location.href = '/pages/Nosotros'} 
-                                className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
-                            >
+                            <button className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md">
                                 CONTACTO
                             </button>
                             
@@ -87,27 +96,124 @@
                     </nav>
 
                     {/* Mobile Menu */}
-                    <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
+                    <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
                         <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
-                            <a href="/pages/Tecnologia" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
-                            <a href="/pages/Sustentabilidad" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
-                            <a href="/pages/Nosotros" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
+                            <a href="#" className="hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
+                            <a href="#" className="hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
+                            <a href="#" className="hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
                         </div>
-                        
-                        <button 
-                            onClick={() => {
-                                toggleMenu();
-                                window.location.href = '/pages/contacto';
-                            }} 
-                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
-                        >
+                        <button onClick={toggleMenu} className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl">
                             CONTACTO
                         </button>
                     </div>
 
-                    <main className="pt-32 px-4 md:px-8">
+                    <main className="pt-32">
                         {children}
                     </main>
+
+                    <footer className="py-12 border-t border-gray-200 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20 px-4">
+                        &copy; 2026 THE MEYER EU. TODOS LOS DERECHOS RESERVADOS.
+                    </footer>
+                </div>
+            );
+        };
+
+        // --- CANVAS ANIMATION COMPONENT ---
+        const ThinkpadSequence = () => {
+            const canvasRef = useRef(null);
+            const containerRef = useRef(null);
+
+            useEffect(() => {
+                gsap.registerPlugin(ScrollTrigger);
+                
+                const canvas = canvasRef.current;
+                const context = canvas.getContext("2d");
+                
+                // Set canvas size
+                canvas.width = 1152;
+                canvas.height = 648;
+
+                const frameCount = 37;
+                // EDIT THIS LINE: This is how you would reference your actual folder path.
+                // e.g. padding to 0001.webp format
+                const currentFrame = index => (
+                    `/media/animations/frames/thinkpad/${(index + 1).toString().padStart(4, '0')}.webp`
+                );
+
+                const images = [];
+                const thinkpad = { frame: 0 };
+
+                // 1. Preload images
+                for (let i = 0; i < frameCount; i++) {
+                    const img = new Image();
+                    // Fallback to avoid broken images in preview if path doesn't exist
+                    img.onerror = () => { img.isPlaceholder = true; }; 
+                    img.src = currentFrame(i);
+                    images.push(img);
+                }
+
+                // Render function
+                const render = () => {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    const img = images[thinkpad.frame];
+
+                    if (img && img.complete && !img.isPlaceholder) {
+                        // Draw actual loaded image
+                        context.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    } else {
+                        // Mock render for preview environment showing the current frame
+                        context.fillStyle = "#e2e8f0";
+                        context.fillRect(0, 0, canvas.width, canvas.height);
+                        context.fillStyle = "#1e293b";
+                        context.font = "bold 48px sans-serif";
+                        context.textAlign = "center";
+                        context.fillText(`Mock Frame: ${thinkpad.frame + 1} / ${frameCount}`, canvas.width / 2, canvas.height / 2);
+                        context.font = "24px sans-serif";
+                        context.fillStyle = "#64748b";
+                        context.fillText(`Path: ${currentFrame(thinkpad.frame)}`, canvas.width / 2, canvas.height / 2 + 50);
+                    }
+                };
+
+                // Draw first frame on load
+                images[0].onload = render;
+                // Force initial render for placeholders
+                render();
+
+                // 2. Setup GSAP ScrollTrigger
+                let tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top top",
+                        end: "+=300%", // Pins for a scroll distance equal to 3x screen height
+                        scrub: 0.5, // Smooth scrubbing
+                        pin: true,  // Pins the container in place while animating
+                    }
+                });
+
+                tl.to(thinkpad, {
+                    frame: frameCount - 1,
+                    snap: "frame",
+                    ease: "none",
+                    onUpdate: render
+                });
+
+                // Cleanup on unmount
+                return () => {
+                    ScrollTrigger.getAll().forEach(t => t.kill());
+                };
+            }, []);
+
+            return (
+                <div ref={containerRef} className="h-screen w-full flex flex-col items-center justify-center bg-gray-50 overflow-hidden relative">
+                    <div className="absolute top-10 text-center z-10 w-full px-4">
+                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">Potencia sin límites.</h2>
+                        <p className="text-gray-500 text-lg">Haz scroll para descubrir cada detalle.</p>
+                    </div>
+                    
+                    <canvas 
+                        ref={canvasRef} 
+                        className="max-w-full h-auto max-h-[80vh] object-contain shadow-2xl rounded-2xl"
+                    />
                 </div>
             );
         };
@@ -119,82 +225,36 @@
 
                 gsap.from("#hero-title", { duration: 1.5, y: 50, opacity: 0, ease: "power4.out" });
                 gsap.from("#hero-subtitle", { duration: 1.5, y: 30, opacity: 0, delay: 0.3, ease: "power4.out" });
-
-                gsap.to("#main-object", {
-                    scrollTrigger: { 
-                        trigger: "body", 
-                        start: "top top", 
-                        end: "50% top", 
-                        scrub: 1.2 
-                    },
-                    scale: 3, 
-                    opacity: 0, 
-                    rotate: 5, 
-                    xPercent: -50, 
-                    yPercent: -50, 
-                    ease: "none"
-                });
-                    
-                gsap.to("#hero-glass-box", {
-                    scrollTrigger: { trigger: "body", start: "top top", end: "40% top", scrub: true },
-                    opacity: 0, ease: "power2.inOut"
-                });
-
-                gsap.to("#hero-title, #hero-subtitle", {
-                    scrollTrigger: { trigger: "body", start: "top top", end: "40% top", scrub: true },
-                    y: -100, opacity: 0
-                });
-
-                gsap.from("#feature-1, #feature-2", {
-                    scrollTrigger: { trigger: "#feature-1", start: "top 85%" },
-                    y: 80, opacity: 0, duration: 1, stagger: 0.2, ease: "back.out(1.2)"
-                });
-
-                gsap.from("#impact-text", {
-                    scrollTrigger: { trigger: "#impact-text", start: "top 85%" },
-                    y: 40, opacity: 0, duration: 1.2, ease: "power2.out"
-                });
             }, []);
 
             return (
                 <Layout>
-                    <section className="relative h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-                        <div className="z-10 mt-[-10vh]">
-                            <h1 className="text-5xl md:text-8xl font-extrabold mb-4 tracking-tight text-gray-900" id="hero-title">
-                                Soluciones Integradas<br /><span className="text-blue-600">de Tecnologia.</span>
-                            </h1>
-                            <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto font-medium" id="hero-subtitle">
-                                Abriendo un horizonte a través del estándar global de la inovacion e integridad.
+                    {/* Dummy Hero Section to provide initial scroll space */}
+                    <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 text-center">
+                        <h1 id="hero-title" className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter mb-6">
+                            Innovación Integrada
+                        </h1>
+                        <p id="hero-subtitle" className="text-xl md:text-2xl text-gray-600 max-w-2xl">
+                            Soluciones tecnológicas de vanguardia con un fuerte compromiso hacia la sustentabilidad ESG.
+                        </p>
+                    </div>
+
+                    {/* Canvas Scroll Sequence Component */}
+                    <ThinkpadSequence />
+
+                    {/* Extra Section to scroll past the canvas */}
+                    <div className="min-h-[60vh] flex items-center justify-center bg-white px-4">
+                        <div className="max-w-3xl text-center">
+                            <h3 className="text-3xl font-bold mb-6">Certificaciones de Calidad</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                Nuestro compromiso se refleja en nuestras operaciones. Continuamos scrollando más allá del modelo 3D renderizado para descubrir cómo nuestras integraciones mejoran los ecosistemas empresariales.
                             </p>
                         </div>
-                        <div id="hero-glass-box" className="absolute inset-0 w-full h-full bg-white/85 backdrop-blur-md pointer-events-none z-[5]"></div>
-                        <div className="product_technology-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl flex justify-center items-center pointer-events-none z-0" id="main-object">
-                            <img 
-                              src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
-                              alt="The Meyer Logo" 
-                              className="w-[100px] md:w-[167px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]" 
-                            />
-                        </div>
-                        <div className="absolute bottom-10 animate-bounce text-blue-400 z-10">
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                        </div>
-                    </section>
+                    </div>
+                </Layout>
+            );
+        };
 
-                    <section className="relative z-20 min-h-screen py-32 px-8 flex flex-col items-center justify-center bg-gradient-to-b from-white to-[#f8faff]">
-                        <div className="grid md:grid-cols-2 gap-16 max-w-6xl w-full">
-                            <div className="glass p-10 rounded-3xl shadow-xl shadow-blue-500/5" id="feature-1">
-                                <h3 className="text-3xl font-bold mb-4 text-gray-900">Sistemas</h3>
-                                <p className="text-gray-500 leading-relaxed">Division de sistemas industriales con enfoque en ingenieria y tecnologia patentada para contratos industriales y gubernamentales.</p>
-                            </div>
-                            <div className="glass p-10 rounded-3xl shadow-xl shadow-blue-500/5" id="feature-2">
-                                <h3 className="text-3xl font-bold mb-4 text-gray-900">Infraestructura</h3>
-                                <p className="text-gray-500 leading-relaxed">Division de infraestructura digital con enfoque en desarrollo, trafico y seguridad para firmas tecnologicas y departamentos corporativos de IT.</p>
-                            </div>
-                        </div>
-                        <div className="mt-32 text-center max-w-4xl" id="impact-text">
-                            <h2 className="text-4xl md:text-6xl font-extrabold mb-8 text-gray-900">Puro. Seguro. Unico.</h2>
-                        </div>
-                    </section>
 
                     <footer className="py-12 border-t border-gray-100 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20 px-4">
                         &copy; 2025 THE MEYER EU. TODOS LOS DERECHOS RESERVADOS.
@@ -202,7 +262,7 @@
                 </Layout>
             );
         };
-
+        
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
