@@ -125,8 +125,9 @@
                 canvas.height = 1080;
 
                 const frameCount = 38;
+                // Updated to point to loop-thinkpad-animation_XXX.png.png in media/animations/frames/
                 const currentFrame = index => (
-                    `media/animations/frames/loop-thinkpad-animation_${index.toString().padStart(3, '0')}.jpg`
+                    `media/animations/frames/loop-thinkpad-animation_${index.toString().padStart(3, '0')}.png.png`
                 );
 
                 const images = [];
@@ -145,11 +146,10 @@
                     if (img && img.complete && !img.isPlaceholder) {
                         context.drawImage(img, 0, 0, canvas.width, canvas.height);
                     } else {
-                        // Background transparent/none, just draw text if missing
                         context.fillStyle = "#1e293b";
                         context.font = "bold 32px sans-serif";
                         context.textAlign = "center";
-                        context.fillText(`Frame: ${thinkpad.frame.toString().padStart(3, '0')}`, canvas.width / 2, canvas.height / 2);
+                        context.fillText(`Frame: ${thinkpad.frame.toString().padStart(3, '0')}.png.png`, canvas.width / 2, canvas.height / 2);
                     }
                 };
 
@@ -179,7 +179,6 @@
                         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 tracking-tight">Potencia sin límites.</h2>
                         <p className="text-gray-500 text-lg">Explora la ingeniería de precisión.</p>
                     </div>
-                    {/* Removed shadow, rounded corners, and background; reduced size to 64vh (20% less than 80vh) */}
                     <canvas 
                         ref={canvasRef} 
                         className="max-w-full h-auto max-h-[64vh] object-contain" 
