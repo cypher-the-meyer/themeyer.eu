@@ -69,7 +69,18 @@
                     </div>
 
                     <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
-                        <a href="#" className="block z-50 font-black text-2xl tracking-tighter">THE MEYER</a>
+                        <a href="/" className="block z-50">
+                            <img 
+                                src="main/media/logos" 
+                                alt="The Meyer Logo" 
+                                className="h-10 md:h-12 w-auto object-contain"
+                                onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.nextSibling.style.display = 'block';
+                                }}
+                            />
+                            <span className="hidden font-black text-2xl tracking-tighter">THE MEYER</span>
+                        </a>
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
                             <a href="#" className="hover:text-blue-600">Tecnologias</a>
                             <a href="#" className="hover:text-blue-600">Sustentabilidad</a>
@@ -110,14 +121,10 @@
                 const canvas = canvasRef.current;
                 const context = canvas.getContext("2d");
                 
-                // Set canvas size to match the JPG aspect ratio or your design
                 canvas.width = 1920; 
                 canvas.height = 1080;
 
-                // 0 to 37 means there are 38 frames total
                 const frameCount = 38;
-                
-                // Updated helper to match: media/animations/frames/loop-thinkpad-animation_000.jpg
                 const currentFrame = index => (
                     `media/animations/frames/loop-thinkpad-animation_${index.toString().padStart(3, '0')}.jpg`
                 );
@@ -125,7 +132,6 @@
                 const images = [];
                 const thinkpad = { frame: 0 };
 
-                // Preload all 38 images
                 for (let i = 0; i < frameCount; i++) {
                     const img = new Image();
                     img.onerror = () => { img.isPlaceholder = true; }; 
@@ -139,21 +145,17 @@
                     if (img && img.complete && !img.isPlaceholder) {
                         context.drawImage(img, 0, 0, canvas.width, canvas.height);
                     } else {
-                        // Background if images aren't found
-                        context.fillStyle = "#f1f5f9";
-                        context.fillRect(0, 0, canvas.width, canvas.height);
+                        // Background transparent/none, just draw text if missing
                         context.fillStyle = "#1e293b";
                         context.font = "bold 32px sans-serif";
                         context.textAlign = "center";
-                        context.fillText(`Frame: loop-thinkpad-animation_${thinkpad.frame.toString().padStart(3, '0')}.jpg`, canvas.width / 2, canvas.height / 2);
+                        context.fillText(`Frame: ${thinkpad.frame.toString().padStart(3, '0')}`, canvas.width / 2, canvas.height / 2);
                     }
                 };
 
-                // Initial render
                 if (images[0]) images[0].onload = render;
                 render();
 
-                // Animate through the frames based on scroll
                 gsap.to(thinkpad, {
                     frame: frameCount - 1,
                     snap: "frame",
@@ -161,7 +163,7 @@
                     scrollTrigger: {
                         trigger: containerRef.current,
                         start: "top top",
-                        end: "+=300%", // Length of the scroll area
+                        end: "+=300%",
                         scrub: 0.5,
                         pin: true,
                     },
@@ -172,14 +174,15 @@
             }, []);
 
             return (
-                <div ref={containerRef} className="h-screen w-full flex flex-col items-center justify-center bg-gray-50 overflow-hidden relative">
+                <div ref={containerRef} className="h-screen w-full flex flex-col items-center justify-center overflow-hidden relative">
                     <div className="absolute top-10 text-center z-10 w-full px-4">
                         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 tracking-tight">Potencia sin límites.</h2>
                         <p className="text-gray-500 text-lg">Explora la ingeniería de precisión.</p>
                     </div>
+                    {/* Removed shadow, rounded corners, and background; reduced size to 64vh (20% less than 80vh) */}
                     <canvas 
                         ref={canvasRef} 
-                        className="max-w-full h-auto max-h-[80vh] object-contain shadow-2xl rounded-2xl bg-white" 
+                        className="max-w-full h-auto max-h-[64vh] object-contain" 
                     />
                 </div>
             );
