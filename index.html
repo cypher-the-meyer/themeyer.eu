@@ -189,19 +189,21 @@
             }, []);
 
             return (
-                <div ref={containerRef} className="h-screen w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-20 overflow-hidden relative">
-                    <div className="w-full md:w-1/2 flex justify-center md:justify-start order-2 md:order-1 mt-8 md:mt-0">
+                <div ref={containerRef} className="h-screen w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-20 overflow-hidden relative gap-8 md:gap-0">
+                    {/* Left Container for the frames scroll trigger - Center it perfectly on mobile */}
+                    <div className="w-full md:w-1/2 flex justify-center md:justify-start order-2 md:order-1">
                         <canvas 
                             ref={canvasRef} 
-                            className="max-w-full h-auto max-h-[50vh] md:max-h-[64vh] object-contain" 
+                            className="max-w-full h-auto max-h-[45vh] md:max-h-[64vh] object-contain mx-auto md:mx-0" 
                         />
                     </div>
 
+                    {/* Right Container for Title and Description - Center it perfectly on mobile */}
                     <div ref={textRef} className="w-full md:w-1/2 flex flex-col justify-center text-center md:text-right order-1 md:order-2 space-y-4">
                         <h2 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">
                             Potencia sin límites.
                         </h2>
-                        <p className="text-gray-500 text-lg md:text-xl max-w-lg md:ml-auto">
+                        <p className="text-gray-500 text-lg md:text-xl max-w-lg mx-auto md:ml-auto md:mr-0">
                             Explora la ingeniería de precisión.
                         </p>
                     </div>
