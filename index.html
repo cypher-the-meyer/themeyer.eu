@@ -125,7 +125,6 @@
                 canvas.height = 1080;
 
                 const frameCount = 38;
-                // Updated to point to loop-thinkpad-animation_XXX.png.png in media/animations/frames/
                 const currentFrame = index => (
                     `media/animations/frames/loop-thinkpad-animation_${index.toString().padStart(3, '0')}.png.png`
                 );
@@ -174,15 +173,24 @@
             }, []);
 
             return (
-                <div ref={containerRef} className="h-screen w-full flex flex-col items-center justify-center overflow-hidden relative">
-                    <div className="absolute top-10 text-center z-10 w-full px-4">
-                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 tracking-tight">Potencia sin límites.</h2>
-                        <p className="text-gray-500 text-lg">Explora la ingeniería de precisión.</p>
+                <div ref={containerRef} className="h-screen w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-20 overflow-hidden relative">
+                    {/* Left Container for the frames scroll trigger */}
+                    <div className="w-full md:w-1/2 flex justify-center md:justify-start order-2 md:order-1 mt-8 md:mt-0">
+                        <canvas 
+                            ref={canvasRef} 
+                            className="max-w-full h-auto max-h-[50vh] md:max-h-[64vh] object-contain" 
+                        />
                     </div>
-                    <canvas 
-                        ref={canvasRef} 
-                        className="max-w-full h-auto max-h-[64vh] object-contain" 
-                    />
+
+                    {/* Right Container for Title and Description */}
+                    <div className="w-full md:w-1/2 flex flex-col justify-center text-center md:text-right order-1 md:order-2 space-y-4">
+                        <h2 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">
+                            Potencia sin límites.
+                        </h2>
+                        <p className="text-gray-500 text-lg md:text-xl max-w-lg md:ml-auto">
+                            Explora la ingeniería de precisión.
+                        </p>
+                    </div>
                 </div>
             );
         };
