@@ -71,12 +71,13 @@
                     <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
                         <a href="/" className="block z-50">
                             <img 
-                                src="main/media/logos" 
+                                src="/media/LogoTransparent.png" 
                                 alt="The Meyer Logo" 
                                 className="h-10 md:h-12 w-auto object-contain"
                                 onError={(e) => {
                                     e.target.style.display = 'none';
-                                    e.target.nextSibling.style.display = 'block';
+                                    const fallback = e.target.nextSibling;
+                                    if (fallback) fallback.classList.remove('hidden');
                                 }}
                             />
                             <span className="hidden font-black text-2xl tracking-tighter">THE MEYER</span>
@@ -115,6 +116,7 @@
         const ThinkpadSequence = () => {
             const canvasRef = useRef(null);
             const containerRef = useRef(null);
+            const textRef = useRef(null);
 
             useEffect(() => {
                 gsap.registerPlugin(ScrollTrigger);
@@ -155,26 +157,39 @@
                 if (images[0]) images[0].onload = render;
                 render();
 
-                gsap.to(thinkpad, {
-                    frame: frameCount - 1,
-                    snap: "frame",
-                    ease: "none",
+                gsap.set(textRef.current, { opacity: 0, x: 100 });
+
+                const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: containerRef.current,
                         start: "top top",
                         end: "+=300%",
                         scrub: 0.5,
                         pin: true,
-                    },
-                    onUpdate: render
+                    }
                 });
+
+                tl.to(thinkpad, {
+                    frame: frameCount - 1,
+                    snap: "frame",
+                    ease: "none",
+                    duration: 1,
+                    onUpdate: render
+                }, 0);
+
+                const triggerPoint = 12 / (frameCount - 1);
+                tl.to(textRef.current, {
+                    opacity: 1,
+                    x: 0,
+                    ease: "power2.out",
+                    duration: 0.3
+                }, triggerPoint);
 
                 return () => ScrollTrigger.getAll().forEach(t => t.kill());
             }, []);
 
             return (
                 <div ref={containerRef} className="h-screen w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-20 overflow-hidden relative">
-                    {/* Left Container for the frames scroll trigger */}
                     <div className="w-full md:w-1/2 flex justify-center md:justify-start order-2 md:order-1 mt-8 md:mt-0">
                         <canvas 
                             ref={canvasRef} 
@@ -182,8 +197,7 @@
                         />
                     </div>
 
-                    {/* Right Container for Title and Description */}
-                    <div className="w-full md:w-1/2 flex flex-col justify-center text-center md:text-right order-1 md:order-2 space-y-4">
+                    <div ref={textRef} className="w-full md:w-1/2 flex flex-col justify-center text-center md:text-right order-1 md:order-2 space-y-4">
                         <h2 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">
                             Potencia sin límites.
                         </h2>
