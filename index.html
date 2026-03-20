@@ -157,8 +157,6 @@
                 if (images[0]) images[0].onload = render;
                 render();
 
-                gsap.set(textRef.current, { opacity: 0, x: 100 });
-
                 const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: containerRef.current,
@@ -169,6 +167,7 @@
                     }
                 });
 
+                // Frame animation for all devices
                 tl.to(thinkpad, {
                     frame: frameCount - 1,
                     snap: "frame",
@@ -177,20 +176,34 @@
                     onUpdate: render
                 }, 0);
 
-                const triggerPoint = 12 / (frameCount - 1);
-                tl.to(textRef.current, {
-                    opacity: 1,
-                    x: 0,
-                    ease: "power2.out",
-                    duration: 0.3
-                }, triggerPoint);
+                // Responsive Media Queries for the text animation
+                const mm = gsap.matchMedia();
 
-                return () => ScrollTrigger.getAll().forEach(t => t.kill());
+                mm.add("(min-width: 768px)", () => {
+                    // Desktop: Animate text in softly starting at frame 12
+                    gsap.set(textRef.current, { opacity: 0, x: 100 });
+                    
+                    tl.to(textRef.current, {
+                        opacity: 1,
+                        x: 0,
+                        ease: "power2.out",
+                        duration: 0.3
+                    }, 12 / (frameCount - 1));
+                });
+
+                mm.add("(max-width: 767px)", () => {
+                    // Mobile: No animation, text appears immediately
+                    gsap.set(textRef.current, { opacity: 1, x: 0 });
+                });
+
+                return () => {
+                    mm.revert();
+                    ScrollTrigger.getAll().forEach(t => t.kill());
+                };
             }, []);
 
             return (
                 <div ref={containerRef} className="h-screen w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-20 overflow-hidden relative gap-8 md:gap-0">
-                    {/* Left Container for the frames scroll trigger - Center it perfectly on mobile */}
                     <div className="w-full md:w-1/2 flex justify-center md:justify-start order-2 md:order-1">
                         <canvas 
                             ref={canvasRef} 
@@ -198,7 +211,6 @@
                         />
                     </div>
 
-                    {/* Right Container for Title and Description - Center it perfectly on mobile */}
                     <div ref={textRef} className="w-full md:w-1/2 flex flex-col justify-center text-center md:text-right order-1 md:order-2 space-y-4">
                         <h2 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">
                             Potencia sin límites.
