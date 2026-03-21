@@ -83,9 +83,9 @@
                             <span className="hidden font-black text-2xl tracking-tighter">THE MEYER</span>
                         </a>
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-                            <a href="pages/Hardware.html" className="hover:text-blue-600 transition-colors">Hardware</a>
-                            <a href="pages/Nosotros.html" className="hover:text-blue-600 transition-colors">Nosotros</a>
-                            <a href="pages/Software.html" className="hover:text-blue-600 transition-colors">Software</a>
+                            <a href="/pages/hardware" className="hover:text-blue-600 transition-colors">Hardware</a>
+                            <a href="/pages/software" className="hover:text-blue-600 transition-colors">Software</a>
+                            <a href="/pages/about_us" className="hover:text-blue-600 transition-colors">About US</a>
                         </div>
                         <div className="flex items-center space-x-4">
                             <button 
@@ -103,9 +103,9 @@
                     </nav>
 
                     <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
-                        <a href="pages/Hardware.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
-                        <a href="pages/Nosotros.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Nosotros</a>
-                        <a href="pages/Software.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
+                        <a href="pages/hardware.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
+                        <a href="pages/software.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
+                        <a href="pages/about_us.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
                         <button 
                             onClick={() => { toggleMenu(); window.location.href = 'pages/Nosotros.html'; }} 
                             className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
