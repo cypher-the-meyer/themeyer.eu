@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Meyer - Nosotros (Secured)</title>
+    <title>The Meyer - About Us (Secured)</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -103,7 +103,7 @@
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
                             <a href="/pages/Tecnologia" className="hover:text-blue-600 transition-colors">Tecnologias</a>
                             <a href="/pages/Sustentabilidad" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
-                            <a href="/pages/Nosotros" className="hover:text-blue-600 transition-colors">Nosotros</a>
+                            <a href="/pages/about_us" className="hover:text-blue-600 transition-colors">About US</a>
                         </div>
 
                         <div className="flex items-center space-x-4">
@@ -119,7 +119,7 @@
                         <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
                             <a href="pages/Tecnologia" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
                             <a href="/pages/Sustentabilidad" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
-                            <a href="/pages/Nosotros" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
+                            <a href="/pages/about_us" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>About Us</a>
                         </div>
                     </div>
 
@@ -146,7 +146,7 @@
                 
                 const authServerUrl = "https://YOUR_IDP_DOMAIN/authorize";
                 const clientId = "YOUR_CLIENT_ID";
-                const redirectUri = window.location.origin + "/pages/Nosotros.html";
+                const redirectUri = window.location.origin + "/pages/about_us.html";
                 
                 console.log("Initiating PKCE Flow...");
                 // Mocking successful authentication for demonstration in this static environment
