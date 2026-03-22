@@ -24,7 +24,42 @@
         .menu-open #line2 { opacity: 0; }
         .menu-open #line3 { transform: translateY(-8px) rotate(-45deg); }
         .hidden-menu { opacity: 0; pointer-events: none; transform: translateY(-20px); transition: all 0.3s ease; }
+    
     </style>
+                        {/* Desktop Links */}
+                        <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
+                            <a href="/pages/hardware" className="hover:text-blue-600 transition-colors">Hardware</a>
+                            <a href="/pages/software" className="hover:text-blue-600 transition-colors">Sofwtare</a>
+                            <a href="/pages/about" className="hover:text-blue-600 transition-colors">About Us</a>
+                        </div>
+
+                        <div className="flex items-center space-x-4">
+                        {/* Desktop CONTACTO Button */}
+                        <button 
+                            onClick={() => window.location.href = '/pages/Nosotros'} 
+                            className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
+                        >
+                            CONTACTO
+                        </button>
+                        
+                        {/* Mobile Menu Toggle */}
+                        <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
+                            <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
+                            <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
+                            <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+                        </button>
+                    </div>
+                </nav>
+                    
+                {/* Mobile Menu */}
+                <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
+                    {/* FIX 2: Removed "hidden" class from here so links show on mobile */}
+                    <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
+                        <a href="pages/hardware" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Hardware</a>
+                        <a href="/pages/software" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Software</a>
+                        <a href="/pages/about" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>About Us</a>
+                    </div>
+                    
 
     <!-- React Framework CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
