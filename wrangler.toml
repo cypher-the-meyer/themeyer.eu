@@ -1,5 +1,5 @@
 name = "geo-router-themeyer"
-main = "src/index.js"  # Ensure this points to your main JS file
+main = "src/index.html"  # Ensure this points to your main JS file
 compatibility_date = "2026-03-28"
 
 # Bindings to intercept your main domain traffic
