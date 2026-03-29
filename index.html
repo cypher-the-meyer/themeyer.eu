@@ -311,23 +311,5 @@
                 </Layout>
             );
         };
-        // ... existing geo logic ...
-
-        const targetHost = `${subdomain}.themeyer.eu`;
-
-        // CRITICAL: If the host is already correct, 'return fetch(request)' 
-        // allows the request to proceed to your actual website/homepage.
-        if (url.hostname === targetHost) {
-            return fetch(request); 
-        }
-
-        // Otherwise, redirect them to the correct regional subdomain
-       const redirectUrl = new URL(request.url);
-       redirectUrl.hostname = targetHost;
-       return Response.redirect(redirectUrl.toString(), 302);
-        
-            const root = ReactDOM.createRoot(document.getElementById('root'));
-            root.render(<App />);
-        </script>
 </body>
 </html>
