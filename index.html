@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Meyer - Software Developement</title>
+    <title>The Meyer - Software Development</title>
 
-    <!-- UI Core -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { margin: 0; background-color: #f8fafc; font-family: sans-serif; }
@@ -26,12 +25,10 @@
         .hidden-menu { opacity: 0; pointer-events: none; transform: translateY(-20px); transition: all 0.3s ease; }
     </style>
 
-    <!-- React Framework CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- Animation Engines -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
@@ -118,198 +115,4 @@
                         </div>
                     </div>
 
-                    <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
-                        <a href="/" className="block z-50">
-                            <img 
-                                src="/media/LogoTransparent.png" 
-                                alt="The Meyer Logo" 
-                                className="h-10 md:h-12 w-auto object-contain"
-                                onError={(e) => {
-                                    e.target.style.display = 'none';
-                                    const fallback = e.target.nextSibling;
-                                    if (fallback) fallback.classList.remove('hidden');
-                                }}
-                            />
-                            <span className="hidden font-black text-2xl tracking-tighter">THE MEYER</span>
-                        </a>
-                        <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-                            <a href="/pages/hardware" className="hover:text-blue-600 transition-colors">Hardware</a>
-                            <a href="/pages/software" className="hover:text-blue-600 transition-colors">Software</a>
-                            <a href="/pages/about" className="hover:text-blue-600 transition-colors">About US</a>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <button 
-                                onClick={() => window.location.href = 'pages/about.html'}
-                                className="hidden sm:block bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-md hover:bg-blue-700 transition-all active:scale-95"
-                            >
-                                CONTACTO
-                            </button>
-                            <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
-                            </button>
-                        </div>
-                    </nav>
-
-                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
-                        <a href="pages/hardware.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
-                        <a href="pages/software.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
-                        <a href="pages/about.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
-                        <button 
-                            onClick={() => { toggleMenu(); window.location.href = 'pages/about.html'; }} 
-                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
-                        >
-                            CONTACTO
-                        </button>
-                    </div>
-
-                    <main className="pt-32">{children}</main>
-
-                    <footer className="py-12 border-t border-gray-200 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20 px-4">
-                        &copy; 2026 THE MEYER EU. TODOS LOS DERECHOS RESERVADOS.
-                    </footer>
-                </div>
-            );
-        };
-
-        const ThinkpadSequence = () => {
-            const canvasRef = useRef(null);
-            const containerRef = useRef(null);
-            const textRef = useRef(null);
-
-            useEffect(() => {
-                gsap.registerPlugin(ScrollTrigger);
-                const canvas = canvasRef.current;
-                const context = canvas.getContext("2d");
-                
-                canvas.width = 1920; 
-                canvas.height = 1080;
-
-                const frameCount = 38;
-                const currentFrame = index => (
-                    `media/animations/frames/loop-thinkpad-animation_${index.toString().padStart(3, '0')}.png.png`
-                );
-
-                const images = [];
-                const thinkpad = { frame: 0 };
-
-                for (let i = 0; i < frameCount; i++) {
-                    const img = new Image();
-                    img.onerror = () => { img.isPlaceholder = true; }; 
-                    img.src = currentFrame(i);
-                    images.push(img);
-                }
-
-                const render = () => {
-                    context.clearRect(0, 0, canvas.width, canvas.height);
-                    const img = images[thinkpad.frame];
-                    if (img && img.complete && !img.isPlaceholder) {
-                        context.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    } else {
-                        context.fillStyle = "#1e293b";
-                        context.font = "bold 32px sans-serif";
-                        context.textAlign = "center";
-                        context.fillText(`Frame: ${thinkpad.frame.toString().padStart(3, '0')}.png.png`, canvas.width / 2, canvas.height / 2);
-                    }
-                };
-
-                if (images[0]) images[0].onload = render;
-                render();
-
-                const tl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: "top top",
-                        end: "+=300%",
-                        scrub: 0.5,
-                        pin: true,
-                    }
-                });
-
-                tl.to(thinkpad, {
-                    frame: frameCount - 1,
-                    snap: "frame",
-                    ease: "none",
-                    duration: 0.5,
-                    onUpdate: render
-                })
-                .to(thinkpad, {
-                    frame: 0,
-                    snap: "frame",
-                    ease: "none",
-                    duration: 0.5,
-                    onUpdate: render
-                });
-
-                const mm = gsap.matchMedia();
-
-                mm.add("(min-width: 768px)", () => {
-                    gsap.set(textRef.current, { opacity: 0, x: 100 });
-                    tl.to(textRef.current, {
-                        opacity: 1,
-                        x: 0,
-                        ease: "power2.out",
-                        duration: 0.2
-                    }, 0.35); 
-                });
-
-                mm.add("(max-width: 767px)", () => {
-                    gsap.set(textRef.current, { opacity: 1, x: 0 });
-                });
-
-                return () => {
-                    mm.revert();
-                    ScrollTrigger.getAll().forEach(t => t.kill());
-                };
-            }, []);
-
-            return (
-                <div ref={containerRef} className="h-screen w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-20 overflow-hidden relative gap-8 md:gap-0">
-                    <div className="w-full md:w-1/2 flex justify-center md:justify-start order-2 md:order-1">
-                        <canvas 
-                            ref={canvasRef} 
-                            className="max-w-full h-auto max-h-[45vh] md:max-h-[64vh] object-contain mx-auto md:mx-0" 
-                        />
-                    </div>
-
-                    <div ref={textRef} className="w-full md:w-1/2 flex flex-col justify-center text-center md:text-right order-1 md:order-2 space-y-4">
-                        <h2 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">
-                            Potencia sin límites.
-                        </h2>
-                        <p className="text-gray-500 text-lg md:text-xl max-w-lg mx-auto md:ml-auto md:mr-0">
-                            Explora la ingeniería de precisión.
-                        </p>
-                    </div>
-                </div>
-            );
-        };
-
-        const App = () => {
-            useEffect(() => {
-                gsap.registerPlugin(ScrollTrigger);
-                gsap.from("#hero-title", { duration: 1.2, y: 30, opacity: 0, ease: "power3.out" });
-            }, []);
-
-            return (
-                <Layout>
-                    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center">
-                        <h1 id="hero-title" className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter mb-6">
-                            Software Developement
-                        </h1>
-                        <p className="text-xl text-gray-600 max-w-2xl">
-                            Securing the global edge through high-performance logic and integrated hardware components.
-                        </p>
-                    </div>
-                    <ThinkpadSequence />
-                    <div className="min-h-[50vh] flex items-center justify-center bg-white px-4">
-                        <div className="max-w-xl text-center">
-                            <h3 className="text-2xl font-bold mb-4">Certificaciones de Calidad</h3>
-                            <p className="text-gray-500">Nuestro compromiso se refleja en nuestras operaciones globales y estándares de excelencia.</p>
-                        </div>
-                    </div>
-                </Layout>
-            );
-        };
-</body>
-</html>
+                    <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass
