@@ -65,7 +65,8 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        // FIX: Added useRef to the destructuring assignment
+        const { useState, useEffect, useRef } = React;
 
         const Layout = ({ children }) => {
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -73,7 +74,6 @@
 
             return (
                 <div className="relative min-h-screen">
-                    {/* Animated Background */}
                     <div className="bubble-bg fixed inset-0 h-screen w-full">
                         <div className="bubble" style={{ width: '300px', height: '300px', left: '10%', '--duration': '15s' }}></div>
                         <div className="bubble" style={{ width: '200px', height: '200px', left: '60%', '--duration': '12s', animationDelay: '2s' }}></div>
@@ -81,7 +81,6 @@
                         <div className="bubble" style={{ width: '100px', height: '100px', left: '80%', '--duration': '20s', animationDelay: '1s' }}></div>
                     </div>
 
-                    {/* Top Banner */}
                     <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
                         <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
                              SUSTENTABILIDAD CORPORATIVA & ESG
@@ -96,7 +95,6 @@
                         </div>
                     </div>
 
-                    {/* Desktop Navigation */}
                     <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
                         <a href="https://themeyer.eu" className="block z-50">
                             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
@@ -110,7 +108,10 @@
 
                         <div className="flex items-center space-x-4">
                             <button 
-                                onClick={() => document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' })} 
+                                onClick={() => {
+                                    const section = document.getElementById('form-section');
+                                    if(section) section.scrollIntoView({ behavior: 'smooth' });
+                                }} 
                                 className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
                             >
                                 CONTACTO
@@ -124,7 +125,6 @@
                         </div>
                     </nav>
                     
-                    {/* Mobile Menu Overlay */}
                     <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
                         <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
                             <a href="pages/hardware" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Hardware</a>
@@ -135,7 +135,8 @@
                         <button 
                             onClick={() => {
                                 toggleMenu();
-                                document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
+                                const section = document.getElementById('form-section');
+                                if(section) section.scrollIntoView({ behavior: 'smooth' });
                             }} 
                             className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
                         >
@@ -149,6 +150,7 @@
                 </div>
             );
         };
+
         const PRODUCT_CATEGORIES = [
             "Todas las Categorías",
             "1. Cerebros y Procesamiento (Core)",
@@ -225,7 +227,6 @@
 
             return (
                 <Layout>
-                    {/* Hero Section */}
                     <section className="relative py-12 px-8 text-center z-10">
                         <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-4" id="title-anim">
                             Tecnologías que <span className="text-blue-600">Transforman</span>
@@ -235,7 +236,6 @@
                         </p>
                     </section>
 
-                    {/* WISHPRO Section */}
                     <section className="py-8 md:py-16 px-4 md:px-8 relative z-20">
                         <div className="max-w-6xl mx-auto">
                             <div className="grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-purple-500/5 border border-white" id="wishpro-card">
@@ -278,7 +278,6 @@
                         </div>
                     </section>
 
-                    {/* WATERGEN Section */}
                     <section className="py-8 md:py-16 px-4 md:px-8 relative z-20 mb-6">
                         <div className="max-w-6xl mx-auto">
                             <div className="grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-blue-500/5 border border-white" id="watergen-card">
@@ -311,10 +310,8 @@
                         </div>
                     </section>
 
-                    {/* SECCIÓN DE PRODUCTOS HARDWARE */}
                     <section className="py-12 md:py-16 px-4 md:px-8 relative z-20 mb-12">
                         <div className="max-w-6xl mx-auto">
-                            
                             <div className="mb-10 flex flex-col items-center text-center gap-2">
                                 <span className="text-blue-600 font-bold text-xs uppercase tracking-widest flex items-center gap-2">
                                     <div className="w-2 h-2 rounded-full bg-blue-500"></div>
@@ -323,10 +320,8 @@
                                 <h2 className="text-3xl font-extrabold text-gray-900">Hardware & Accesorios</h2>
                             </div>
 
-                            {/* FILTRO PRINCIPAL SUPERPUESTO */}
                             <div className="mb-12 flex justify-center relative z-[99]">
                                 <div className="glass px-6 py-3 rounded-full flex items-center gap-6 shadow-xl border border-white/50 w-full max-w-2xl justify-between">
-                                    
                                     <div className="relative flex-1" ref={dropdownRef}>
                                         <button 
                                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -379,7 +374,6 @@
                                 </div>
                             </div>
 
-                            {/* GRILLA DE PRODUCTOS */}
                             {isLoading ? (
                                 <div className="flex justify-center items-center h-80">
                                     <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-blue-600/10 border-t-blue-600"></div>
