@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Meyer - About Us</title>
+    <title>The Meyer - Nosotros</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -16,6 +16,7 @@
             overflow-x: hidden;
         }
 
+        /* Bubbles - Original Blue Style */
         .bubble-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -23,7 +24,7 @@
         }
         .bubble {
             position: absolute;
-            background: rgba(59, 130, 246, 0.08);
+            background: rgba(59, 130, 246, 0.08); /* Original Blue */
             border: 1px solid rgba(59, 130, 246, 0.15);
             border-radius: 50%;
             bottom: -100px;
@@ -36,21 +37,33 @@
             100% { transform: translateY(-110%) scale(1.2); opacity: 0; }
         }
 
+        /* Glassmorphism - Original Style */
         .glass {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
+        /* Scrollbar hiding */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+        /* Mobile Menu */
         #mobile-menu { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .hidden-menu { transform: translateX(100%); }
         
+        /* Menu Hamburger Animation */
         .menu-open #line1 { transform: rotate(45deg) translate(5px, 5px); }
         .menu-open #line2 { opacity: 0; }
         .menu-open #line3 { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* Form Inputs */
+        .form-input { transition: all 0.3s ease; }
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15); /* Blue shadow focus */
+        }
+        
     </style>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -65,29 +78,35 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // FIX: Added useRef to the destructuring assignment
         const { useState, useEffect, useRef } = React;
 
+        // --- LAYOUT COMPONENT ---
         const Layout = ({ children }) => {
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-            const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+
+            const toggleMenu = () => {
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+            };
 
             return (
                 <div className="relative min-h-screen">
+                    {/* Background Bubbles */}
                     <div className="bubble-bg fixed inset-0 h-screen w-full">
                         <div className="bubble" style={{ width: '300px', height: '300px', left: '10%', '--duration': '15s' }}></div>
                         <div className="bubble" style={{ width: '200px', height: '200px', left: '60%', '--duration': '12s', animationDelay: '2s' }}></div>
                         <div className="bubble" style={{ width: '150px', height: '150px', left: '30%', '--duration': '18s', animationDelay: '5s' }}></div>
                         <div className="bubble" style={{ width: '100px', height: '100px', left: '80%', '--duration': '20s', animationDelay: '1s' }}></div>
+                        <div className="bubble" style={{ width: '250px', height: '250px', left: '45%', '--duration': '14s', animationDelay: '3s' }}></div>
                     </div>
 
+                    {/* Top Banner */}
                     <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
-                        <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
+                        <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap flex items-center gap-2">
                              SUSTENTABILIDAD CORPORATIVA & ESG
                         </span>
-                        <div className="flex items-center space-x-4 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
-                            {['ODS 6', 'ODS 11', 'ODS 13', 'AGENDA 2030'].map((cert, i) => (
-                                <div key={i} className="flex items-center space-x-1 flex-shrink-0">
+                        <div className="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
+                            {['ODS 6', 'ODS 11', 'ODS 13', 'AGENDA 2030', 'ESG COMPLIANT'].map((cert, index) => (
+                                <div key={index} className="flex items-center space-x-1 flex-shrink-0">
                                     <div className="w-1 h-3 bg-blue-500"></div>
                                     <span className="text-[9px] font-bold text-white tracking-widest uppercase">{cert}</span>
                                 </div>
@@ -95,53 +114,66 @@
                         </div>
                     </div>
 
+            {/* Navigation */}
                     <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
+                        {/* THIS IS THE UPDATED LINE */}
                         <a href="https://themeyer.eu" className="block z-50">
                             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
                         </a>
                         
+                        {/* Desktop Links */}
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
                             <a href="/pages/hardware" className="hover:text-blue-600 transition-colors">Hardware</a>
-                            <a href="/pages/software" className="hover:text-blue-600 transition-colors">Software</a>
+                            <a href="/pages/software" className="hover:text-blue-600 transition-colors">Sofwtare</a>
                             <a href="/pages/about" className="hover:text-blue-600 transition-colors">About Us</a>
                         </div>
 
                         <div className="flex items-center space-x-4">
-                            <button 
-                                onClick={() => {
-                                    const section = document.getElementById('form-section');
-                                    if(section) section.scrollIntoView({ behavior: 'smooth' });
-                                }} 
-                                className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
-                            >
-                            CONTACTO
-                            </button>
-                            <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
-                            </button>
-                        </div>
-                    </nav>
-
-                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
-                        <a href="pages/hardware.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
-                        <a href="pages/software.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
-                        <a href="pages/about.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
+                        {/* Desktop CONTACTO Button */}
                         <button 
-                            onClick={() => { toggleMenu(); window.location.href = '/pages/about.html'; }} 
-                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
+                            onClick={() => window.location.href = '/pages/about.html'} 
+                            className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
                         >
                             CONTACTO
                         </button>
+                        
+                        {/* Mobile Menu Toggle */}
+                        <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
+                            <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
+                            <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
+                            <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+                        </button>
                     </div>
+                </nav>
+                    
+                {/* Mobile Menu */}
+                <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
+                    {/* FIX 2: Removed "hidden" class from here so links show on mobile */}
+                    <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
+                        <a href="pages/hardware" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Hardware</a>
+                        <a href="/pages/software" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Software</a>
+                        <a href="/pages/about" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>About Us</a>
+                    </div>
+                    
+                    {/* Mobile CONTACTO Button */}
+                    <button 
+                        onClick={() => {
+                            toggleMenu();
+                            window.location.href = '/pages/contacto';
+                        }} 
+                        className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
+                    >
+                        CONTACTO
+                    </button>
+                </div>
 
-                    <main className="pt-48 pb-20 relative z-10">
+                    <main className="pt-32 px-4 md:px-8">
                         {children}
                     </main>
                 </div>
             );
         };
+
 
         const PRODUCT_CATEGORIES = [
             "Todas las Categorías",
