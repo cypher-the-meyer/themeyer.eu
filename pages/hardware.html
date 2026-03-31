@@ -114,9 +114,8 @@
                                 }} 
                                 className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
                             >
-                                CONTACTO
+                            CONTACTO
                             </button>
-                            
                             <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
                                 <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
                                 <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
@@ -124,20 +123,13 @@
                             </button>
                         </div>
                     </nav>
-                    
-                    <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
-                        <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
-                            <a href="pages/hardware" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Hardware</a>
-                            <a href="/pages/software" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Software</a>
-                            <a href="/pages/about" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>About Us</a>
-                        </div>
-                        
+
+                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
+                        <a href="pages/hardware.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
+                        <a href="pages/software.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
+                        <a href="pages/about.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
                         <button 
-                            onClick={() => {
-                                toggleMenu();
-                                const section = document.getElementById('form-section');
-                                if(section) section.scrollIntoView({ behavior: 'smooth' });
-                            }} 
+                            onClick={() => { toggleMenu(); window.location.href = 'pages/about.html'; }} 
                             className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
                         >
                             CONTACTO
