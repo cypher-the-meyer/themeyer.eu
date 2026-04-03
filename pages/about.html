@@ -51,6 +51,15 @@
         .menu-open #line1 { transform: translateY(8px) rotate(45deg); }
         .menu-open #line2 { opacity: 0; }
         .menu-open #line3 { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Toggle Switch Styles */
+        .toggle-dot {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        input:checked ~ .toggle-dot {
+            transform: translateX(100%);
+            background-color: #2563eb;
+        }
     </style>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -65,7 +74,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
 
         const Layout = ({ children }) => {
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -222,15 +231,25 @@
         };
 
         const App = () => {
+            const [isCorporate, setIsCorporate] = useState(false);
+            const contentRef = useRef(null);
+
             useEffect(() => {
                 gsap.registerPlugin(ScrollTrigger);
                 gsap.from("#title-anim", { duration: 1, y: 30, opacity: 0, ease: "power3.out" });
-                gsap.from("#ods-card", { scrollTrigger: { trigger: "#ods-card", start: "top 85%" }, y: 60, opacity: 0, duration: 1.2 });
             }, []);
+
+            useEffect(() => {
+                // Animation when switching content
+                gsap.fromTo(contentRef.current, 
+                    { opacity: 0, y: 20 }, 
+                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+                );
+            }, [isCorporate]);
 
             return (
                 <Layout>
-                    <section className="relative px-8 text-center mb-16">
+                    <section className="relative px-8 text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4" id="title-anim">
                             Open Source <span className="text-blue-600">Tech Firm</span>
                         </h1>
@@ -239,22 +258,101 @@
                         </p>
                     </section>
 
-                    <section className="px-4 md:px-8 mb-20">
-                        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-12 shadow-2xl" id="ods-card">
-                            <div>
-                                <h2 className="text-3xl font-extrabold text-gray-900 mb-6">Agua Limpia y Saneamiento</h2>
-                                <p className="text-gray-600 text-lg mb-6">The Meyer utiliza tecnología de generación atmosférica para descentralizar el acceso al agua potable.</p>
-                                <ul className="space-y-3 mb-8 text-gray-600 font-medium">
-                                    <li>✓ Creación de agua desde la humedad del aire.</li>
-                                    <li>✓ Eliminación de transporte contaminante.</li>
-                                    <li>✓ Agua mineralizada premium in-situ.</li>
-                                </ul>
-                                <a href="https://www.un.org/sustainabledevelopment/es/water-and-sanitation/" target="_blank" className="text-blue-600 font-bold hover:underline">Leer más sobre el ODS 6 →</a>
-                            </div>
-                            <div className="rounded-2xl overflow-hidden shadow-lg aspect-square">
-                                <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/AfricaWatergen.png" alt="Clean Water" className="w-full h-full object-cover" />
-                            </div>
+                    {/* Strategic Toggle */}
+                    <div className="flex flex-col items-center mb-16">
+                        <div className="glass p-1.5 rounded-full flex items-center shadow-inner mb-4">
+                            <button 
+                                onClick={() => setIsCorporate(false)}
+                                className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition-all ${!isCorporate ? 'bg-blue-600 text-white shadow-md' : 'text-gray-500 hover:text-gray-800'}`}
+                            >
+                                IMPACTO SOCIAL
+                            </button>
+                            <button 
+                                onClick={() => setIsCorporate(true)}
+                                className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition-all ${isCorporate ? 'bg-blue-600 text-white shadow-md' : 'text-gray-500 hover:text-gray-800'}`}
+                            >
+                                CONSULTORÍA ESTRATÉGICA
+                            </button>
                         </div>
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">
+                            {isCorporate ? "Estrategia Digital & Hardware" : "Agua, Clima y ODS"}
+                        </p>
+                    </div>
+
+                    <section className="px-4 md:px-8 mb-20" ref={contentRef}>
+                        {!isCorporate ? (
+                            /* Social Impact Content (ODS 6) */
+                            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-12 shadow-2xl border-l-4 border-blue-500">
+                                <div>
+                                    <div className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-[10px] font-bold tracking-widest uppercase mb-4">
+                                        ODS 6: AGUA LIMPIA
+                                    </div>
+                                    <h2 className="text-3xl font-extrabold text-gray-900 mb-6 leading-tight">Acceso Universal al Agua Potable</h2>
+                                    <p className="text-gray-600 text-lg mb-6">The Meyer utiliza tecnología de generación atmosférica para descentralizar el suministro y eliminar la dependencia de infraestructuras obsoletas.</p>
+                                    <ul className="space-y-3 mb-8 text-gray-600 font-medium">
+                                        <li className="flex items-start">
+                                            <span className="text-blue-500 mr-2 font-bold">✓</span>
+                                            <span>Generación desde la humedad relativa del aire.</span>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <span className="text-blue-500 mr-2 font-bold">✓</span>
+                                            <span>Eliminación de la huella de carbono por transporte.</span>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <span className="text-blue-500 mr-2 font-bold">✓</span>
+                                            <span>Cumplimiento riguroso de la Agenda 2030.</span>
+                                        </li>
+                                    </ul>
+                                    <a href="https://www.un.org/sustainabledevelopment/es/water-and-sanitation/" target="_blank" className="inline-flex items-center text-blue-600 font-bold hover:translate-x-2 transition-transform">
+                                        LEER MÁS SOBRE ODS 6 <span className="ml-2">→</span>
+                                    </a>
+                                </div>
+                                <div className="rounded-2xl overflow-hidden shadow-2xl aspect-square relative group">
+                                    <div className="absolute inset-0 bg-blue-600/10 group-hover:bg-transparent transition-colors z-10"></div>
+                                    <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/AfricaWatergen.png" alt="Impacto Social" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                                </div>
+                            </div>
+                        ) : (
+                            /* Corporate/Tech Consulting Content */
+                            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-12 shadow-2xl border-l-4 border-gray-800">
+                                <div>
+                                    <div className="inline-block px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-[10px] font-bold tracking-widest uppercase mb-4">
+                                        SOLUCIONES B2B
+                                    </div>
+                                    <h2 className="text-3xl font-extrabold text-gray-900 mb-6 leading-tight">Arquitectura de Sistemas y Hardware</h2>
+                                    <p className="text-gray-600 text-lg mb-6">Integramos hardware de vanguardia con software open-source para optimizar la eficiencia operativa de su organización.</p>
+                                    <ul className="space-y-3 mb-8 text-gray-600 font-medium">
+                                        <li className="flex items-start">
+                                            <span className="text-gray-800 mr-2 font-bold">✓</span>
+                                            <span>Implementación de sistemas cerrados y seguros.</span>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <span className="text-gray-800 mr-2 font-bold">✓</span>
+                                            <span>Consultoría en integración de APIs y escalabilidad.</span>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <span className="text-gray-800 mr-2 font-bold">✓</span>
+                                            <span>Optimización de procesos mediante automatización.</span>
+                                        </li>
+                                    </ul>
+                                    <button 
+                                        onClick={() => document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' })}
+                                        className="inline-flex items-center text-gray-900 font-bold hover:translate-x-2 transition-transform"
+                                    >
+                                        VER PORTAFOLIO TÉCNICO <span className="ml-2">→</span>
+                                    </button>
+                                </div>
+                                <div className="rounded-2xl overflow-hidden shadow-2xl aspect-square relative group bg-gray-900 flex items-center justify-center p-12">
+                                    <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="w-full h-auto object-contain brightness-0 invert opacity-20" />
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="text-white text-center">
+                                            <p className="text-5xl font-black mb-2 tracking-tighter">TECH</p>
+                                            <p className="text-xs tracking-[0.5em] opacity-60">STRATEGIC FIRM</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </section>
 
                     <div id="form-section" className="max-w-4xl mx-auto px-4 pb-20">
