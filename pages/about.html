@@ -128,7 +128,7 @@
                             </button>
                         </div>
                     </nav>
-                       
+                        
                     {/* Mobile Menu Overlay - Refactored Fix */}
                     <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
                         
@@ -147,7 +147,7 @@
                         <a href="/pages/software.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
                         <a href="/pages/about.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
                         <button 
-                            onClick={() => { toggleMenu(); window.location.href = 'pages/about.html'; }} 
+                            onClick={() => { toggleMenu(); document.getElementById('form-section')?.scrollIntoView({ behavior: 'smooth' }); }} 
                             className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4 active:scale-95 transition-transform"
                         >
                             CONTACTO
