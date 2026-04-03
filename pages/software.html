@@ -47,22 +47,6 @@
         /* Scrollbar hiding */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Mobile Menu */
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .hidden-menu { transform: translateX(100%); }
-        
-        /* Menu Hamburger Animation */
-        .menu-open #line1 { transform: rotate(45deg) translate(5px, 5px); }
-        .menu-open #line2 { opacity: 0; }
-        .menu-open #line3 { transform: rotate(-45deg) translate(5px, -5px); }
-
-        /* Form Inputs */
-        .form-input { transition: all 0.3s ease; }
-        .form-input:focus {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15); /* Blue shadow focus */
-        }
         
     </style>
 
@@ -114,9 +98,8 @@
                         </div>
                     </div>
 
-            {/* Navigation */}
-                    <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
-                        {/* THIS IS THE UPDATED LINE */}
+                    {/* Navigation */}
+                    <nav className="fixed left-0 w-full z-[70] px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
                         <a href="https://themeyer.eu" className="block z-50">
                             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
                         </a>
@@ -124,21 +107,33 @@
                         {/* Desktop Links */}
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
                             <a href="/pages/hardware" className="hover:text-blue-600 transition-colors">Hardware</a>
-                            <a href="/pages/software" className="hover:text-blue-600 transition-colors">Sofwtare</a>
+                            <a href="/pages/software" className="hover:text-blue-600 transition-colors">Software</a>
                             <a href="/pages/about" className="hover:text-blue-600 transition-colors">About Us</a>
                         </div>
 
                         <div className="flex items-center space-x-4">
-                        {/* Desktop CONTACTO Button */}
-                        <button 
-                            onClick={() => window.location.href = '/pages/about.html'} 
-                            className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
-                        >
-                            CONTACTO
-                        </button>
-                        
+                            <button 
+                                onClick={() => window.location.href = '/pages/about.html'} 
+                                className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
+                            >
+                                CONTACTO
+                            </button>
+                            
+                            {/* Mobile Hamburger Button */}
+                            <button 
+                                onClick={toggleMenu}
+                                className="md:hidden p-2 text-gray-900 focus:outline-none"
+                                aria-label="Abrir menú"
+                            >
+                                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </nav>
+
                     {/* Mobile Menu Overlay */}
-                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
+                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-all duration-400 ease-in-out ${isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}`}>
                         
                         {/* Close Button Inside Overlay */}
                         <button 
@@ -158,7 +153,6 @@
                             onClick={() => { toggleMenu(); window.location.href = 'pages/about.html'; }} 
                             className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4"
                         >
-
                             CONTACTO
                         </button>
                     </div>
@@ -176,12 +170,10 @@
 
             const handleSubmit = async (e) => {
                 e.preventDefault();
-    
+                
                 const formData = new FormData(e.target);
 
-                // --- HONEYPOT CHECK ---
                 if (formData.get("telefono_secundario")) {
-                    console.log("Bot detected! Silently rejecting.");
                     setStatus({ loading: false, submitted: true, error: false });
                     e.target.reset();
                     return; 
@@ -189,10 +181,8 @@
 
                 setStatus({ loading: true, submitted: false, error: false });
 
-                // --- FORMULA INJECTION PREVENTION ---
                 const searchParams = new URLSearchParams();
                 for (let [key, value] of formData.entries()) {
-                    // If a user types =, +, -, or @ at the start, prepend an apostrophe to neutralize it in Google Sheets
                     if (typeof value === 'string' && /^[=+\-@]/.test(value)) {
                         value = "'" + value;
                     }
@@ -216,7 +206,6 @@
                 }
             };
     
-            // Success State Render
             if (status.submitted) {
                 return (
                     <div className="p-12 text-center bg-white/80 backdrop-blur-md rounded-3xl shadow-xl max-w-2xl mx-auto my-12 animate-fade-in border border-green-100">
@@ -237,11 +226,8 @@
                 );
             }
 
-            // Default Form Render
             return (
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-        
-                    {/* HONEYPOT FIELD */}
                     <div className="absolute left-[-9999px] top-[-9999px]" aria-hidden="true">
                         <input 
                             type="text" 
@@ -251,7 +237,6 @@
                         />
                     </div>
 
-                    {/* Basic Fields */}
                     {[
                         { label: 'NOMBRE', name: 'NOMBRE', type: 'text', placeholder: 'Nombre completo', req: true },
                         { label: 'WEB', name: 'WEB', type: 'url', placeholder: 'https://ejemplo.com', req: false },
@@ -273,7 +258,6 @@
                         </div>
                     ))}
 
-                    {/* Tecnología Select Field */}
                     <div className="flex flex-col md:col-span-1">
                         <label className="mb-1 text-sm font-semibold text-gray-700">
                             TECNOLOGÍA <span className="text-red-500">*</span>
@@ -293,14 +277,12 @@
                         </select>
                     </div>
 
-                    {/* Error Message */}
                     {status.error && (
                         <div className="md:col-span-2 text-red-500 text-sm text-center font-semibold">
                             Hubo un error al enviar el mensaje. Por favor, inténtelo de nuevo.
                         </div>
                     )}
 
-                    {/* Submit Button */}
                     <div className="md:col-span-2 mt-6">
                         <button 
                             type="submit" 
@@ -329,7 +311,6 @@
                 gsap.from("#title-anim", { duration: 1, y: 30, opacity: 0, ease: "power3.out" });
                 gsap.from("#subtitle-anim", { duration: 1, y: 20, opacity: 0, delay: 0.3, ease: "power3.out" });
 
-                // ODS Section Animation
                 gsap.from("#ods-card", {
                     scrollTrigger: { trigger: "#ods-card", start: "top 85%" },
                     y: 60, opacity: 0, duration: 1.2, ease: "power4.out"
@@ -340,19 +321,17 @@
 
             return (
                 <Layout>
-                    {/* Hero Section */}
                     <section className="relative py-12 px-8 overflow-hidden text-center z-10">
                         <div className="relative z-10 mt-12 mb-12">
                             <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-4" id="title-anim">
                                 Orquestacion & y <span className="text-blue-600">Automatizacion</span>
                             </h1>
                             <p className="text-gray-500 max-w-2xl mx-auto font-medium text-lg leading-relaxed" id="subtitle-anim">
-                                GEcosistema de Ejecución segura y apta para LLMs (Secure LLM Runtime) en entornos corporativos.arantizar la disponibilidad de agua y su gestión sostenible y el saneamiento para todos es el núcleo de nuestra tecnología.
+                                Ecosistema de Ejecución segura y apta para LLMs (Secure LLM Runtime) en entornos corporativos.
                             </p>
                         </div>
                     </section>
 
-                    {/* ODS 6 Main Feature Section */}
                     <section className="py-12 md:py-20 px-4 md:px-8 bg-[#f8faff]/50 rounded-[3rem] relative z-20 mb-20 border border-blue-50">
                         <div className="max-w-6xl mx-auto">
                             <div className="grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-blue-500/5 border border-white" id="ods-card">
@@ -403,7 +382,6 @@
                         </div>
                     </section>
 
-                     {/* Technology Context Section */}
                      <section className="py-12 md:py-20 px-4 md:px-8 bg-gray-50 rounded-[3rem] relative z-20 mb-20 mx-4 md:mx-12">
                         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12">
                             <div className="w-full md:w-1/2">
@@ -421,7 +399,6 @@
                         </div>
                     </section>
 
-                    {/* Integrated Contact Form */}
                     <div className="max-w-4xl mx-auto px-4 pb-20 relative z-20">
                         <div className="glass p-8 md:p-12 rounded-[2.5rem] shadow-2xl shadow-blue-500/10 border border-white">
                             <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-2">Solicitar Información</h2>
