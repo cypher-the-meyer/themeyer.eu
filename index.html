@@ -7,7 +7,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { margin: 0; background-color: #f8fafc; font-family: sans-serif; }
+        body { margin: 0; background-color: #f8fafc; font-family: sans-serif; overflow-x: hidden; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -20,6 +20,14 @@
         
         /* Mobile Menu Animations */
         .hidden-menu { opacity: 0; pointer-events: none; transform: translateY(-20px); transition: all 0.3s ease; }
+
+        .sticky-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
     </style>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -35,7 +43,6 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- LANGUAGE DETECTOR COMPONENT ---
         const flagMap = {
             'es': '🇪🇸', 'en': '🇺🇸', 'fr': '🇫🇷', 'de': '🇩🇪', 'it': '🇮🇹',
             'pt': '🇧🇷', 'zh-CN': '🇨🇳', 'zh-TW': '🇹🇼', 'ja': '🇯🇵', 'ko': '🇰🇷',
@@ -52,18 +59,13 @@
                     const currentLang = htmlNode.getAttribute('lang') || 'es';
                     setLang(currentLang);
                 };
-
                 const observer = new MutationObserver((mutations) => {
                     mutations.forEach((mutation) => {
-                        if (mutation.attributeName === 'lang') {
-                            updateLang();
-                        }
+                        if (mutation.attributeName === 'lang') updateLang();
                     });
                 });
-
                 observer.observe(htmlNode, { attributes: true, attributeFilter: ['lang'] });
                 updateLang();
-
                 return () => observer.disconnect();
             }, []);
 
@@ -71,18 +73,12 @@
             const flag = flagMap[lang] || flagMap[baseLang] || '🌐';
 
             return (
-                <div 
-                    className="flex items-center justify-center opacity-40 hover:opacity-100 transition-all duration-300 cursor-help"
-                    title={`Idioma / Language: ${lang.toUpperCase()}`}
-                >
-                    <span className="text-[11px] leading-none grayscale-[0.5] hover:grayscale-0 transition-all duration-300">
-                        {flag}
-                    </span>
+                <div className="flex items-center justify-center opacity-40 hover:opacity-100 transition-all duration-300 cursor-help" title={`Idioma: ${lang.toUpperCase()}`}>
+                    <span className="text-[11px] leading-none grayscale-[0.5] hover:grayscale-0 transition-all duration-300">{flag}</span>
                 </div>
             );
         };
 
-        // --- LAYOUT COMPONENT ---
         const Layout = ({ children }) => {
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
             const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -97,9 +93,7 @@
 
                     <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-4 md:px-8 overflow-hidden">
                         <div className="flex items-center space-x-3">
-                            <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
-                                NOSOTROS
-                            </span>
+                            <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">NOSOTROS</span>
                             <LanguageFlag />
                         </div>
                         <div className="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
@@ -115,7 +109,7 @@
                     <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
                         <a href="/" className="block z-50">
                             <img 
-                                src="/media/LogoTransparent.png" 
+                                src="media/LogoTransparent.png" 
                                 alt="The Meyer Logo" 
                                 className="h-10 md:h-12 w-auto object-contain"
                                 onError={(e) => {
@@ -124,20 +118,15 @@
                                     if (fallback) fallback.classList.remove('hidden');
                                 }}
                             />
-                            <span className="hidden font-black text-2xl tracking-tighter">THE MEYER</span>
+                            <span className="hidden font-black text-2xl tracking-tighter text-slate-900">THE MEYER</span>
                         </a>
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-                            <a href="/pages/hardware" className="hover:text-blue-600 transition-colors">Hardware</a>
-                            <a href="/pages/software" className="hover:text-blue-600 transition-colors">Software</a>
-                            <a href="/pages/about" className="hover:text-blue-600 transition-colors">About US</a>
+                            <a href="#" className="hover:text-blue-600 transition-colors">Hardware</a>
+                            <a href="#" className="hover:text-blue-600 transition-colors">Software</a>
+                            <a href="#" className="hover:text-blue-600 transition-colors">About US</a>
                         </div>
                         <div className="flex items-center space-x-4">
-                            <button 
-                                onClick={() => window.location.href = 'pages/about.html'}
-                                className="hidden sm:block bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-md hover:bg-blue-700 transition-all active:scale-95"
-                            >
-                                CONTACTO
-                            </button>
+                            <button className="hidden sm:block bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-md hover:bg-blue-700 transition-all active:scale-95">CONTACTO</button>
                             <button onClick={toggleMenu} className="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-50">
                                 <span className="block w-6 h-0.5 bg-gray-900"></span>
                                 <span className="block w-6 h-0.5 bg-gray-900"></span>
@@ -148,27 +137,15 @@
 
                     {/* Mobile Menu Overlay */}
                     <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
-                        
-                        {/* Close Button Inside Overlay */}
-                        <button 
-                            onClick={toggleMenu} 
-                            className="absolute top-6 right-6 p-2 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none"
-                            aria-label="Cerrar menú"
-                        >
+                        <button onClick={toggleMenu} className="absolute top-6 right-6 p-2 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
-
-                        <a href="/pages/hardware.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
-                        <a href="pages/software.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
-                        <a href="pages/about.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
-                        <button 
-                            onClick={() => { toggleMenu(); window.location.href = 'pages/about.html'; }} 
-                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4"
-                        >
-                            CONTACTO
-                        </button>
+                        <a href="#" className="text-xl font-bold uppercase" onClick={toggleMenu}>Hardware</a>
+                        <a href="#" className="text-xl font-bold uppercase" onClick={toggleMenu}>Software</a>
+                        <a href="#" className="text-xl font-bold uppercase" onClick={toggleMenu}>About us</a>
+                        <button className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4">CONTACTO</button>
                     </div>
 
                     <main className="pt-32">{children}</main>
@@ -180,142 +157,133 @@
             );
         };
 
-        // --- ANIMATION COMPONENT ---
-        const ThinkpadSequence = () => {
-            const canvasRef = useRef(null);
+        const HardwareShowcase = () => {
             const containerRef = useRef(null);
             const textRef = useRef(null);
+            const imageRef = useRef(null);
 
             useEffect(() => {
                 gsap.registerPlugin(ScrollTrigger);
-                const canvas = canvasRef.current;
-                const context = canvas.getContext("2d");
-                
-                canvas.width = 1920; 
-                canvas.height = 1080;
-
-                const frameCount = 38;
-                const currentFrame = index => (
-                    `media/animations/frames/loop-thinkpad-animation_${index.toString().padStart(3, '0')}.png.png`
-                );
-
-                const images = [];
-                const thinkpad = { frame: 0 };
-                let lastDrawnFrame = -1;
-
-                for (let i = 0; i < frameCount; i++) {
-                    const img = new Image();
-                    img.onerror = () => { img.isPlaceholder = true; }; 
-                    img.src = currentFrame(i);
-                    images.push(img);
-                }
-
-                const render = () => {
-                    const frameToDraw = Math.round(thinkpad.frame);
-                    if (frameToDraw === lastDrawnFrame) return;
-
-                    context.clearRect(0, 0, canvas.width, canvas.height);
-                    const img = images[frameToDraw];
-                    
-                    if (img && img.complete && !img.isPlaceholder) {
-                        context.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        lastDrawnFrame = frameToDraw;
-                    } else {
-                        context.fillStyle = "#1e293b";
-                        context.font = "bold 32px sans-serif";
-                        context.textAlign = "center";
-                        context.fillText(`Loading Frame ${frameToDraw.toString().padStart(3, '0')}...`, canvas.width / 2, canvas.height / 2);
-                    }
-                };
-
-                if (images[0]) images[0].onload = render;
-                render();
 
                 const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: containerRef.current,
                         start: "top top",
-                        end: "+=200%",
+                        end: "+=150%",
                         scrub: 1,
                         pin: true,
-                        fastScrollEnd: true
+                        anticipatePin: 1
                     }
                 });
 
-                tl.to(thinkpad, {
-                    frame: frameCount - 1,
-                    snap: "frame",
-                    ease: "none",
-                    onUpdate: render
-                });
+                tl.fromTo(imageRef.current, 
+                    { scale: 0.8, opacity: 0, rotateY: -20 },
+                    { scale: 1, opacity: 1, rotateY: 0, duration: 1 }
+                );
 
-                const mm = gsap.matchMedia();
-
-                mm.add("(min-width: 768px)", () => {
-                    gsap.set(textRef.current, { opacity: 0, x: 100 });
-                    tl.to(textRef.current, {
-                        opacity: 1,
-                        x: 0,
-                        ease: "power2.out",
-                        duration: 0.2
-                    }, 0.5); 
-                });
-
-                mm.add("(max-width: 767px)", () => {
-                    gsap.set(textRef.current, { opacity: 1, x: 0 });
-                });
+                tl.fromTo(textRef.current,
+                    { opacity: 0, x: 50 },
+                    { opacity: 1, x: 0, duration: 0.5 },
+                    "-=0.5"
+                );
 
                 return () => {
-                    mm.revert();
                     ScrollTrigger.getAll().forEach(t => t.kill());
                 };
             }, []);
 
             return (
-                <div ref={containerRef} className="h-screen w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-20 overflow-hidden relative gap-8 md:gap-0">
-                    <div className="w-full md:w-1/2 flex justify-center md:justify-start order-2 md:order-1">
-                        <canvas 
-                            ref={canvasRef} 
-                            className="max-w-full h-auto max-h-[45vh] md:max-h-[64vh] object-contain mx-auto md:mx-0" 
+                <div ref={containerRef} className="h-screen w-full flex flex-col md:flex-row items-center justify-center md:justify-between px-6 md:px-20 overflow-hidden relative gap-8">
+                    <div className="w-full md:w-1/2 flex justify-center md:justify-start">
+                        <img 
+                            ref={imageRef}
+                            src="media/animations/Product_ingredient_burst_202604030735.webp" 
+                            alt="Hardware Component Animation"
+                            className="max-w-full h-auto max-h-[50vh] md:max-h-[70vh] object-contain drop-shadow-2xl"
+                            style={{ perspective: '1000px' }}
+                            onError={(e) => {
+                                // Fallback if local file isn't found
+                                e.target.src = "https://placehold.co/800x600/0f172a/white?text=Hardware+Animation";
+                            }}
                         />
                     </div>
 
-                    <div ref={textRef} className="w-full md:w-1/2 flex flex-col justify-center text-center md:text-right order-1 md:order-2 space-y-4">
-                        <h2 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">
-                            Potencia sin límites.
+                    <div ref={textRef} className="w-full md:w-1/2 flex flex-col justify-center text-center md:text-right space-y-6">
+                        <div className="inline-block md:ml-auto mb-2 px-3 py-1 bg-blue-100 text-blue-600 text-xs font-bold rounded-full tracking-widest">
+                            ENGINEERING EXCELLENCE
+                        </div>
+                        <h2 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight leading-tight">
+                            Arquitectura de <br/><span className="text-blue-600">Nueva Generación.</span>
                         </h2>
                         <p className="text-gray-500 text-lg md:text-xl max-w-lg mx-auto md:ml-auto md:mr-0">
-                            Explora la ingeniería de precisión.
+                            Implementamos el hardware más avanzado para garantizar estabilidad crítica en entornos de Zero Trust y procesamiento masivo.
                         </p>
+                        <div className="flex flex-wrap justify-center md:justify-end gap-4 pt-4">
+                            <div className="text-center px-4 border-r border-gray-200 last:border-0">
+                                <p className="text-2xl font-bold text-slate-800">Z790</p>
+                                <p className="text-[10px] text-gray-400 uppercase">Chipset</p>
+                            </div>
+                            <div className="text-center px-4 border-r border-gray-200 last:border-0">
+                                <p className="text-2xl font-bold text-slate-800">PCIe 5.0</p>
+                                <p className="text-[10px] text-gray-400 uppercase">Interface</p>
+                            </div>
+                            <div className="text-center px-4">
+                                <p className="text-2xl font-bold text-slate-800">DDR5</p>
+                                <p className="text-[10px] text-gray-400 uppercase">Memory</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
         };
 
-        // --- ROOT APP ---
         const App = () => {
             useEffect(() => {
                 gsap.registerPlugin(ScrollTrigger);
-                gsap.from("#hero-title", { duration: 1.2, y: 30, opacity: 0, ease: "power3.out" });
+                gsap.from("#hero-content", { duration: 1.5, y: 50, opacity: 0, ease: "power4.out" });
             }, []);
 
             return (
                 <Layout>
-                    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center">
-                        <h1 id="hero-title" className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter mb-6">
-                            Empresa de desarrollo y distribución
-                        </h1>
-                        <p className="text-xl text-gray-600 max-w-2xl">
-                            Mantenimiento de bases de datos, Zero trust y MCP.
-                        </p>
-                    </div>
-                    <ThinkpadSequence />
-                    <div className="min-h-[50vh] flex items-center justify-center bg-white px-4">
-                        <div className="max-w-xl text-center">
-                            <h3 className="text-2xl font-bold mb-4">Certificaciones de Calidad</h3>
-                            <p className="text-gray-500">Nuestro compromiso se refleja en nuestras operaciones globales y estándares de excelencia.</p>
+                    <section className="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center">
+                        <div id="hero-content">
+                            <h1 className="text-5xl md:text-8xl font-black text-gray-900 tracking-tighter mb-6 leading-none">
+                                Innovación en <br/>Infraestructura.
+                            </h1>
+                            <p className="text-xl text-gray-500 max-w-2xl mx-auto mb-10">
+                                Desarrollo, distribución y mantenimiento especializado en bases de datos y seguridad Zero Trust.
+                            </p>
+                            <div className="w-12 h-12 border-2 border-blue-200 rounded-full flex items-center justify-center mx-auto animate-bounce">
+                                <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/></svg>
+                            </div>
                         </div>
-                    </div>
+                    </section>
+
+                    <HardwareShowcase />
+
+                    <section className="py-24 bg-white px-4 relative z-20">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h3 className="text-3xl font-bold mb-6 text-slate-900">Estándares Globales</h3>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-50 grayscale">
+                                <div className="p-4 border border-gray-100 rounded-xl flex flex-col items-center">
+                                    <span className="text-2xl mb-2">🛡️</span>
+                                    <p className="font-bold text-xs">ISO 27001</p>
+                                </div>
+                                <div className="p-4 border border-gray-100 rounded-xl flex flex-col items-center">
+                                    <span className="text-2xl mb-2">💎</span>
+                                    <p className="font-bold text-xs">ISO 9001</p>
+                                </div>
+                                <div className="p-4 border border-gray-100 rounded-xl flex flex-col items-center">
+                                    <span className="text-2xl mb-2">⚙️</span>
+                                    <p className="font-bold text-xs">ETL CERT</p>
+                                </div>
+                                <div className="p-4 border border-gray-100 rounded-xl flex flex-col items-center">
+                                    <span className="text-2xl mb-2">💳</span>
+                                    <p className="font-bold text-xs">PCI DSS</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </Layout>
             );
         };
