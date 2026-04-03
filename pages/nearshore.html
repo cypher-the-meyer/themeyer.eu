@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networking & Selección de Talento Nearshore</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #1a202c;
+            overflow-x: hidden;
+        }
+
+        .bubble-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; overflow: hidden; z-index: 0;
+        }
+        .bubble {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 50%;
+            bottom: -100px;
+            animation: rise var(--duration) infinite ease-in;
+        }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-110%) scale(1.2); opacity: 0; }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .menu-open #line1 { transform: translateY(8px) rotate(45deg); }
+        .menu-open #line2 { opacity: 0; }
+        .menu-open #line3 { transform: translateY(-8px) rotate(-45deg); }
+
+        .toggle-dot {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        input:checked ~ .toggle-dot {
+            transform: translateX(100%);
+            background-color: #2563eb;
+        }
+
+        .section-gradient {
+            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+        }
+    </style>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const Layout = ({ children }) => {
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+            const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+
+            return (
+                <div className="relative min-h-screen">
+                    {/* Animated Background */}
+                    <div className="bubble-bg fixed inset-0 h-screen w-full">
+                        <div className="bubble" style={{ width: '300px', height: '300px', left: '10%', '--duration': '15s' }}></div>
+                        <div className="bubble" style={{ width: '200px', height: '200px', left: '60%', '--duration': '12s', animationDelay: '2s' }}></div>
+                        <div className="bubble" style={{ width: '150px', height: '150px', left: '30%', '--duration': '18s', animationDelay: '5s' }}></div>
+                        <div className="bubble" style={{ width: '100px', height: '100px', left: '80%', '--duration': '20s', animationDelay: '1s' }}></div>
+                    </div>
+
+                    {/* Top Banner */}
+                    <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
+                        <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
+                             SUSTENTABILIDAD CORPORATIVA & ESG
+                        </span>
+                        <div className="flex items-center space-x-4 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
+                            {['ODS 6', 'ODS 11', 'ODS 13', 'AGENDA 2030'].map((cert, i) => (
+                                <div key={i} className="flex items-center space-x-1 flex-shrink-0">
+                                    <div className="w-1 h-3 bg-blue-500"></div>
+                                    <span className="text-[9px] font-bold text-white tracking-widest uppercase">{cert}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Desktop Navigation */}
+                    <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
+                        <a href="https://themeyer.eu" className="block z-50">
+                            <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
+                        </a>
+                        
+                        <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
+                            <a href="/pages/hardware" className="hover:text-blue-600 transition-colors">Hardware</a>
+                            <a href="/pages/software" className="hover:text-blue-600 transition-colors">Software</a>
+                            <a href="/pages/about" className="hover:text-blue-600 transition-colors text-blue-600 border-b-2 border-blue-600 pb-1">Networking</a>
+                        </div>
+
+                        <div className="flex items-center space-x-4">
+                            <button 
+                                onClick={() => document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' })} 
+                                className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
+                            >
+                                CONTACTO
+                            </button>
+                            
+                            <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
+                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
+                                <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
+                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+                            </button>
+                        </div>
+                    </nav>
+                        
+                    {/* Mobile Menu Overlay */}
+                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
+                        <button 
+                            onClick={toggleMenu} 
+                            className="absolute top-10 right-8 p-2 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none"
+                            aria-label="Cerrar menú"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <a href="/pages/hardware.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
+                        <a href="/pages/software.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
+                        <a href="/pages/about.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Networking</a>
+                        <button 
+                            onClick={() => { toggleMenu(); document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' }); }} 
+                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4 active:scale-95 transition-transform"
+                        >
+                            CONTACTO
+                        </button>
+                    </div>
+
+                    <main className="pt-32 relative z-10">
+                        {children}
+                    </main>
+
+                    {/* Footer con Hipervínculos Legales */}
+                    <footer className="py-12 border-t border-gray-200 text-center bg-white relative z-20 px-4">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4 text-[10px] md:text-xs font-semibold tracking-widest text-gray-400 uppercase">
+                                <a href="/pages/terminos-y-condiciones" className="hover:text-blue-600 transition-colors">TERMINOS Y CONDICIONES</a>
+                                <a href="/pages/privacidad" className="hover:text-blue-600 transition-colors">PRIVACIDAD</a>
+                                <a href="/pages/terminos-de-servicio" className="hover:text-blue-600 transition-colors">TERMINOS DE SERVICIO</a>
+                                <a href="/pages/cumplimiento-gdpr" className="hover:text-blue-600 transition-colors">CUMPLIMIENTO GDPR</a>
+                                <a href="/pages/politicas-de-seguridad" className="hover:text-blue-600 transition-colors">POLITICAS DE SEGURIDAD</a>
+                            </div>
+                            <p className="text-gray-400 text-sm font-semibold tracking-widest uppercase">
+                                &copy; 2026 THE MEYER EU. TODOS LOS DERECHOS RESERVADOS.
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const App = () => {
+            return (
+                <Layout>
+                    {/* Page Content */}
+                    <section className="max-w-7xl mx-auto px-6 md:px-8 py-20">
+                        <div className="grid md:grid-cols-2 gap-16 items-center">
+                            <div>
+                                <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 leading-[1.1] mb-8">
+                                    Talento Nearshore con <span className="text-blue-600">ADN de Seguridad.</span>
+                                </h1>
+                                <p className="text-slate-500 text-xl leading-relaxed mb-10">
+                                    Evaluamos, perfilamos y seleccionamos desarrolladores freelance de alto nivel para integrarse a su equipo bajo el estándar Zero Trust.
+                                </p>
+                                <div className="flex flex-wrap gap-4">
+                                    <div className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-bold border border-blue-100">
+                                        <i className="fas fa-user-shield"></i> IAM ENFORCED
+                                    </div>
+                                    <div className="flex items-center gap-2 bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-bold border border-slate-100">
+                                        <i className="fas fa-microchip"></i> CLOUD NATIVE
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Score Card Visual */}
+                            <div className="bg-white border border-slate-100 shadow-2xl rounded-3xl p-10 relative overflow-hidden">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-16 -mt-16 z-0"></div>
+                                <div className="relative z-10">
+                                    <div className="flex justify-between items-center mb-10">
+                                        <h3 className="text-xl font-extrabold uppercase tracking-widest text-slate-400">Vetting Score</h3>
+                                        <div className="h-2 w-12 bg-blue-600 rounded-full"></div>
+                                    </div>
+                                    <div className="space-y-8">
+                                        {[
+                                            { label: 'Seguridad IAM & OWASP', value: '98%' },
+                                            { label: 'Arquitectura Microservicios', value: '94%' },
+                                            { label: 'Cultura Corporativa & ESG', value: '92%' }
+                                        ].map((item, idx) => (
+                                            <div key={idx}>
+                                                <div className="flex justify-between mb-2">
+                                                    <span className="font-bold text-slate-700">{item.label}</span>
+                                                    <span className="text-blue-600 font-extrabold">{item.value}</span>
+                                                </div>
+                                                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                                    <div className="bg-blue-600 h-full rounded-full" style={{ width: item.value }}></div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Detailed Section */}
+                    <section className="section-gradient py-24">
+                        <div className="max-w-7xl mx-auto px-6 md:px-8">
+                            <div className="text-center mb-20">
+                                <h2 className="text-3xl font-extrabold mb-4">¿Por qué nuestro Networking es diferente?</h2>
+                                <p className="text-slate-500 max-w-2xl mx-auto">
+                                    No solo conectamos personas, aseguramos que cada integración cumpla con las políticas de seguridad de datos más estrictas del mercado.
+                                </p>
+                            </div>
+
+                            <div className="grid md:grid-cols-3 gap-10">
+                                <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                                    <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-200">
+                                        <i className="fas fa-fingerprint text-xl"></i>
+                                    </div>
+                                    <h4 className="text-xl font-bold mb-3">IAM & Identidad</h4>
+                                    <p className="text-slate-500 text-sm leading-relaxed">
+                                        Acceso basado en roles (RBAC) y principio de menor privilegio. Validamos identidades digitales antes de cualquier commit.
+                                    </p>
+                                </div>
+                                <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                                    <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white mb-6 shadow-lg">
+                                        <i className="fas fa-mask text-xl"></i>
+                                    </div>
+                                    <h4 className="text-xl font-bold mb-3">Zero Trust Strategy</h4>
+                                    <p className="text-slate-500 text-sm leading-relaxed">
+                                        Implementamos una filosofía de verificación constante. Ningún freelancer tiene acceso lateral a recursos no autorizados.
+                                    </p>
+                                </div>
+                                <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                                        <i className="fas fa-code-branch text-xl"></i>
+                                    </div>
+                                    <h4 className="text-xl font-bold mb-3">Auditoría en Tiempo Real</h4>
+                                    <p className="text-slate-500 text-sm leading-relaxed">
+                                        Trazabilidad total de la actividad del equipo nearshore, garantizando que el desarrollo siga los estándares ESG y de seguridad.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="contact-section" className="py-24 text-center">
+                        <div className="max-w-xl mx-auto px-6">
+                            <h2 className="text-3xl font-extrabold mb-6">¿Listo para escalar su equipo?</h2>
+                            <p className="text-slate-500 mb-10">Agende una llamada técnica para conocer cómo perfilamos el talento para su industria específica.</p>
+                            <button className="bg-blue-600 text-white px-12 py-4 rounded-full font-bold hover:bg-blue-700 transition-all shadow-xl shadow-blue-100">
+                                HABLAR CON UN EXPERTO
+                            </button>
+                        </div>
+                    </section>
+                </Layout>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
