@@ -19,9 +19,6 @@
         .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
         
         /* Mobile Menu Animations */
-        .menu-open #line1 { transform: translateY(8px) rotate(45deg); }
-        .menu-open #line2 { opacity: 0; }
-        .menu-open #line3 { transform: translateY(-8px) rotate(-45deg); }
         .hidden-menu { opacity: 0; pointer-events: none; transform: translateY(-20px); transition: all 0.3s ease; }
     </style>
 
@@ -141,21 +138,34 @@
                             >
                                 CONTACTO
                             </button>
-                            <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+                            <button onClick={toggleMenu} className="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-50">
+                                <span className="block w-6 h-0.5 bg-gray-900"></span>
+                                <span className="block w-6 h-0.5 bg-gray-900"></span>
+                                <span className="block w-6 h-0.5 bg-gray-900"></span>
                             </button>
                         </div>
                     </nav>
 
+                    {/* Mobile Menu Overlay */}
                     <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
+                        
+                        {/* Close Button Inside Overlay */}
+                        <button 
+                            onClick={toggleMenu} 
+                            className="absolute top-6 right-6 p-2 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none"
+                            aria-label="Cerrar menú"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
                         <a href="pages/hardware.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
                         <a href="pages/software.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
                         <a href="pages/about.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
                         <button 
                             onClick={() => { toggleMenu(); window.location.href = 'pages/about.html'; }} 
-                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
+                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4"
                         >
                             CONTACTO
                         </button>
@@ -191,7 +201,7 @@
 
                 const images = [];
                 const thinkpad = { frame: 0 };
-                let lastDrawnFrame = -1; // Caching variable to prevent redundant API calls
+                let lastDrawnFrame = -1;
 
                 for (let i = 0; i < frameCount; i++) {
                     const img = new Image();
@@ -202,8 +212,7 @@
 
                 const render = () => {
                     const frameToDraw = Math.round(thinkpad.frame);
-                    
-                    if (frameToDraw === lastDrawnFrame) return; // Prevent unnecessary repaints
+                    if (frameToDraw === lastDrawnFrame) return;
 
                     context.clearRect(0, 0, canvas.width, canvas.height);
                     const img = images[frameToDraw];
@@ -227,13 +236,12 @@
                         trigger: containerRef.current,
                         start: "top top",
                         end: "+=200%",
-                        scrub: 1, // Increased for smoother momentum
+                        scrub: 1,
                         pin: true,
                         fastScrollEnd: true
                     }
                 });
 
-                // Single fluid transition through the sequence
                 tl.to(thinkpad, {
                     frame: frameCount - 1,
                     snap: "frame",
