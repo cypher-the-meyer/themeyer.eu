@@ -21,9 +21,14 @@
         /* Mobile Menu Animations */
         .hidden-menu { opacity: 0; pointer-events: none; transform: translateY(-20px); transition: all 0.3s ease; }
 
-        /* Hardware Section Specifics */
-        .hardware-gradient {
-            background: radial-gradient(circle at center, white 0%, #f1f5f9 100%);
+        /* Full Screen Hardware Section */
+        .hardware-container-full {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
         }
     </style>
 
@@ -173,13 +178,11 @@
                     }
                 });
 
-                // Entry animation for the motherboard
                 tl.fromTo(imageRef.current, 
-                    { scale: 0.9, opacity: 0, y: 100 },
-                    { scale: 1, opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+                    { scale: 1.1, opacity: 0 },
+                    { scale: 1, opacity: 1, duration: 1.5, ease: "power2.out" }
                 );
 
-                // Entrance for text content
                 tl.fromTo(textRef.current,
                     { opacity: 0, y: 50 },
                     { opacity: 1, y: 0, duration: 1 },
@@ -192,50 +195,48 @@
             }, []);
 
             return (
-                <section ref={containerRef} className="w-full py-20 px-4 md:px-0 flex flex-col items-center justify-center overflow-hidden hardware-gradient">
-                    {/* COLUMN 1: WIDEST IMAGE CONTAINER */}
-                    <div className="w-full max-w-[1400px] mb-16 px-4 md:px-10">
-                        <div className="relative aspect-video md:aspect-[21/9] w-full flex items-center justify-center">
-                            <img 
-                                ref={imageRef}
-                                src="media/animations/motherboard_burst/Product_ingredient_burst_202604030735-ezgif.com-video-to-webp-converter.webp" 
-                                alt="Hardware Motherboard Burst Animation"
-                                className="w-full h-full object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.1)]"
-                                onError={(e) => {
-                                    e.target.src = "https://placehold.co/1920x1080/0f172a/white?text=Hardware+Burst+Animation";
-                                }}
-                            />
-                        </div>
+                <section ref={containerRef} className="w-full flex flex-col items-center justify-center overflow-hidden">
+                    {/* FULL SCREEN ANIMATION CONTAINER - NO PADDING, NO MARGINS */}
+                    <div className="w-full h-[60vh] md:h-[90vh] bg-slate-50 flex items-center justify-center overflow-hidden">
+                        <img 
+                            ref={imageRef}
+                            src="media/animations/motherboard_burst/Product_ingredient_burst_202604030735-ezgif.com-video-to-webp-converter.webp" 
+                            alt="Hardware Burst"
+                            className="w-full h-full object-contain md:object-cover"
+                            onError={(e) => {
+                                e.target.src = "https://placehold.co/1920x1080/0f172a/white?text=Hardware+Burst+Full+Width";
+                            }}
+                        />
                     </div>
 
-                    {/* COLUMN 2: REORGANIZED CONTENT BELOW */}
-                    <div ref={textRef} className="w-full max-w-4xl px-6 md:px-10 text-center flex flex-col items-center space-y-8">
-                        <div className="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 text-[10px] md:text-xs font-black rounded-full tracking-[0.3em] uppercase">
+                    {/* CONTENT CONTAINER - CENTERED BELOW */}
+                    <div ref={textRef} className="w-full max-w-6xl py-20 px-6 md:px-10 text-center flex flex-col items-center space-y-10">
+                        <div className="inline-block px-5 py-2 bg-blue-600 text-white text-[10px] md:text-xs font-black rounded-full tracking-[0.4em] uppercase shadow-lg shadow-blue-100">
                             Exclusive Hardware Engineering
                         </div>
                         
-                        <h2 className="text-4xl md:text-7xl font-black text-gray-900 tracking-tighter leading-[0.9] md:leading-[1.1]">
+                        <h2 className="text-5xl md:text-[8rem] font-black text-gray-900 tracking-tighter leading-[0.85]">
                             Potencia Bruta. <br/><span className="text-blue-600">Control Absoluto.</span>
                         </h2>
 
-                        <p className="text-gray-500 text-lg md:text-2xl font-medium max-w-2xl leading-relaxed">
+                        <p className="text-gray-500 text-xl md:text-3xl font-medium max-w-4xl leading-snug">
                             Diseñamos la base de su infraestructura digital con componentes de grado industrial, optimizados para seguridad Zero Trust y flujos de datos ininterrumpidos.
                         </p>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-12 w-full pt-8 border-t border-gray-100">
-                            <div className="flex flex-col items-center space-y-2 group">
-                                <span className="text-3xl md:text-5xl font-black text-slate-800 group-hover:text-blue-600 transition-colors">Z790</span>
-                                <div className="h-1 w-8 bg-blue-500 rounded-full"></div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 md:gap-20 w-full pt-16 border-t border-gray-100">
+                            <div className="flex flex-col items-center space-y-3 group">
+                                <span className="text-4xl md:text-6xl font-black text-slate-800 group-hover:text-blue-600 transition-colors">Z790</span>
+                                <div className="h-1.5 w-10 bg-blue-500 rounded-full"></div>
                                 <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Next-Gen Chipset</p>
                             </div>
-                            <div className="flex flex-col items-center space-y-2 group">
-                                <span className="text-3xl md:text-5xl font-black text-slate-800 group-hover:text-blue-600 transition-colors">PCIe 5.0</span>
-                                <div className="h-1 w-8 bg-blue-500 rounded-full"></div>
+                            <div className="flex flex-col items-center space-y-3 group">
+                                <span className="text-4xl md:text-6xl font-black text-slate-800 group-hover:text-blue-600 transition-colors">PCIe 5.0</span>
+                                <div className="h-1.5 w-10 bg-blue-500 rounded-full"></div>
                                 <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Bandwidth interface</p>
                             </div>
-                            <div className="flex flex-col items-center space-y-2 group">
-                                <span className="text-3xl md:text-5xl font-black text-slate-800 group-hover:text-blue-600 transition-colors">DDR5</span>
-                                <div className="h-1 w-8 bg-blue-500 rounded-full"></div>
+                            <div className="flex flex-col items-center space-y-3 group">
+                                <span className="text-4xl md:text-6xl font-black text-slate-800 group-hover:text-blue-600 transition-colors">DDR5</span>
+                                <div className="h-1.5 w-10 bg-blue-500 rounded-full"></div>
                                 <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">ECC Memory Tech</p>
                             </div>
                         </div>
@@ -253,54 +254,54 @@
             return (
                 <Layout>
                     {/* HERO SECTION */}
-                    <section className="min-h-[60vh] md:min-h-[80vh] flex flex-col items-center justify-center px-4 pt-12 md:pt-20 text-center relative overflow-hidden">
+                    <section className="min-h-[60vh] md:min-h-[85vh] flex flex-col items-center justify-center px-4 pt-20 md:pt-32 text-center relative overflow-hidden">
                         <div id="hero-content" className="relative z-10">
-                            <div className="inline-block mb-6 px-4 py-1 border border-blue-200 text-blue-600 text-[10px] font-bold rounded-full tracking-[0.4em] uppercase bg-blue-50/50 backdrop-blur-sm">
+                            <div className="inline-block mb-8 px-5 py-1.5 border border-blue-200 text-blue-600 text-[10px] font-bold rounded-full tracking-[0.5em] uppercase bg-blue-50/50 backdrop-blur-sm">
                                 EST. 2026 | TECH FIRM
                             </div>
-                            <h1 className="text-5xl md:text-[10rem] font-black text-gray-900 tracking-tighter mb-8 leading-[0.8] md:leading-[0.85]">
+                            <h1 className="text-6xl md:text-[12rem] font-black text-gray-900 tracking-tighter mb-10 leading-[0.8]">
                                 LA NUEVA <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-800">ERA DIGITAL</span>
                             </h1>
-                            <p className="text-lg md:text-2xl text-gray-500 max-w-3xl mx-auto mb-12 font-medium">
+                            <p className="text-xl md:text-3xl text-gray-500 max-w-4xl mx-auto mb-16 font-medium leading-tight">
                                 Redefiniendo la infraestructura crítica con soluciones de hardware y software blindadas por los estándares más altos de seguridad.
                             </p>
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                                <button className="w-full sm:w-auto px-10 py-5 bg-blue-600 text-white font-black rounded-full hover:bg-blue-700 hover:scale-105 transition-all shadow-xl shadow-blue-200 uppercase tracking-widest text-sm">Explorar Hardware</button>
-                                <button className="w-full sm:w-auto px-10 py-5 bg-white text-slate-900 border border-slate-200 font-black rounded-full hover:bg-slate-50 transition-all uppercase tracking-widest text-sm">Casos de Éxito</button>
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                                <button className="w-full sm:w-auto px-12 py-6 bg-blue-600 text-white font-black rounded-full hover:bg-blue-700 hover:scale-105 transition-all shadow-2xl shadow-blue-200 uppercase tracking-widest text-sm">Explorar Hardware</button>
+                                <button className="w-full sm:w-auto px-12 py-6 bg-white text-slate-900 border border-slate-200 font-black rounded-full hover:bg-slate-50 transition-all uppercase tracking-widest text-sm">Casos de Éxito</button>
                             </div>
                         </div>
                         
                         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
-                            <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5"/></svg>
+                            <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3"/></svg>
                         </div>
                     </section>
 
-                    {/* HARDWARE SHOWCASE (STACKED LAYOUT) */}
+                    {/* HARDWARE SHOWCASE (FULL SCREEN ANIMATION) */}
                     <HardwareShowcase />
 
                     {/* CERTIFICATIONS / STANDARDS */}
-                    <section className="py-32 bg-slate-900 px-4 relative z-20 overflow-hidden">
+                    <section className="py-40 bg-slate-900 px-4 relative z-20 overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                             <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
                         </div>
                         
-                        <div className="max-w-6xl mx-auto">
-                            <div className="text-center mb-20">
-                                <h3 className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-4">Certificaciones Internacionales</h3>
-                                <p className="text-slate-400 text-lg font-medium">Cumplimos con los protocolos más rigurosos de la industria tecnológica.</p>
+                        <div className="max-w-7xl mx-auto">
+                            <div className="text-center mb-24">
+                                <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-6">Certificaciones Internacionales</h3>
+                                <p className="text-slate-400 text-xl font-medium">Cumplimos con los protocolos más rigurosos de la industria tecnológica.</p>
                             </div>
                             
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
                                 {[
                                     { id: 'ISO 27001', label: 'Seguridad Info.', icon: '🛡️' },
                                     { id: 'ISO 9001', label: 'Gestión Calidad', icon: '💎' },
                                     { id: 'ASSE LEC', label: 'Infraestructura', icon: '⚙️' },
                                     { id: 'PCI DSS', label: 'Financiero', icon: '💳' }
                                 ].map((cert, idx) => (
-                                    <div key={idx} className="p-8 bg-slate-800/50 backdrop-blur border border-slate-700 rounded-3xl flex flex-col items-center group hover:bg-blue-600 transition-all duration-500 cursor-default">
-                                        <span className="text-4xl mb-4 group-hover:scale-125 transition-transform duration-500">{cert.icon}</span>
-                                        <p className="font-black text-white text-lg tracking-tight mb-1">{cert.id}</p>
-                                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest group-hover:text-blue-100">{cert.label}</p>
+                                    <div key={idx} className="p-10 md:p-14 bg-slate-800/50 backdrop-blur border border-slate-700 rounded-[3rem] flex flex-col items-center group hover:bg-blue-600 transition-all duration-700 cursor-default">
+                                        <span className="text-5xl md:text-7xl mb-6 group-hover:rotate-12 group-hover:scale-125 transition-all duration-700">{cert.icon}</span>
+                                        <p className="font-black text-white text-2xl tracking-tight mb-2">{cert.id}</p>
+                                        <p className="text-slate-400 text-[11px] font-bold uppercase tracking-widest group-hover:text-blue-100">{cert.label}</p>
                                     </div>
                                 ))}
                             </div>
