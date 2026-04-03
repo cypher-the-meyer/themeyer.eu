@@ -24,7 +24,7 @@
         }
         .bubble {
             position: absolute;
-            background: rgba(59, 130, 246, 0.08); /* Original Blue */
+            background: rgba(59, 130, 246, 0.08);
             border: 1px solid rgba(59, 130, 246, 0.15);
             border-radius: 50%;
             bottom: -100px;
@@ -37,33 +37,27 @@
             100% { transform: translateY(-110%) scale(1.2); opacity: 0; }
         }
 
-        /* Glassmorphism - Original Style */
         .glass {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* Scrollbar hiding */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Mobile Menu */
         #mobile-menu { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .hidden-menu { transform: translateX(100%); }
         
-        /* Menu Hamburger Animation - Updated logic */
         .menu-open #line1 { transform: translateY(8px) rotate(45deg); }
         .menu-open #line2 { opacity: 0; }
         .menu-open #line3 { transform: translateY(-8px) rotate(-45deg); }
 
-        /* Form Inputs */
         .form-input { transition: all 0.3s ease; }
         .form-input:focus {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15); /* Blue shadow focus */
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
         }
-        
     </style>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -84,25 +78,40 @@
         const Layout = ({ children }) => {
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-            const toggleMenu = () => {
-                setIsMobileMenuOpen(!isMobileMenuOpen);
+            const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+
+            // Logic to handle Contact redirection or scroll
+            const handleContactClick = () => {
+                const formElement = document.getElementById('form-section');
+                
+                if (formElement) {
+                    formElement.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.location.href = '/index.html#form-section';
+                }
+                
+                if (isMobileMenuOpen) toggleMenu();
             };
 
             return (
                 <div className="relative min-h-screen">
                     {/* Background Bubbles */}
                     <div className="bubble-bg fixed inset-0 h-screen w-full">
-                        <div className="bubble" style={{ width: '300px', height: '300px', left: '10%', '--duration': '15s' }}></div>
-                        <div className="bubble" style={{ width: '200px', height: '200px', left: '60%', '--duration': '12s', animationDelay: '2s' }}></div>
-                        <div className="bubble" style={{ width: '150px', height: '150px', left: '30%', '--duration': '18s', animationDelay: '5s' }}></div>
-                        <div className="bubble" style={{ width: '100px', height: '100px', left: '80%', '--duration': '20s', animationDelay: '1s' }}></div>
-                        <div className="bubble" style={{ width: '250px', height: '250px', left: '45%', '--duration': '14s', animationDelay: '3s' }}></div>
+                        {[15, 12, 18, 20, 14].map((dur, i) => (
+                            <div key={i} className="bubble" style={{ 
+                                width: `${200 + (i * 20)}px`, 
+                                height: `${200 + (i * 20)}px`, 
+                                left: `${10 + (i * 15)}%`, 
+                                '--duration': `${dur}s`,
+                                animationDelay: `${i * 1.5}s`
+                            }}></div>
+                        ))}
                     </div>
 
                     {/* Top Banner */}
                     <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[120] flex items-center justify-between px-8 overflow-hidden">
-                        <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap flex items-center gap-2">
-                             SUSTENTABILIDAD CORPORATIVA & ESG
+                        <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
+                            SUSTENTABILIDAD CORPORATIVA & ESG
                         </span>
                         <div className="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
                             {['ODS 6', 'ODS 11', 'ODS 13', 'AGENDA 2030', 'ESG COMPLIANT'].map((cert, index) => (
@@ -114,13 +123,12 @@
                         </div>
                     </div>
 
-                    {/* Navigation - Refactored Z-index */}
+                    {/* Navigation */}
                     <nav className="fixed left-0 w-full z-[110] px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
-                        <a href="https://themeyer.eu" className="block z-50">
+                        <a href="/" className="block z-50">
                             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
                         </a>
                         
-                        {/* Desktop Links */}
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
                             <a href="/pages/hardware" className="hover:text-blue-600 transition-colors">Hardware</a>
                             <a href="/pages/software" className="hover:text-blue-600 transition-colors">Software</a>
@@ -128,15 +136,13 @@
                         </div>
 
                         <div className="flex items-center space-x-4">
-                            {/* Desktop CONTACTO Button */}
                             <button 
-                                onClick={() => window.location.href = '/pages/about.html'} 
+                                onClick={handleContactClick}
                                 className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
                             >
                                 CONTACTO
                             </button>
                             
-                            {/* Hamburger Menu - Refactored Z-index and visibility */}
                             <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[120] relative ${isMobileMenuOpen ? 'menu-open' : ''}`}>
                                 <span className="block w-6 h-0.5 bg-gray-900 transition-all duration-300" id="line1"></span>
                                 <span className="block w-6 h-0.5 bg-gray-900 transition-all duration-300" id="line2"></span>
@@ -148,17 +154,13 @@
                     {/* Mobile Menu */}
                     <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
                         <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
-                            <a href="pages/hardware" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Hardware</a>
+                            <a href="/pages/hardware" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Hardware</a>
                             <a href="/pages/software" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Software</a>
                             <a href="/pages/about" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>About Us</a>
                         </div>
                         
-                        {/* Mobile CONTACTO Button */}
                         <button 
-                            onClick={() => {
-                                toggleMenu();
-                                window.location.href = '/pages/contacto';
-                            }} 
+                            onClick={handleContactClick}
                             className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
                         >
                             CONTACTO
@@ -172,58 +174,40 @@
             );
         };
 
-
-        const PRODUCT_CATEGORIES = [
-            "Todas las Categorías",
-            "1. Cerebros y Procesamiento (Core)",
-            "2. Componentes de Alimentación y Gestión Energética",
-            "3. Conectores, Cables y Expansión (HATs)",
-            "4. Sensores (Entradas de Domótica)",
-            "6. Interfaces de Usuario y Visualización",
-            "7. Comunicación y Redes",
-            "8. Estructura, Carcasas y Montaje",
-            "9. Kits de Iniciación"
-        ];
-
-        const MOCK_PRODUCTS = [
-            { id: 1, name: "Microcontrolador RP2040 Dual ARM Cortex-M0+", category: "1. Cerebros y Procesamiento (Core)", price: "$4.50", deliveryTime: "1-2 días", isExpress: true, stock: 150, image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=400" },
-            { id: 2, name: "Módulo de Batería LiPo con Gestión Integrada", category: "2. Componentes de Alimentación y Gestión Energética", price: "$18.90", deliveryTime: "3-5 días", isExpress: false, stock: 45, image: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&q=80&w=400" },
-            { id: 3, name: "HAT de Expansión de E/S 32 Canales", category: "3. Conectores, Cables y Expansión (HATs)", price: "$24.00", deliveryTime: "2-4 días", isExpress: false, stock: 12, image: "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=400" },
-            { id: 4, name: "Sensor Ambiental (Temp, Humedad, VOCs)", category: "4. Sensores (Entradas de Domótica)", price: "$15.50", deliveryTime: "1-2 días", isExpress: true, stock: 89, image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=400" },
-            { id: 5, name: "Pantalla Táctil Capacitiva 7'' DSI", category: "6. Interfaces de Usuario y Visualización", price: "$65.00", deliveryTime: "5-7 días", isExpress: false, stock: 5, image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&q=80&w=400" },
-            { id: 6, name: "Módulo Transceptor LoRaWAN 868MHz", category: "7. Comunicación y Redes", price: "$32.20", deliveryTime: "2-3 días", isExpress: false, stock: 34, image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=400" },
-            { id: 7, name: "Carcasa de Aluminio con Disipación Pasiva", category: "8. Estructura, Carcasas y Montaje", price: "$14.99", deliveryTime: "1-2 días", isExpress: true, stock: 210, image: "https://images.unsplash.com/photo-1631553127986-e3d17462ecce?auto=format&fit=crop&q=80&w=400" },
-            { id: 8, name: "Kit de Iniciación Domótica Avanzada", category: "9. Kits de Iniciación", price: "$149.00", deliveryTime: "3-5 días", isExpress: false, stock: 8, image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&q=80&w=400" }
-        ];
-
+        // --- MAIN APP COMPONENT ---
         const App = () => {
             const [activeCategory, setActiveCategory] = useState("Todas las Categorías");
             const [isExpressOnly, setIsExpressOnly] = useState(false);
             const [isDropdownOpen, setIsDropdownOpen] = useState(false);
             const [products, setProducts] = useState([]);
             const [isLoading, setIsLoading] = useState(true);
-            
             const dropdownRef = useRef(null);
+
+            const PRODUCT_CATEGORIES = [
+                "Todas las Categorías",
+                "1. Cerebros y Procesamiento (Core)",
+                "2. Componentes de Alimentación",
+                "3. Conectores y HATs",
+                "4. Sensores",
+                "6. Interfaces y Visualización",
+                "7. Comunicación y Redes",
+                "8. Estructura y Montaje",
+                "9. Kits de Iniciación"
+            ];
+
+            const MOCK_PRODUCTS = [
+                { id: 1, name: "Microcontrolador RP2040 Dual ARM", category: "1. Cerebros y Procesamiento (Core)", price: "$4.50", isExpress: true, image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400" },
+                { id: 2, name: "Módulo de Batería LiPo Gestión", category: "2. Componentes de Alimentación", price: "$18.90", isExpress: false, image: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400" },
+                { id: 4, name: "Sensor Ambiental (VOCs)", category: "4. Sensores", price: "$15.50", isExpress: true, image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400" },
+                { id: 7, name: "Carcasa Aluminio Disipación", category: "8. Estructura y Montaje", price: "$14.99", isExpress: true, image: "https://images.unsplash.com/photo-1631553127986-e3d17462ecce?w=400" }
+            ];
 
             useEffect(() => {
                 gsap.registerPlugin(ScrollTrigger);
                 gsap.from("#title-anim", { duration: 1, y: 30, opacity: 0, ease: "power3.out" });
-                gsap.from("#subtitle-anim", { duration: 1, y: 20, opacity: 0, delay: 0.3, ease: "power3.out" });
                 
-                gsap.from("#wishpro-card", {
-                    scrollTrigger: { trigger: "#wishpro-card", start: "top 85%" },
-                    y: 60, opacity: 0, duration: 1.2, ease: "power4.out"
-                });
-
-                gsap.from("#watergen-card", {
-                    scrollTrigger: { trigger: "#watergen-card", start: "top 85%" },
-                    y: 60, opacity: 0, duration: 1.2, delay: 0.2, ease: "power4.out"
-                });
-
-                const handleClickOutside = (event) => {
-                    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                        setIsDropdownOpen(false);
-                    }
+                const handleClickOutside = (e) => {
+                    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setIsDropdownOpen(false);
                 };
                 document.addEventListener('mousedown', handleClickOutside);
                 return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -231,20 +215,14 @@
 
             useEffect(() => {
                 setIsLoading(true);
-                const fetchTimer = setTimeout(() => {
-                    let filtered = activeCategory === "Todas las Categorías" 
-                        ? MOCK_PRODUCTS 
-                        : MOCK_PRODUCTS.filter(p => p.category === activeCategory);
-                    
-                    if (isExpressOnly) {
-                        filtered = filtered.filter(p => p.isExpress);
-                    }
-                    
+                const timer = setTimeout(() => {
+                    let filtered = activeCategory === "Todas las Categorías" ? MOCK_PRODUCTS : MOCK_PRODUCTS.filter(p => p.category === activeCategory);
+                    if (isExpressOnly) filtered = filtered.filter(p => p.isExpress);
                     setProducts(filtered);
                     setIsLoading(false);
                     setTimeout(() => ScrollTrigger.refresh(), 100);
                 }, 400);
-                return () => clearTimeout(fetchTimer);
+                return () => clearTimeout(timer);
             }, [activeCategory, isExpressOnly]);
 
             return (
@@ -253,178 +231,92 @@
                         <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-4" id="title-anim">
                             Tecnologías que <span className="text-blue-600">Transforman</span>
                         </h1>
-                        <p className="text-gray-500 max-w-2xl mx-auto font-medium text-lg leading-relaxed" id="subtitle-anim">
-                            Descubra nuestro portafolio de soluciones patentadas. Desde la revolución dermoestética hasta la generación de recursos vitales.
+                        <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                            Descubra nuestro portafolio de soluciones patentadas para dermoestética y sustentabilidad.
                         </p>
                     </section>
 
-                    <section className="py-8 md:py-16 px-4 md:px-8 relative z-20">
+                    {/* WishPro Section */}
+                    <section className="py-16 px-4 md:px-8 relative z-20">
                         <div className="max-w-6xl mx-auto">
-                            <div className="grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-purple-500/5 border border-white" id="wishpro-card">
-                                <div className="order-2 md:order-1 flex flex-col justify-center text-left">
+                            <div className="grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-white">
+                                <div className="order-2 md:order-1 text-left">
                                     <span className="text-purple-600 font-bold text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                                        Estética Avanzada
+                                        <div className="w-2 h-2 rounded-full bg-purple-500"></div> Estética Avanzada
                                     </span>
-                                    <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
-                                        WishPro: Infusión Magnética
-                                    </h2>
-                                    <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                                        La única tecnología del mundo que combina pulsos magnéticos con cápsulas de principios activos avanzados. Tratamientos no invasivos con resultados inmediatos.
-                                    </p>
-                                    <ul className="space-y-3 mb-8">
-                                        <li className="flex items-start">
-                                            <span className="text-purple-500 mr-2">✓</span>
-                                            <span className="text-gray-600 font-medium">Tecnología MIT (Magnetic Infusion Technology).</span>
-                                        </li>
-                                        <li className="flex items-start">
-                                            <span className="text-purple-500 mr-2">✓</span>
-                                            <span className="text-gray-600 font-medium">Cápsulas unitarias higiénicas y patentadas.</span>
-                                        </li>
-                                    </ul>
-                                    <button className="bg-gray-900 hover:bg-purple-700 text-white w-fit px-8 py-3 rounded-full font-bold transition-all shadow-lg flex items-center group">
-                                        <span>SABER MÁS</span>
-                                    </button>
+                                    <h2 className="text-3xl md:text-4xl font-extrabold mb-6">WishPro: Infusión Magnética</h2>
+                                    <p className="text-gray-600 text-lg mb-8">Pulsos magnéticos con cápsulas de principios activos avanzados.</p>
+                                    <button className="bg-gray-900 hover:bg-purple-700 text-white px-8 py-3 rounded-full font-bold transition-all shadow-lg">SABER MÁS</button>
                                 </div>
-                                <div className="order-1 md:order-2 overflow-hidden rounded-2xl aspect-video relative group shadow-lg">
-                                    <img 
-                                        src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/Wishpro.png" 
-                                        alt="WishPro" 
-                                        className="w-full h-full object-cover"
-                                    />
-                                    <div className="absolute top-6 right-6 bg-white/90 backdrop-blur text-purple-900 font-bold px-4 py-1 rounded-full text-xs">
-                                        PATENTADO
-                                    </div>
+                                <div className="order-1 md:order-2 rounded-2xl overflow-hidden shadow-lg aspect-video">
+                                    <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/Wishpro.png" className="w-full h-full object-cover" alt="WishPro" />
                                 </div>
                             </div>
                         </div>
                     </section>
 
-                    <section className="py-8 md:py-16 px-4 md:px-8 relative z-20 mb-6">
+                    {/* Hardware Catalog Section */}
+                    <section className="py-12 px-4 md:px-8 relative z-20">
                         <div className="max-w-6xl mx-auto">
-                            <div className="grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-blue-500/5 border border-white" id="watergen-card">
-                                <div className="order-1 overflow-hidden rounded-2xl aspect-video relative group shadow-lg">
-                                    <img 
-                                        src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/media/Watergen%20GEN-M%201.jpg" 
-                                        alt="Watergen" 
-                                        className="w-full h-full object-cover"
-                                    />
-                                    <div className="absolute bottom-6 left-6 text-white font-bold text-xl drop-shadow-md">
-                                        #DrinkingAir
-                                    </div>
-                                </div>
-                                <div className="order-2 flex flex-col justify-center text-left">
-                                    <span className="text-blue-600 font-bold text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                                        Sustentabilidad Hídrica
-                                    </span>
-                                    <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
-                                        Watergen: Agua del Aire
-                                    </h2>
-                                    <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                                        Generadores atmosféricos que crean agua potable fresca directamente de la humedad del aire. Eficiencia energética inigualable.
-                                    </p>
-                                    <button className="bg-blue-600 hover:bg-blue-700 text-white w-fit px-8 py-3 rounded-full font-bold transition-all shadow-lg flex items-center group">
-                                        <span>MÁS INFORMACIÓN</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className="py-12 md:py-16 px-4 md:px-8 relative z-20 mb-12">
-                        <div className="max-w-6xl mx-auto">
-                            <div className="mb-10 flex flex-col items-center text-center gap-2">
-                                <span className="text-blue-600 font-bold text-xs uppercase tracking-widest flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                                    Catálogo de Componentes
-                                </span>
-                                <h2 className="text-3xl font-extrabold text-gray-900">Hardware & Accesorios</h2>
+                            <div className="mb-10 text-center">
+                                <h2 className="text-3xl font-extrabold text-gray-900">Catálogo Hardware</h2>
                             </div>
 
-                            <div className="mb-12 flex justify-center relative z-[99]">
+                            {/* Filters Bar */}
+                            <div className="mb-12 flex justify-center z-[99] relative">
                                 <div className="glass px-6 py-3 rounded-full flex items-center gap-6 shadow-xl border border-white/50 w-full max-w-2xl justify-between">
                                     <div className="relative flex-1" ref={dropdownRef}>
-                                        <button 
-                                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                            className="flex items-center justify-between w-full text-left group transition-all"
-                                        >
+                                        <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center justify-between w-full text-left">
                                             <div className="flex flex-col">
-                                                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">Categoría</span>
-                                                <span className="text-sm font-bold text-gray-800 truncate max-w-[180px] md:max-w-[280px]">
-                                                    {activeCategory}
-                                                </span>
+                                                <span className="text-[10px] text-gray-400 font-bold uppercase">Categoría</span>
+                                                <span className="text-sm font-bold text-gray-800 truncate">{activeCategory}</span>
                                             </div>
-                                            <svg className={`w-4 h-4 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                                            <svg className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"></path></svg>
                                         </button>
-
                                         {isDropdownOpen && (
-                                            <div className="absolute top-[calc(100%+15px)] left-0 w-72 md:w-80 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/40 overflow-hidden z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
-                                                <div className="max-h-80 overflow-y-auto no-scrollbar py-2">
+                                            <div className="absolute top-[calc(100%+15px)] left-0 w-72 bg-white rounded-2xl shadow-2xl border overflow-hidden z-[100]">
+                                                <div className="max-h-64 overflow-y-auto py-2">
                                                     {PRODUCT_CATEGORIES.map((cat, i) => (
-                                                        <button 
-                                                            key={i}
-                                                            onClick={() => {
-                                                                setActiveCategory(cat);
-                                                                setIsDropdownOpen(false);
-                                                            }}
-                                                            className={`w-full text-left px-5 py-3 text-sm transition-colors flex items-center justify-between ${
-                                                                activeCategory === cat ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-gray-50 text-gray-600'
-                                                            }`}
-                                                        >
-                                                            <span>{cat}</span>
-                                                            {activeCategory === cat && <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>}
+                                                        <button key={i} onClick={() => { setActiveCategory(cat); setIsDropdownOpen(false); }} className={`w-full text-left px-5 py-3 text-sm hover:bg-gray-50 ${activeCategory === cat ? 'text-blue-600 font-bold' : ''}`}>
+                                                            {cat}
                                                         </button>
                                                     ))}
                                                 </div>
                                             </div>
                                         )}
                                     </div>
-
-                                    <div className="h-8 w-[1px] bg-gray-200/80"></div>
-
-                                    <div className="flex items-center gap-3 shrink-0">
-                                        <label className="flex items-center cursor-pointer group">
-                                            <div className="relative">
-                                                <input type="checkbox" className="sr-only" checked={isExpressOnly} onChange={() => setIsExpressOnly(!isExpressOnly)}/>
-                                                <div className={`w-10 h-5 rounded-full transition-colors ${isExpressOnly ? 'bg-blue-600' : 'bg-gray-200'}`}></div>
-                                                <div className={`absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full shadow-sm transition-transform ${isExpressOnly ? 'translate-x-5' : 'translate-x-0'}`}></div>
-                                            </div>
-                                            <span className="ml-3 text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-tight">Entrega 24h</span>
-                                        </label>
-                                    </div>
+                                    <div className="h-8 w-[1px] bg-gray-200"></div>
+                                    <label className="flex items-center cursor-pointer">
+                                        <input type="checkbox" className="sr-only" checked={isExpressOnly} onChange={() => setIsExpressOnly(!isExpressOnly)}/>
+                                        <div className={`w-10 h-5 rounded-full transition-colors ${isExpressOnly ? 'bg-blue-600' : 'bg-gray-200'}`}></div>
+                                        <span className="ml-3 text-[10px] font-bold text-gray-500 uppercase">24h</span>
+                                    </label>
                                 </div>
                             </div>
 
-                            {isLoading ? (
-                                <div className="flex justify-center items-center h-80">
-                                    <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-blue-600/10 border-t-blue-600"></div>
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-                                    {products.length > 0 ? products.map(product => (
-                                        <div key={product.id} className="bg-white rounded-[2.5rem] shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col overflow-hidden group hover:shadow-2xl transition-all duration-500">
-                                            <div className="aspect-square relative overflow-hidden bg-gray-50">
-                                                <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"/>
-                                                {product.isExpress && (
-                                                    <div className="absolute top-5 left-5 bg-blue-600 px-3 py-1 rounded-full text-[9px] font-black text-white shadow-sm">EXPRESS</div>
-                                                )}
-                                            </div>
-                                            <div className="p-6 flex flex-col gap-4">
-                                                <h3 className="font-bold text-gray-900 leading-tight line-clamp-2 text-sm">{product.name}</h3>
-                                                <div className="flex justify-between items-center">
-                                                    <p className="text-blue-600 font-black text-xl">{product.price}</p>
-                                                    <button className="bg-gray-100 p-2 rounded-xl hover:bg-gray-900 hover:text-white transition-colors">
-                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4"></path></svg>
-                                                    </button>
-                                                </div>
+                            {/* Product Grid */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {isLoading ? (
+                                    <div className="col-span-full py-20 text-center">Cargando...</div>
+                                ) : products.length > 0 ? products.map(product => (
+                                    <div key={product.id} className="bg-white rounded-[2.5rem] shadow-xl border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all">
+                                        <div className="aspect-square bg-gray-50 overflow-hidden">
+                                            <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
+                                        </div>
+                                        <div className="p-6">
+                                            <h3 className="font-bold text-sm text-gray-900 mb-2">{product.name}</h3>
+                                            <div className="flex justify-between items-center">
+                                                <p className="text-blue-600 font-black text-xl">{product.price}</p>
+                                                <button className="bg-gray-100 p-2 rounded-xl hover:bg-black hover:text-white transition-colors">
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4"></path></svg>
+                                                </button>
                                             </div>
                                         </div>
-                                    )) : (
-                                        <div className="col-span-full py-20 text-center text-gray-400 uppercase font-bold text-xs">Sin coincidencias</div>
-                                    )}
-                                </div>
-                            )}
+                                    </div>
+                                )) : (
+                                    <div className="col-span-full py-20 text-center text-gray-400 font-bold">Sin resultados</div>
+                                )}
+                            </div>
                         </div>
                     </section>
                 </Layout>
