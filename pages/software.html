@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Meyer - Nosotros</title>
+    <title>The Meyer - Software</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -47,6 +47,12 @@
         /* Scrollbar hiding */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
     </style>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -69,6 +75,20 @@
 
             const toggleMenu = () => {
                 setIsMobileMenuOpen(!isMobileMenuOpen);
+            };
+
+            const handleContactClick = () => {
+                const formElement = document.getElementById('form-section');
+                
+                if (formElement) {
+                    // We are on the page with the form
+                    formElement.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    // We are on a different page
+                    window.location.href = '/index.html#form-section';
+                }
+                
+                if (isMobileMenuOpen) toggleMenu();
             };
 
             return (
@@ -97,7 +117,7 @@
                         </div>
                     </div>
 
-                    {/* Navigation - Added dynamic visibility to avoid overlapping with menu overlay */}
+                    {/* Navigation */}
                     <nav className={`fixed left-0 w-full z-[70] px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px] ${isMobileMenuOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                         <a href="https://themeyer.eu" className="block z-50">
                             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
@@ -112,7 +132,7 @@
 
                         <div className="flex items-center space-x-4">
                             <button 
-                                onClick={() => window.location.href = '/pages/about.html'} 
+                                onClick={handleContactClick} 
                                 className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
                             >
                                 CONTACTO
@@ -134,7 +154,7 @@
                     {/* Mobile Menu Overlay */}
                     <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}`}>
                         
-                        {/* Close Button - Enhanced z-index and accessibility */}
+                        {/* Close Button */}
                         <button 
                             onClick={toggleMenu} 
                             className="absolute top-10 right-8 p-4 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none z-[110]"
@@ -149,7 +169,7 @@
                         <a href="/pages/software" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
                         <a href="/pages/about" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
                         <button 
-                            onClick={() => { toggleMenu(); window.location.href = 'pages/about.html'; }} 
+                            onClick={handleContactClick} 
                             className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4"
                         >
                             CONTACTO
@@ -323,7 +343,7 @@
                     <section className="relative py-12 px-8 overflow-hidden text-center z-10">
                         <div className="relative z-10 mt-12 mb-12">
                             <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-4" id="title-anim">
-                                Orquestacion & y <span className="text-blue-600">Automatizacion</span>
+                                Orquestación & <span className="text-blue-600">Automatización</span>
                             </h1>
                             <p className="text-gray-500 max-w-2xl mx-auto font-medium text-lg leading-relaxed" id="subtitle-anim">
                                 Ecosistema de Ejecución segura y apta para LLMs (Secure LLM Runtime) en entornos corporativos.
@@ -340,7 +360,7 @@
                                         Desarrollo de Integraciones Low Code & MCP
                                     </span>
                                     <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
-                                        Arquitectura Hibrida de Búsqueda Semántica
+                                        Arquitectura Híbrida de Búsqueda Semántica
                                     </h2>
                                     <p className="text-gray-600 text-lg leading-relaxed mb-6">
                                         Implementación de vanguardia que fusiona la potencia de la búsqueda semántica con las mejores prácticas de Ciberseguridad.
@@ -374,7 +394,7 @@
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 to-transparent"></div>
                                     <div className="absolute bottom-6 left-6 text-white font-bold text-xl">
-                                        Claude como cerebro de la operacion.
+                                        Claude como cerebro de la operación.
                                     </div>
                                 </div>
                             </div>
@@ -398,7 +418,7 @@
                         </div>
                     </section>
 
-                    <div className="max-w-4xl mx-auto px-4 pb-20 relative z-20">
+                    <div className="max-w-4xl mx-auto px-4 pb-20 relative z-20" id="form-section">
                         <div className="glass p-8 md:p-12 rounded-[2.5rem] shadow-2xl shadow-blue-500/10 border border-white">
                             <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-2">Solicitar Información</h2>
                             <p className="text-center text-gray-500 mb-10">Complete el formulario y nuestro equipo de expertos se pondrá en contacto.</p>
