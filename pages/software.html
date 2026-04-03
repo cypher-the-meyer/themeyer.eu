@@ -137,35 +137,31 @@
                             CONTACTO
                         </button>
                         
-                        {/* Mobile Menu Toggle */}
-                        <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
-                            <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
-                            <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
-                            <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+                    {/* Mobile Menu Overlay */}
+                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
+                        
+                        {/* Close Button Inside Overlay */}
+                        <button 
+                            onClick={toggleMenu} 
+                            className="absolute top-6 right-6 p-2 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none"
+                            aria-label="Cerrar menú"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <a href="/pages/hardware.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
+                        <a href="/pages/software.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
+                        <a href="/pages/about.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
+                        <button 
+                            onClick={() => { toggleMenu(); window.location.href = 'pages/about.html'; }} 
+                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4"
+                        >
+
+                            CONTACTO
                         </button>
                     </div>
-                </nav>
-                    
-                {/* Mobile Menu */}
-                <div id="mobile-menu" className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}>
-                    {/* FIX 2: Removed "hidden" class from here so links show on mobile */}
-                    <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
-                        <a href="pages/hardware" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Hardware</a>
-                        <a href="/pages/software" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Software</a>
-                        <a href="/pages/about" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>About Us</a>
-                    </div>
-                    
-                    {/* Mobile CONTACTO Button */}
-                    <button 
-                        onClick={() => {
-                            toggleMenu();
-                            window.location.href = '/pages/contacto';
-                        }} 
-                        className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl"
-                    >
-                        CONTACTO
-                    </button>
-                </div>
 
                     <main className="pt-32 px-4 md:px-8">
                         {children}
