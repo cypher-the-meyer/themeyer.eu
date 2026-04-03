@@ -44,15 +44,11 @@
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .hidden-menu { transform: translateX(100%); }
         
         .menu-open #line1 { transform: translateY(8px) rotate(45deg); }
         .menu-open #line2 { opacity: 0; }
         .menu-open #line3 { transform: translateY(-8px) rotate(-45deg); }
 
-        /* Toggle Switch Styles */
         .toggle-dot {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -133,28 +129,27 @@
                         </div>
                     </nav>
                        
-                    {/* Mobile Menu Overlay */}
-                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'hidden-menu'}`}>
+                    {/* Mobile Menu Overlay - Refactored Fix */}
+                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
                         
                         {/* Close Button Inside Overlay */}
                         <button 
                             onClick={toggleMenu} 
-                            className="absolute top-6 right-6 p-2 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none"
+                            className="absolute top-10 right-8 p-2 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none"
                             aria-label="Cerrar menú"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
 
-                        <a href="/pages/hardware.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
-                        <a href="/pages/software.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
-                        <a href="/pages/about.html" className="text-xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
+                        <a href="/pages/hardware.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
+                        <a href="/pages/software.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
+                        <a href="/pages/about.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
                         <button 
                             onClick={() => { toggleMenu(); window.location.href = 'pages/about.html'; }} 
-                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4"
+                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4 active:scale-95 transition-transform"
                         >
-
                             CONTACTO
                         </button>
                     </div>
@@ -247,7 +242,6 @@
             }, []);
 
             useEffect(() => {
-                // Animation when switching content
                 gsap.fromTo(contentRef.current, 
                     { opacity: 0, y: 20 }, 
                     { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
@@ -265,7 +259,6 @@
                         </p>
                     </section>
 
-                    {/* Strategic Toggle */}
                     <div className="flex flex-col items-center mb-16">
                         <div className="glass p-1.5 rounded-full flex items-center shadow-inner mb-4">
                             <button 
@@ -288,7 +281,6 @@
 
                     <section className="px-4 md:px-8 mb-20" ref={contentRef}>
                         {!isCorporate ? (
-                            /* Social Impact Content (ODS 6) */
                             <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-12 shadow-2xl border-l-4 border-blue-500">
                                 <div>
                                     <div className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-[10px] font-bold tracking-widest uppercase mb-4">
@@ -320,7 +312,6 @@
                                 </div>
                             </div>
                         ) : (
-                            /* Corporate/Tech Consulting Content */
                             <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center glass rounded-[2.5rem] p-12 shadow-2xl border-l-4 border-gray-800">
                                 <div>
                                     <div className="inline-block px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-[10px] font-bold tracking-widest uppercase mb-4">
