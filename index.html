@@ -67,7 +67,8 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        // FIX: Added useLayoutEffect which was missing and causing a crash
+        const { useState, useEffect, useLayoutEffect, useRef } = React;
 
         // --- LAYOUT COMPONENT ---
         const Layout = ({ children }) => {
@@ -179,10 +180,15 @@
                     <main className="pt-32 px-4 md:px-8">
                         {children}
                     </main>
+
+                    {/* FIX: Moved Footer from the duplicate Layout into the main working one */}
+                    <footer className="py-12 border-t border-gray-200 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20">
+                        &copy; 2026 THE MEYER EU. TODOS LOS DERECHOS RESERVADOS.
+                    </footer>
                 </div>
             );
         };
-        };
+        // FIX: Removed the extra `};` bracket that was breaking syntax here.
 
         const ContentCard = ({ title, desc, align, active, icon }) => {
             return (
@@ -340,7 +346,7 @@
                                     className="relative rounded-[3rem] shadow-2xl object-cover aspect-[4/3] w-full border border-gray-100"
                                     onError={(e) => {
                                         e.target.onerror = null;
-                                        e.target.src='https://via.placeholder.com/1200x900?text=Software+Development'
+                                        e.target.src='https://placehold.co/1200x900/1a202c/ffffff?text=Software+Development'
                                     }}
                                 />
                                 <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-3xl shadow-xl border border-gray-50 flex items-center gap-4 max-w-[200px]">
@@ -354,44 +360,8 @@
             );
         };
 
-        const Layout = ({ children }) => {
-            return (
-                <div className="relative min-h-screen w-full sticky-container">
-                    <div className="bubble-bg">
-                        <div className="bubble" style={{ width: '300px', height: '300px', left: '10%', '--duration': '15s' }}></div>
-                        <div className="bubble" style={{ width: '200px', height: '200px', left: '60%', '--duration': '12s', animationDelay: '2s' }}></div>
-                    </div>
-
-                    <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-4 md:px-8">
-                        <div className="flex items-center space-x-3">
-                            <span className="text-[9px] font-bold text-blue-400 tracking-[0.2em]">THE MEYER</span>
-                            <LanguageFlag />
-                        </div>
-                        <div className="hidden md:flex space-x-6 opacity-60">
-                            {['ISO 27001', 'ISO 9001', 'PCI DSS'].map((c, i) => (
-                                <span key={i} className="text-[9px] font-bold text-white tracking-widest">{c}</span>
-                            ))}
-                        </div>
-                    </div>
-
-                    <nav className="fixed left-0 w-full z-50 px-4 md:px-8 py-4 flex justify-between items-center glass transition-all top-[40px]">
-                        <div className="font-black text-2xl tracking-tighter text-slate-900">THE MEYER</div>
-                        <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
-                            <a href="#" className="hover:text-blue-600">Hardware</a>
-                            <a href="#" className="hover:text-blue-600">Software</a>
-                            <a href="#" className="hover:text-blue-600">About US</a>
-                        </div>
-                        <button className="bg-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-md hover:bg-blue-700">CONTACTO</button>
-                    </nav>
-
-                    <main className="pt-32">{children}</main>
-
-                    <footer className="py-12 border-t border-gray-200 text-center text-gray-400 text-sm font-semibold tracking-widest bg-white relative z-20">
-                        &copy; 2026 THE MEYER EU. TODOS LOS DERECHOS RESERVADOS.
-                    </footer>
-                </div>
-            );
-        };
+        // FIX: Completely removed the secondary, duplicate `const Layout = ({ children }) => { ... }` block here 
+        // which was causing Babel to crash with an "Identifier 'Layout' has already been declared" error.
 
         const App = () => {
             useEffect(() => {
