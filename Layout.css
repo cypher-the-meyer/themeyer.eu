@@ -11,29 +11,44 @@ margin: 0;
 
 /* Discrete Grey Circuit Pattern */
 .circuit-bg {
-position: fixed;
-inset: 0;
-z-index: 0;
-pointer-events: none;
-background-color: transparent;
-/* Creates the subtle tech grid lines */
-background-image: 
-linear-gradient(to right, rgba(148, 163, 184, 0.15) 1px, transparent 1px),
-linear-gradient(to bottom, rgba(148, 163, 184, 0.15) 1px, transparent 1px);
-background-size: 40px 40px;
-/* Fades the pattern out towards the edges so it isn't overwhelming */
-mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
--webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    /* Optional: A very subtle off-white background to help the grid pop */
+    background-color: #f8fafc; 
+    
+    /* Layer 1 & 2: Major Traces (Thicker, wider gaps) */
+    /* Layer 3 & 4: Minor Traces (Thinner, denser gaps) */
+    background-image: 
+        linear-gradient(to right, rgba(100, 116, 139, 0.25) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(100, 116, 139, 0.25) 1px, transparent 1px),
+        linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+    
+    /* 80px for major traces, 20px for minor traces */
+    background-size: 
+        80px 80px,
+        80px 80px,
+        20px 20px,
+        20px 20px;
+    background-position: 0 0;
+    
+    /* Much wider mask so the pattern is actually visible across the screen */
+    -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
+    mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
 }
-        
-/* Creates the hardware "nodes" at the intersections */
+
+/* Hardware Nodes (Dots at the intersections) */
 .circuit-bg::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-image: radial-gradient(rgba(148, 163, 184, 0.4) 1.5px, transparent 1.5px);
-        background-size: 40px 40px;
-        background-position: -1px -1px;
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Draws distinct, solid dots to simulate solder points */
+    background-image: radial-gradient(circle, rgba(71, 85, 105, 0.6) 2.5px, transparent 3px);
+    background-size: 80px 80px;
+    /* Aligns the center of the dot precisely with the 80px major traces */
+    background-position: -2.5px -2.5px; 
 }
 
 @keyframes rise {
