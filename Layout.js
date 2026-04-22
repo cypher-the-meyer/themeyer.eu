@@ -3,37 +3,21 @@ import React, { useState } from 'react';
 // --- CSS Styles (Simulating layout.css for the Preview) ---
 const Styles = () => (
   <style>{`
-    .bubble-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .bubble {
-      position: absolute;
-      bottom: -100px; /* Start below screen */
-      background: rgba(59, 130, 246, 0.1); /* Blue-ish bubble */
-      border-radius: 50%;
-      animation: rise var(--duration) infinite ease-in;
-    }
-    @keyframes rise {
-      0% { bottom: -100px; transform: translateX(0); }
-      50% { transform: translateX(100px); }
-      100% { bottom: 120%; transform: translateX(-200px); }
-    }
+    /* Glassmorphism Navigation */
     .glass {
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(10px);
     }
+    
     /* Hamburger Menu Animation classes */
     .menu-open #line1 { transform: rotate(45deg) translate(5px, 5px); }
     .menu-open #line2 { opacity: 0; }
     .menu-open #line3 { transform: rotate(-45deg) translate(5px, -5px); }
     .hidden-menu { display: none; }
+    
+    /* Utilities */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   `}</style>
 );
 
@@ -48,8 +32,8 @@ const Layout = ({ children }) => {
     <div className="relative min-h-screen">
       <Styles />
       
- {/* Background Circuit Pattern */}
-                    <div className="circuit-bg"></div>
+      {/* Background Circuit Pattern */}
+      <div className="circuit-bg"></div>
 
       {/* --- Top Banner (Certifications) --- */}
       <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
@@ -67,7 +51,7 @@ const Layout = ({ children }) => {
       </div>
 
       {/* --- Navigation --- */}
-        <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-3 flex justify-between items-center glass shadow-sm transition-all mt-10">
+      <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-3 flex justify-between items-center glass shadow-sm transition-all mt-10">
         <a href="/" className="block z-50"> 
             <img 
                src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
@@ -76,7 +60,7 @@ const Layout = ({ children }) => {
             />
         </a>
 
-        {/* Desktop Links - UPDATED */}
+        {/* Desktop Links */}
         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
           <a href="pages/Tecnologia.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
           <a href="pages/Sustainability.html" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
@@ -107,9 +91,9 @@ const Layout = ({ children }) => {
         className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}
       >
         <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
-          {/* Mobile Links - UPDATED for consistency */}
-          <a /pages/Tecnologia.html className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
-          <a href="#" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
+          {/* Mobile Links */}
+          <a href="/pages/Tecnologia.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
+          <a href="/pages/Sustainability.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
           <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Nosotros.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
         </div>
         <button className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl">
@@ -118,7 +102,7 @@ const Layout = ({ children }) => {
       </div>
 
       {/* --- Main Page Content --- */}
-      <main className="pt-32 px-4 md:px-8">
+      <main className="pt-32 px-4 md:px-8 relative z-10">
         {children}
       </main>
 
