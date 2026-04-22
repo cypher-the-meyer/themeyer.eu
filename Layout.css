@@ -10,31 +10,31 @@ margin: 0;
 }
 
 /* Discrete Grey Circuit Pattern */
-        .circuit-bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background-color: transparent;
-            /* Creates the subtle tech grid lines */
-            background-image: 
-                linear-gradient(to right, rgba(148, 163, 184, 0.15) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(148, 163, 184, 0.15) 1px, transparent 1px);
-            background-size: 40px 40px;
-            /* Fades the pattern out towards the edges so it isn't overwhelming */
-            mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
-            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
-        }
+.circuit-bg {
+position: fixed;
+inset: 0;
+z-index: 0;
+pointer-events: none;
+background-color: transparent;
+/* Creates the subtle tech grid lines */
+background-image: 
+linear-gradient(to right, rgba(148, 163, 184, 0.15) 1px, transparent 1px),
+linear-gradient(to bottom, rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+background-size: 40px 40px;
+/* Fades the pattern out towards the edges so it isn't overwhelming */
+mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
+-webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
+}
         
-        /* Creates the hardware "nodes" at the intersections */
-        .circuit-bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(rgba(148, 163, 184, 0.4) 1.5px, transparent 1.5px);
-            background-size: 40px 40px;
-            background-position: -1px -1px;
-        }
+/* Creates the hardware "nodes" at the intersections */
+.circuit-bg::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(148, 163, 184, 0.4) 1.5px, transparent 1.5px);
+        background-size: 40px 40px;
+        background-position: -1px -1px;
+}
 
 @keyframes rise {
 0% { transform: translateY(0) scale(1); opacity: 0; }
