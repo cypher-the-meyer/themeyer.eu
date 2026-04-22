@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Meyer - About Us</title>
+    <title>The Meyer - Software</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -16,6 +16,7 @@
             overflow-x: hidden;
         }
 
+        /* Bubbles - Original Blue Style */
         .bubble-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -23,7 +24,7 @@
         }
         .bubble {
             position: absolute;
-            background: rgba(59, 130, 246, 0.08);
+            background: rgba(59, 130, 246, 0.08); /* Original Blue */
             border: 1px solid rgba(59, 130, 246, 0.15);
             border-radius: 50%;
             bottom: -100px;
@@ -36,26 +37,22 @@
             100% { transform: translateY(-110%) scale(1.2); opacity: 0; }
         }
 
+        /* Glassmorphism - Original Style */
         .glass {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
+        /* Scrollbar hiding */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        .menu-open #line1 { transform: translateY(8px) rotate(45deg); }
-        .menu-open #line2 { opacity: 0; }
-        .menu-open #line3 { transform: translateY(-8px) rotate(-45deg); }
-
-        .toggle-dot {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        input:checked ~ .toggle-dot {
-            transform: translateX(100%);
-            background-color: #2563eb;
-        }
+        .animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
     </style>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -72,28 +69,47 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
+        // --- LAYOUT COMPONENT ---
         const Layout = ({ children }) => {
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-            const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+
+            const toggleMenu = () => {
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+            };
+
+            const handleContactClick = () => {
+                const formElement = document.getElementById('form-section');
+                
+                if (formElement) {
+                    // We are on the page with the form
+                    formElement.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    // We are on a different page
+                    window.location.href = '/index.html#form-section';
+                }
+                
+                if (isMobileMenuOpen) toggleMenu();
+            };
 
             return (
                 <div className="relative min-h-screen">
-                    {/* Animated Background */}
+                    {/* Background Bubbles */}
                     <div className="bubble-bg fixed inset-0 h-screen w-full">
                         <div className="bubble" style={{ width: '300px', height: '300px', left: '10%', '--duration': '15s' }}></div>
                         <div className="bubble" style={{ width: '200px', height: '200px', left: '60%', '--duration': '12s', animationDelay: '2s' }}></div>
                         <div className="bubble" style={{ width: '150px', height: '150px', left: '30%', '--duration': '18s', animationDelay: '5s' }}></div>
                         <div className="bubble" style={{ width: '100px', height: '100px', left: '80%', '--duration': '20s', animationDelay: '1s' }}></div>
+                        <div className="bubble" style={{ width: '250px', height: '250px', left: '45%', '--duration': '14s', animationDelay: '3s' }}></div>
                     </div>
 
                     {/* Top Banner */}
                     <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
-                        <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
+                        <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap flex items-center gap-2">
                              SUSTENTABILIDAD CORPORATIVA & ESG
                         </span>
-                        <div className="flex items-center space-x-4 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
-                            {['ODS 6', 'ODS 11', 'ODS 13', 'AGENDA 2030'].map((cert, i) => (
-                                <div key={i} className="flex items-center space-x-1 flex-shrink-0">
+                        <div className="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
+                            {['ODS 6', 'ODS 11', 'ODS 13', 'AGENDA 2030', 'ESG COMPLIANT'].map((cert, index) => (
+                                <div key={index} className="flex items-center space-x-1 flex-shrink-0">
                                     <div className="w-1 h-3 bg-blue-500"></div>
                                     <span className="text-[9px] font-bold text-white tracking-widest uppercase">{cert}</span>
                                 </div>
@@ -101,12 +117,13 @@
                         </div>
                     </div>
 
-                    {/* Desktop Navigation */}
-                    <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px]">
+                    {/* Navigation */}
+                    <nav className={`fixed left-0 w-full z-[70] px-6 md:px-8 py-4 flex justify-between items-center glass shadow-sm transition-all top-[40px] ${isMobileMenuOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                         <a href="https://themeyer.eu" className="block z-50">
                             <img src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" alt="The Meyer Logo" className="h-10 md:h-12 w-auto object-contain" />
                         </a>
                         
+                        {/* Desktop Links */}
                         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
                             <a href="/pages/hardware" className="hover:text-blue-600 transition-colors">Hardware</a>
                             <a href="/pages/software" className="hover:text-blue-600 transition-colors">Software</a>
@@ -115,27 +132,32 @@
 
                         <div className="flex items-center space-x-4">
                             <button 
-                                onClick={() => document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' })} 
+                                onClick={handleContactClick} 
                                 className="hidden sm:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-md"
                             >
                                 CONTACTO
                             </button>
                             
-                            <button onClick={toggleMenu} className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line1"></span>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-opacity duration-300" id="line2"></span>
-                                <span className="block w-6 h-0.5 bg-gray-900 transition-transform duration-300" id="line3"></span>
+                            {/* Mobile Hamburger Button */}
+                            <button 
+                                onClick={toggleMenu}
+                                className="md:hidden p-2 text-gray-900 focus:outline-none"
+                                aria-label="Abrir menú"
+                            >
+                                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                                </svg>
                             </button>
                         </div>
                     </nav>
+
+                    {/* Mobile Menu Overlay */}
+                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}`}>
                         
-                    {/* Mobile Menu Overlay - Refactored Fix */}
-                    <div className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-all duration-500 ease-in-out ${isMobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
-                        
-                        {/* Close Button Inside Overlay */}
+                        {/* Close Button */}
                         <button 
                             onClick={toggleMenu} 
-                            className="absolute top-10 right-8 p-2 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none"
+                            className="absolute top-10 right-8 p-4 text-gray-900 hover:text-blue-600 transition-colors focus:outline-none z-[110]"
                             aria-label="Cerrar menú"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -143,22 +165,23 @@
                             </svg>
                         </button>
 
-                        <a href="/pages/hardware.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
-                        <a href="/pages/software.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
-                        <a href="/pages/about.html" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
+                        <a href="/pages/hardware" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Hardware</a>
+                        <a href="/pages/software" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>Software</a>
+                        <a href="/pages/about" className="text-2xl font-bold uppercase hover:text-blue-600" onClick={toggleMenu}>About us</a>
                         <button 
-                            onClick={() => { toggleMenu(); document.getElementById('form-section')?.scrollIntoView({ behavior: 'smooth' }); }} 
-                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4 active:scale-95 transition-transform"
+                            onClick={handleContactClick} 
+                            className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl mt-4"
                         >
                             CONTACTO
                         </button>
                     </div>
 
-                    <main className="pt-48 pb-20 relative z-10">
+                    <main className="pt-32 px-4 md:px-8">
                         {children}
                     </main>
                 </div>
             );
+        };
         };
 
         const ContentCard = ({ title, desc, align, active, icon }) => {
