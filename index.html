@@ -28,7 +28,7 @@
 <body>
     <div id="root"></div>
 
-    <script type="text/babel">
+    <script type="text/babel" data-presets="react">
         const { useState, useEffect, useRef, useLayoutEffect } = React;
 
         const flagMap = {
@@ -38,6 +38,7 @@
 
         const LanguageFlag = () => {
             const [lang, setLang] = useState('es');
+            
             useEffect(() => {
                 const htmlNode = document.documentElement;
                 const updateLang = () => setLang(htmlNode.getAttribute('lang') || 'es');
@@ -46,7 +47,9 @@
                 updateLang();
                 return () => observer.disconnect();
             }, []);
+            
             const flag = flagMap[lang.split('-')[0].toLowerCase()] || '🌐';
+            
             return (
                 <div className="flex items-center justify-center opacity-40 hover:opacity-100 transition-all cursor-help">
                     <span className="text-[11px]">{flag}</span>
@@ -86,11 +89,9 @@
                     const rect = containerRef.current.getBoundingClientRect();
                     const totalScrollable = containerRef.current.offsetHeight - window.innerHeight;
                     
-                    // Cálculo de scroll relativo a la sección
                     const s = Math.max(0, Math.min(1, -rect.top / totalScrollable));
-
                     let a; 
-                    // Lógica de mesetas (Plateaus)
+                    
                     if (s > 0.2 && s < 0.3) {
                         a = 0.25;
                     } else if (s >= 0.3 && s < 0.5) {
