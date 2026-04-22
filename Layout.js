@@ -1,21 +1,57 @@
 import React, { useState } from 'react';
 
-// --- CSS Styles (Simulating layout.css for the Preview) ---
+// --- Improved CSS for High-Visibility Circuit Pattern ---
 const Styles = () => (
   <style>{`
-    /* Glassmorphism Navigation */
+    body {
+      margin: 0;
+      background-color: #ffffff; /* Base page color */
+    }
+
+    /* The Circuit Container */
+    .circuit-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-color: #fcfdfe; /* Very slight blue-tinted white */
+      
+      /* Major Grid (The "Traces") */
+      background-image: 
+        linear-gradient(to right, rgba(148, 163, 184, 0.15) 1.5px, transparent 1.5px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.15) 1.5px, transparent 1.5px),
+        /* Minor Grid (The "Texture") */
+        linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+      
+      background-size: 80px 80px, 80px 80px, 20px 20px, 20px 20px;
+      
+      /* Fade effect so it's not distracting at the edges */
+      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+    }
+    
+    /* The "Nodes" or solder points at intersections */
+    .circuit-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(59, 130, 246, 0.2) 2px, transparent 2px);
+      background-size: 80px 80px;
+      background-position: -1px -1px;
+    }
+
     .glass {
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
     }
     
-    /* Hamburger Menu Animation classes */
     .menu-open #line1 { transform: rotate(45deg) translate(5px, 5px); }
     .menu-open #line2 { opacity: 0; }
     .menu-open #line3 { transform: rotate(-45deg) translate(5px, -5px); }
-    .hidden-menu { display: none; }
-    
-    /* Utilities */
+    .hidden-menu { transform: translateX(100%); display: none; }
+
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   `}</style>
@@ -29,13 +65,13 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen w-full">
       <Styles />
       
-      {/* Background Circuit Pattern */}
+      {/* 1. Background Layer */}
       <div className="circuit-bg"></div>
 
-      {/* --- Top Banner (Certifications) --- */}
+      {/* 2. Top Banner */}
       <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
         <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap">
           Global Certifications & Standards
@@ -50,9 +86,9 @@ const Layout = ({ children }) => {
         </div>
       </div>
 
-      {/* --- Navigation --- */}
-      <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-3 flex justify-between items-center glass shadow-sm transition-all mt-10">
-        <a href="/" className="block z-50"> 
+      {/* 3. Navigation */}
+      <nav className="fixed left-0 w-full z-50 px-6 md:px-8 py-3 flex justify-between items-center glass shadow-sm mt-10">
+        <a href="/" className="block"> 
             <img 
                src="https://raw.githubusercontent.com/cypher-the-meyer/themeyer.eu/main/themeyerlogo" 
               alt="The Meyer Logo" 
@@ -60,7 +96,6 @@ const Layout = ({ children }) => {
             />
         </a>
 
-        {/* Desktop Links */}
         <div className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase opacity-60">
           <a href="pages/Tecnologia.html" className="hover:text-blue-600 transition-colors">Tecnologias</a>
           <a href="pages/Sustainability.html" className="hover:text-blue-600 transition-colors">Sustentabilidad</a>
@@ -72,9 +107,7 @@ const Layout = ({ children }) => {
             DEMO
           </button>
           
-          {/* Hamburger Button */}
           <button 
-            id="menu-btn" 
             onClick={toggleMenu}
             className={`md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-[110] ${isMobileMenuOpen ? 'menu-open' : ''}`}
           >
@@ -85,24 +118,22 @@ const Layout = ({ children }) => {
         </div>
       </nav>
 
-      {/* --- Mobile Menu Overlay --- */}
+      {/* 4. Mobile Menu */}
       <div 
-        id="mobile-menu" 
-        className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 ${isMobileMenuOpen ? '' : 'hidden-menu'}`}
+        className={`fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] md:hidden flex flex-col items-center justify-center space-y-8 transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
         <div className="flex flex-col items-center space-y-8 text-xl font-bold tracking-[0.2em] uppercase text-gray-900">
-          {/* Mobile Links */}
-          <a href="/pages/Tecnologia.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Tecnologias</a>
-          <a href="/pages/Sustainability.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Sustentabilidad</a>
-          <a href="https://github.com/cypher-the-meyer/themeyer.eu/blob/main/pages/Nosotros.html" className="mobile-link hover:text-blue-600 transition-colors" onClick={toggleMenu}>Nosotros</a>
+          <a href="/pages/Tecnologia.html" className="hover:text-blue-600" onClick={toggleMenu}>Tecnologias</a>
+          <a href="/pages/Sustainability.html" className="hover:text-blue-600" onClick={toggleMenu}>Sustentabilidad</a>
+          <a href="/pages/Nosotros.html" className="hover:text-blue-600" onClick={toggleMenu}>Nosotros</a>
         </div>
         <button className="bg-blue-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl">
           SOLICITAR DEMO
         </button>
       </div>
 
-      {/* --- Main Page Content --- */}
-      <main className="pt-32 px-4 md:px-8 relative z-10">
+      {/* 5. Content Layer */}
+      <main className="relative z-10 pt-40 px-4 md:px-8">
         {children}
       </main>
 
@@ -110,16 +141,15 @@ const Layout = ({ children }) => {
   );
 };
 
-// --- Main App Component for Preview ---
 export default function App() {
   return (
     <Layout>
       <div className="max-w-4xl mx-auto text-center mt-20">
-        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-          Future of Technology
+        <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tighter">
+          FUTURE OF <span className="text-blue-600">TECHNOLOGY</span>
         </h1>
-        <p className="text-xl text-gray-600 leading-relaxed">
-          Welcome to The Meyer. Please use the navigation links above to visit our specific technology pages on GitHub.
+        <p className="text-xl text-gray-500 font-medium max-w-2xl mx-auto leading-relaxed">
+          The Meyer infrastructure is built on precision engineering. Explore our digital circuit ecosystems.
         </p>
       </div>
     </Layout>
