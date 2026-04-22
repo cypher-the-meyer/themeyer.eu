@@ -48,11 +48,8 @@ const Layout = ({ children }) => {
     <div className="relative min-h-screen">
       <Styles />
       
-      {/* --- Background Bubbles --- */}
-      <div className="bubble-bg">
-        <div className="bubble" style={{ width: '300px', height: '300px', left: '10%', '--duration': '15s' }}></div>
-        <div className="bubble" style={{ width: '200px', height: '200px', left: '60%', '--duration': '12s', animationDelay: '2s' }}></div>
-      </div>
+ {/* Background Circuit Pattern */}
+                    <div className="circuit-bg"></div>
 
       {/* --- Top Banner (Certifications) --- */}
       <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
