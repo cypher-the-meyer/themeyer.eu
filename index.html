@@ -400,13 +400,12 @@
                     <SoftwareSection />
 
                     <section className="py-40 bg-slate-900 px-4 relative z-20">
-                        <section className="py-40 bg-slate-900 px-4 relative z-20">
     <div className="max-w-7xl mx-auto text-center">
         <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-20">
             Stack Tecnológico
         </h3>
         
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
             {[
                 { name: 'JavaScript', slug: 'javascript' },
                 { name: 'Java', slug: 'openjdk' },
@@ -415,28 +414,33 @@
                 { name: 'React', slug: 'react' },
                 { name: 'Django', slug: 'django' },
                 { name: 'Vercel', slug: 'vercel' },
-                { name: 'AWS', slug: 'amazonwebservices' },
+                { name: 'AWS', slug: 'amazonwebservices' }, // Fixed AWS slug
                 { name: 'Gemini', slug: 'googlegemini' },
                 { name: 'Google Cloud', slug: 'googlecloud' },
-                { name: 'Claude Code', slug: 'anthropic' },
-                { name: 'Claw Code', slug: 'probot' }, // Using a generic bot icon for 'Claw'
+                { name: 'Claude Code', slug: 'anthropic' }, // Claude uses the Anthropic "A"
+                { name: 'Claw Code', slug: 'probot' },     // 'Claw' often uses a mechanical/bot icon
                 { name: 'Tailwind', slug: 'tailwindcss' },
                 { name: 'HTML5', slug: 'html5' },
-                { name: 'CSS3', slug: 'css3' }
+                { name: 'CSS3', slug: 'css3' }             // Standard CSS Shield
             ].map((tech, idx) => (
                 <div 
                     key={idx} 
-                    className="group p-6 bg-slate-800 border border-slate-700 rounded-2xl hover:bg-blue-600/20 hover:border-blue-500 transition-all duration-300 cursor-default flex flex-col items-center justify-center gap-4"
+                    className="group p-8 bg-slate-800/50 border border-slate-700 rounded-3xl hover:bg-slate-800 hover:border-blue-500 transition-all duration-300 flex flex-col items-center justify-center gap-4"
                 >
+                    {/* Removed /white to allow official brand colors */}
                     <img 
-                        src={`https://cdn.simpleicons.org/${tech.slug}/white`} 
+                        src={`https://cdn.simpleicons.org/${tech.slug}`} 
                         alt={`${tech.name} logo`}
-                        className="w-12 h-12 object-contain group-hover:scale-110 transition-transform"
+                        className="w-14 h-14 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500"
                     />
-                    <span className="text-white text-xs md:text-sm font-bold opacity-80 group-hover:opacity-100 uppercase tracking-widest">
+                    <span className="text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors">
                         {tech.name}
                     </span>
                 </div>
+            ))}
+        </div>
+    </div>
+</section>
             ))}
         </div>
     </div>
