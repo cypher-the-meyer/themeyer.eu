@@ -424,17 +424,26 @@
                 { name: 'CSS3', slug: 'css3' }             // Standard CSS Shield
             ].map((tech, idx) => (
                 <div 
-                    key={idx} 
-                    className="group p-8 bg-slate-800/50 border border-slate-700 rounded-3xl hover:bg-slate-800 hover:border-blue-500 transition-all duration-300 flex flex-col items-center justify-center gap-4"
-                >
-                    {/* Removed /white to allow official brand colors */}
-                    <img 
-                        src={`https://cdn.simpleicons.org/${tech.slug}`} 
-                        alt={`${tech.name} logo`}
-                        className="w-14 h-14 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500"
-                    />
-                    <span className="text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors">
-                        {tech.name}
+        key={idx} 
+        className="group p-8 bg-slate-800/50 border border-slate-700 rounded-3xl hover:bg-slate-800 hover:border-blue-500/50 transition-all duration-300 flex flex-col items-center justify-center gap-4"
+    >
+        <div className="relative w-14 h-14">
+            {/* Gray baseline icon */}
+            <img 
+                src={`https://cdn.simpleicons.org/${tech.slug}/94a3b8`} 
+                className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0"
+                alt=""
+            />
+            {/* Colored icon (appears on hover) */}
+            <img 
+    src={`https://cdn.simpleicons.org/${tech.slug}`} 
+    alt={`${tech.name} logo`}
+    className="w-14 h-14 object-contain brightness-0 invert opacity-50 group-hover:opacity-100 transition-all duration-500"
+/>
+        </div>
+        
+        <span className="text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors">
+                {tech.name}
                     </span>
                 </div>
             ))}
