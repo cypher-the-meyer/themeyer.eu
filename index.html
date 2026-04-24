@@ -16,7 +16,7 @@
             overflow-x: hidden;
         }
 
-/* Discrete Grey Circuit Pattern */
+        /* Discrete Grey Circuit Pattern */
         .circuit-bg {
             position: fixed;
             inset: 0;
@@ -47,6 +47,7 @@
             background-size: 80px 80px;
             background-position: -1px -1px;
         }
+        
         /* Glassmorphism - Original Style */
         .glass {
             background: rgba(255, 255, 255, 0.7);
@@ -110,7 +111,7 @@
                     {/* Top Banner */}
                     <div className="fixed top-0 w-full h-10 bg-[#0f172a] z-[60] flex items-center justify-between px-8 overflow-hidden">
                         <span className="text-[9px] md:text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em] whitespace-nowrap flex items-center gap-2">
-                             SUSTENTABILIDAD CORPORATIVA & ESG
+                             SUSTENTABILIDAD CORPORATIVA &amp; ESG
                         </span>
                         <div className="flex items-center space-x-4 md:space-x-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto no-scrollbar">
                             {['ODS 6', 'ODS 11', 'ODS 13', 'AGENDA 2030', 'ESG COMPLIANT'].map((cert, index) => (
@@ -192,7 +193,6 @@
                 </div>
             );
         };
-        // FIX: Removed the extra `};` bracket that was breaking syntax here.
 
         const ContentCard = ({ title, desc, align, active, icon }) => {
             return (
@@ -364,9 +364,6 @@
             );
         };
 
-        // FIX: Completely removed the secondary, duplicate `const Layout = ({ children }) => { ... }` block here 
-        // which was causing Babel to crash with an "Identifier 'Layout' has already been declared" error.
-
         const App = () => {
             useEffect(() => {
                 gsap.registerPlugin(ScrollTrigger);
@@ -400,46 +397,45 @@
                     <SoftwareSection />
 
                     <section className="py-40 bg-slate-900 px-4 relative z-20">
-    <div className="max-w-7xl mx-auto text-center">
-        <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-20">
-            Stack Tecnológico
-        </h3>
-        
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-            {[
-                { name: 'JavaScript', slug: 'javascript' },
-                { name: 'Java', slug: 'openjdk' },
-                { name: 'Python', slug: 'python' },
-                { name: 'Docker', slug: 'docker' },
-                { name: 'React', slug: 'react' },
-                { name: 'Django', slug: 'django' },
-                { name: 'Vercel', slug: 'vercel' },
-                { name: 'AWS', slug: 'amazonwebservices' }, // Fixed AWS slug
-                { name: 'Gemini', slug: 'googlegemini' },
-                { name: 'Google Cloud', slug: 'googlecloud' },
-                { name: 'Claude Code', slug: 'anthropic' }, // Claude uses the Anthropic "A"
-                { name: 'Claw Code', slug: 'probot' },     // 'Claw' often uses a mechanical/bot icon
-                { name: 'Tailwind', slug: 'tailwindcss' },
-                { name: 'HTML5', slug: 'html5' },
-                { name: 'CSS3', slug: 'css3' }             // Standard CSS Shield
-            ].map((tech, idx) => (
-                <div 
-                    key={idx} 
-                    className="group p-8 bg-slate-800/50 border border-slate-700 rounded-3xl hover:bg-slate-800 hover:border-blue-500 transition-all duration-300 flex flex-col items-center justify-center gap-4"
-                >
-                    {/* Removed /white to allow official brand colors */}
-                    <img 
-                        src={`https://cdn.simpleicons.org/${tech.slug}`} 
-                        alt={`${tech.name} logo`}
-                        className="w-14 h-14 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500"
-                    />
-                    <span className="text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors">
-                        {tech.name}
-                    </span>
-                </div>
-            ))}
-        </div>
-    </div>
+                        <div className="max-w-7xl mx-auto text-center">
+                            <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-20">
+                                Stack Tecnológico
+                            </h3>
+                            
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+                                {[
+                                    { name: 'JavaScript', slug: 'javascript' },
+                                    { name: 'Java', slug: 'openjdk' },
+                                    { name: 'Python', slug: 'python' },
+                                    { name: 'Docker', slug: 'docker' },
+                                    { name: 'React', slug: 'react' },
+                                    { name: 'Django', slug: 'django' },
+                                    { name: 'Vercel', slug: 'vercel' },
+                                    { name: 'AWS', slug: 'amazonwebservices' },
+                                    { name: 'Gemini', slug: 'googlegemini' },
+                                    { name: 'Google Cloud', slug: 'googlecloud' },
+                                    { name: 'Claude Code', slug: 'anthropic' },
+                                    { name: 'Claw Code', slug: 'probot' },
+                                    { name: 'Tailwind', slug: 'tailwindcss' },
+                                    { name: 'HTML5', slug: 'html5' },
+                                    { name: 'CSS3', slug: 'css3' }
+                                ].map((tech, idx) => (
+                                    <div 
+                                        key={idx} 
+                                        className="group p-8 bg-slate-800/50 border border-slate-700 rounded-3xl hover:bg-slate-800 hover:border-blue-500 transition-all duration-300 flex flex-col items-center justify-center gap-4"
+                                    >
+                                        <img 
+                                            src={`https://cdn.simpleicons.org/${tech.slug}`} 
+                                            alt={`${tech.name} logo`}
+                                            className="w-14 h-14 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500"
+                                        />
+                                        <span className="text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors">
+                                            {tech.name}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </section>
                 </Layout>
             );
