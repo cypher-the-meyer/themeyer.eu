@@ -400,17 +400,47 @@
                     <SoftwareSection />
 
                     <section className="py-40 bg-slate-900 px-4 relative z-20">
-                        <div className="max-w-7xl mx-auto text-center">
-                            <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-20">Certificaciones</h3>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                                {['🛡️ Security', '💎 Quality', '⚙️ Infra', '💳 Finance'].map((item, idx) => (
-                                    <div key={idx} className="p-10 bg-slate-800 border border-slate-700 rounded-[3rem] hover:bg-blue-600 transition-all cursor-default">
-                                        <div className="text-4xl mb-4">{item.split(' ')[0]}</div>
-                                        <div className="text-white font-bold">{item.split(' ')[1]}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <section className="py-40 bg-slate-900 px-4 relative z-20">
+    <div className="max-w-7xl mx-auto text-center">
+        <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-20">
+            Stack Tecnológico
+        </h3>
+        
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-6">
+            {[
+                { name: 'JavaScript', slug: 'javascript' },
+                { name: 'Java', slug: 'openjdk' },
+                { name: 'Python', slug: 'python' },
+                { name: 'Docker', slug: 'docker' },
+                { name: 'React', slug: 'react' },
+                { name: 'Django', slug: 'django' },
+                { name: 'Vercel', slug: 'vercel' },
+                { name: 'AWS', slug: 'amazonwebservices' },
+                { name: 'Gemini', slug: 'googlegemini' },
+                { name: 'Google Cloud', slug: 'googlecloud' },
+                { name: 'Claude Code', slug: 'anthropic' },
+                { name: 'Claw Code', slug: 'probot' }, // Using a generic bot icon for 'Claw'
+                { name: 'Tailwind', slug: 'tailwindcss' },
+                { name: 'HTML5', slug: 'html5' },
+                { name: 'CSS3', slug: 'css3' }
+            ].map((tech, idx) => (
+                <div 
+                    key={idx} 
+                    className="group p-6 bg-slate-800 border border-slate-700 rounded-2xl hover:bg-blue-600/20 hover:border-blue-500 transition-all duration-300 cursor-default flex flex-col items-center justify-center gap-4"
+                >
+                    <img 
+                        src={`https://cdn.simpleicons.org/${tech.slug}/white`} 
+                        alt={`${tech.name} logo`}
+                        className="w-12 h-12 object-contain group-hover:scale-110 transition-transform"
+                    />
+                    <span className="text-white text-xs md:text-sm font-bold opacity-80 group-hover:opacity-100 uppercase tracking-widest">
+                        {tech.name}
+                    </span>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
                     </section>
                 </Layout>
             );
