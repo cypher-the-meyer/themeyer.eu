@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>GitHub Repo Mind Map</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"
+        crossorigin="anonymous"
+        onerror="window.__d3FailedPrimary = true;"></script>
+<script>
+  // Fallback if cdnjs is blocked (corporate firewalls, some CSPs)
+  if (typeof d3 === "undefined") {
+    document.write('<script src="https://d3js.org/d3.v7.min.js"><\/script>');
+  }
+</script>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; height: 100%; width: 100%;
+    background: #ffffff;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
+    overscroll-behavior: none;
+    color: #111827;
+  }
+  #app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+  header {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+    flex-shrink: 0;
+  }
+  .title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .title-row h1 { font-size: 14px; font-weight: 600; margin: 0; }
+  .title-row .sub { font-size: 11px; color: #6b7280; }
+  .title-row .gh { margin-left: auto; font-size: 11px; color: #1e63d6; text-decoration: none; }
+  .input-row {
+    display: flex; gap: 6px; margin-top: 8px;
+  }
+  .input-row input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    min-width: 0;
+  }
+  .input-row input:focus {
+    outline: none;
+    border-color: #1e63d6;
+    box-shadow: 0 0 0 2px rgba(30, 99, 214, 0.15);
+  }
+  .input-row button {
+    padding: 8px 14px;
+    background: #1e63d6;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .input-row button:disabled { background: #93c5fd; cursor: not-allowed; }
+  .stats {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #6b7280;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+  .status {
+    margin-top: 6px;
+    font-size: 11px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    display: none;
+  }
+  .status.info { display: block; background: #f3f4f6; color: #374151; }
+  .status.error { display: block; background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  .status.warn { display: block; background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+  main { flex: 1; position: relative; overflow: hidden; touch-action: none; }
+  svg { width: 100%; height: 100%; display: block; background: #ffffff; touch-action: none; }
+  .legend {
+    position: absolute; bottom: 10px; left: 10px;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 6px;
+    padding: 7px 9px; font-size: 10px; line-height: 1.6;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    max-width: calc(100% - 20px);
+  }
+  .legend .row { display: flex; align-items: center; gap: 7px; }
+  .swatch { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .swatch.repo { background: #1e63d6; }
+  .swatch.folder { background: #e5e7eb; border: 1px solid #9ca3af; width: 10px; height: 10px; }
+  .swatch.file { background: #9ca3af; width: 7px; height: 7px; }
+  .line { width: 14px; height: 2px; flex-shrink: 0; }
+  .line.tree { background: #d4d4d8; }
+  .line.dep { background: #1e63d6; }
+  .legend hr { border: none; border-top: 1px solid #f3f4f6; margin: 4px 0; }
+  .tooltip {
+    position: absolute; top: 10px; right: 10px;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 6px;
+    padding: 7px 9px; font-size: 11px;
+    max-width: calc(100% - 20px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: none; pointer-events: none; z-index: 10;
+  }
+  .tooltip .name { font-weight: 600; }
+  .tooltip .path { color: #6b7280; font-family: ui-monospace, monospace; margin-top: 2px; word-break: break-all; }
+  .tooltip .type { color: #9ca3af; margin-top: 4px; text-transform: capitalize; }
+  .empty {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #9ca3af; font-size: 13px;
+  }
+  @media (max-width: 640px) {
+    header { padding: 8px 10px; }
+    .title-row h1 { font-size: 13px; }
+    .title-row .sub { display: none; }
+    .input-row input { font-size: 12px; padding: 7px 8px; }
+    .input-row button { padding: 7px 10px; font-size: 12px; }
+    .legend { font-size: 9.5px; padding: 6px 8px; }
+    .tooltip { font-size: 10px; max-width: 200px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="title-row">
+      <h1 id="repo-title">GitHub Repo Mind Map</h1>
+      <span class="sub" id="repo-sub">paste any GitHub URL</span>
+      <a class="gh" id="gh-link" href="#" target="_blank" rel="noreferrer" style="display:none;">GitHub →</a>
+    </div>
+    <div class="input-row">
+      <input id="url-input" type="text" placeholder="https://github.com/owner/repo or owner/repo"
+             autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <button id="go-btn">Visualize</button>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="status" id="status"></div>
+  </header>
+  <main>
+    <svg id="graph"></svg>
+    <div class="empty" id="empty">Enter a GitHub URL above to begin</div>
+    <div class="tooltip" id="tooltip">
+      <div class="name"></div>
+      <div class="path"></div>
+      <div class="type"></div>
+    </div>
+    <div class="legend" id="legend" style="display:none;">
+      <div class="row"><div class="swatch repo"></div>Repository</div>
+      <div class="row"><div class="swatch folder"></div>Folder</div>
+      <div class="row"><div class="swatch file"></div>File</div>
+      <hr>
+      <div class="row"><div class="line tree"></div>Belongs to</div>
+      <div class="row"><div class="line dep"></div>Imports / links to</div>
+    </div>
+  </main>
+</div>
+ 
+<script>
+// =========================================================
+// Top-level error handling: surface real errors in the page
+// instead of letting the browser show an opaque "Script error" alert.
+// =========================================================
+window.addEventListener("error", function (e) {
+  try {
+    const status = document.getElementById("status");
+    if (status) {
+      status.className = "status error";
+      status.textContent = "Error: " + (e.message || "unknown") +
+        (e.filename ? " · " + e.filename.split("/").pop() : "") +
+        (e.lineno ? ":" + e.lineno : "");
+    }
+  } catch (_) {}
+});
+window.addEventListener("unhandledrejection", function (e) {
+  try {
+    const status = document.getElementById("status");
+    if (status) {
+      status.className = "status error";
+      status.textContent = "Async error: " + (e.reason && e.reason.message ? e.reason.message : String(e.reason));
+    }
+  } catch (_) {}
+});
+ 
+// Make sure d3 actually loaded before running any of our code.
+if (typeof d3 === "undefined") {
+  document.body.innerHTML =
+    '<div style="padding:24px;font-family:sans-serif;color:#b91c1c;">' +
+    '<strong>Could not load d3.js.</strong><br>' +
+    'Check your internet connection or your hosting platform\'s Content-Security-Policy.<br>' +
+    'The page needs to load d3 from cdnjs.cloudflare.com or d3js.org.' +
+    '</div>';
+  throw new Error("d3 not loaded");
+}
+ 
+// =========================================================
+// Pre-rendered map for cypher-the-meyer/toriku_films
+// Loaded as default so the page shows a working viz on first open.
+// =========================================================
+const PRELOADED = {
+  owner: "cypher-the-meyer",
+  name: "toriku_films",
+  files: [
+    "App.js",
+    "CNAME",
+    "index.html",
+    "layout.css",
+    "main.js",
+    ".github/workflows",
+    "media",
+    "pages/series",
+    "src"
+  ],
+  dependencies: [
+    { source: "index.html", target: "main.js" },
+    { source: "index.html", target: "layout.css" },
+    { source: "index.html", target: "App.js" },
+    { source: "App.js", target: "main.js" },
+    { source: "main.js", target: "pages/series" }
+  ],
+  totalFiles: 9,
+  truncated: false,
+  note: "Pre-loaded snapshot. Click 'Visualize' to fetch the latest live."
+};
+ 
+// =========================================================
+// State + DOM refs
+// =========================================================
+const elInput = document.getElementById("url-input");
+const elBtn = document.getElementById("go-btn");
+const elTitle = document.getElementById("repo-title");
+const elSub = document.getElementById("repo-sub");
+const elGh = document.getElementById("gh-link");
+const elStats = document.getElementById("stats");
+const elStatus = document.getElementById("status");
+const elEmpty = document.getElementById("empty");
+const elLegend = document.getElementById("legend");
+const elTooltip = document.getElementById("tooltip");
+const svg = d3.select("#graph");
+ 
+const isMobile = window.matchMedia("(max-width: 640px)").matches
+              || ("ontouchstart" in window && window.innerWidth < 900);
+ 
+// =========================================================
+// URL parsing
+// =========================================================
+function parseRepoUrl(input) {
+  const cleaned = (input || "").trim().replace(/\.git$/, "").replace(/\/$/, "");
+  let m = cleaned.match(/github\.com[/:]([^/]+)\/([^/?#]+)/);
+  if (m) return { owner: m[1], repo: m[2] };
+  m = cleaned.match(/^([^/\s]+)\/([^/\s]+)$/);
+  if (m) return { owner: m[1], repo: m[2] };
+  return null;
+}
+ 
+// =========================================================
+// Status messaging
+// =========================================================
+function showStatus(msg, kind) {
+  elStatus.textContent = msg;
+  elStatus.className = "status " + (kind || "info");
+}
+function clearStatus() {
+  elStatus.textContent = "";
+  elStatus.className = "status";
+}
+ 
+// =========================================================
+// FETCH LAYER  (single shared "online search" used by all paths)
+//
+// Uses the GitHub REST API directly. Works from any normal
+// browser (mobile / desktop). 60 req/hr unauthenticated which
+// is plenty for a single repo (~3 calls).
+// =========================================================
+const API = "https://api.github.com";
+ 
+// CORS proxies as transparent fallback when api.github.com is blocked
+// by the user's network or platform CSP. Tried in order.
+const CORS_PROXIES = [
+  (url) => "https://corsproxy.io/?" + encodeURIComponent(url),
+  (url) => "https://api.allorigins.win/raw?url=" + encodeURIComponent(url),
+];
+ 
+function buildUrl(path, params) {
+  let url = API + path;
+  if (params) {
+    const parts = [];
+    for (const [k, v] of Object.entries(params)) {
+      parts.push(encodeURIComponent(k) + "=" + encodeURIComponent(v));
+    }
+    if (parts.length) url += "?" + parts.join("&");
+  }
+  return url;
+}
+ 
+// Try fetch directly, then through each proxy. Return the first response that works.
+async function resilientFetch(targetUrl) {
+  const attempts = [
+    { label: "direct", run: () => fetch(targetUrl) },
+    ...CORS_PROXIES.map((p, i) => ({
+      label: "proxy" + (i + 1),
+      run: () => fetch(p(targetUrl)),
+    })),
+  ];
+  const errors = [];
+  for (const a of attempts) {
+    try {
+      const res = await a.run();
+      if (res.ok || (res.status >= 300 && res.status < 400)) return res;
+      if (res.status === 404 || res.status === 403) return res;
+      errors.push(a.label + ": HTTP " + res.status);
+    } catch (e) {
+      errors.push(a.label + ": " + (e.message || e.toString()));
+    }
+  }
+  throw new Error("All paths failed [" + errors.join(" | ") + "] for " + targetUrl);
+}
+ 
+async function apiJson(path, params) {
+  // No custom headers — they would trigger CORS preflight.
+  // GitHub returns JSON by default.
+  const res = await resilientFetch(buildUrl(path, params));
+  if (!res.ok) {
+    const err = new Error("HTTP " + res.status);
+    err.status = res.status;
+    err.body = await res.text().catch(() => "");
+    throw err;
+  }
+  return res.json();
+}
+ 
+async function fetchRaw(owner, repo, branch, path) {
+  // raw.githubusercontent.com generally has permissive CORS, but route through the
+  // resilient layer in case the user's network blocks it like it blocks api.github.com.
+  const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
+  try {
+    const res = await resilientFetch(url);
+    if (!res.ok) return null;
+    return await res.text();
+  } catch { return null; }
+}
+ 
+// =========================================================
+// Repo loading: full-tree -> contents API fallback -> partial OK
+// "If no data is found, return nodes that are found to map"
+// =========================================================
+async function loadRepo(owner, repo) {
+  const collected = { files: [], note: null, truncated: false, totalFiles: 0 };
+ 
+  // 1. Repo info (default branch)
+  let branch = "main";
+  try {
+    const info = await apiJson(`/repos/${owner}/${repo}`);
+    branch = info.default_branch || "main";
+  } catch (e) {
+    if (e.status === 404) throw new Error(`Repository not found: ${owner}/${repo}`);
+    if (e.status === 403) {
+      collected.note = "GitHub rate limit hit (60 req/hr unauthenticated). Try again in an hour.";
+    } else {
+      // Bubble up the full diagnostic from resilientFetch
+      collected.note = "Repo info fetch failed → " + (e.message || String(e));
+    }
+    // Don't return yet — try the tree call anyway, branch defaulted to main
+  }
+ 
+  // 2. Try recursive tree (1 call, full repo)
+  let treeOk = false;
+  try {
+    const tree = await apiJson(`/repos/${owner}/${repo}/git/trees/${branch}`, { recursive: "1" });
+    if (tree.tree && Array.isArray(tree.tree)) {
+      collected.files = tree.tree
+        .filter(n => n.type === "blob")
+        .map(n => ({ path: n.path, size: n.size || 0 }));
+      collected.totalFiles = collected.files.length;
+      collected.truncated = !!tree.truncated;
+      treeOk = collected.files.length > 0;
+      if (tree.truncated) {
+        collected.note = (collected.note ? collected.note + " · " : "") +
+                         "Repo truncated by GitHub — showing partial tree.";
+      }
+    }
+  } catch (e) {
+    collected.note = (collected.note ? collected.note + " · " : "") +
+                     "Tree call failed (" + e.message + ") — falling back to contents API.";
+  }
+ 
+  // 3. Fallback: BFS the contents API (slower but works on big repos)
+  if (!treeOk) {
+    const found = [];
+    const queue = [""];
+    const seen = new Set();
+    const MAX = 25; // hard cap to avoid rate-limit blowups
+    let visited = 0;
+    while (queue.length && visited < MAX) {
+      const dir = queue.shift();
+      if (seen.has(dir)) continue;
+      seen.add(dir);
+      visited++;
+      try {
+        const items = await apiJson(`/repos/${owner}/${repo}/contents/${dir}`, { ref: branch });
+        if (!Array.isArray(items)) continue;
+        for (const it of items) {
+          if (it.type === "file") found.push({ path: it.path, size: it.size || 0 });
+          else if (it.type === "dir") queue.push(it.path);
+        }
+      } catch (e) {
+        // Stop on rate limit; otherwise just skip this dir
+        if (e.status === 403) {
+          collected.note = (collected.note ? collected.note + " · " : "") +
+                           "Rate limited during scan — showing what we got.";
+          break;
+        }
+      }
+    }
+    if (found.length > 0) {
+      collected.files = found;
+      collected.totalFiles = found.length;
+      if (queue.length > 0) collected.truncated = true;
+    }
+  }
+ 
+  if (collected.files.length === 0) {
+    throw new Error(collected.note || "No files found.");
+  }
+ 
+  // 4. Trim to keep visualization legible
+  const MAX_FILES = 120;
+  const codeExt = /\.(js|jsx|ts|tsx|py|rb|go|rs|java|c|cpp|h|hpp|cs|php|swift|kt|vue|svelte|html|css|scss|md|json|yml|yaml)$/i;
+  collected.files.sort((a, b) => {
+    const ac = codeExt.test(a.path) ? 0 : 1;
+    const bc = codeExt.test(b.path) ? 0 : 1;
+    if (ac !== bc) return ac - bc;
+    return a.path.split("/").length - b.path.split("/").length;
+  });
+  const trimmed = collected.files.slice(0, MAX_FILES);
+  if (collected.files.length > MAX_FILES) collected.truncated = true;
+ 
+  // 5. Detect dependencies (best-effort, non-fatal)
+  const fileSet = new Set(trimmed.map(f => f.path));
+  const fetchable = trimmed
+    .filter(f => codeExt.test(f.path) && f.size < 200000)
+    .slice(0, 25);
+ 
+  const contents = {};
+  await Promise.all(fetchable.map(async (f) => {
+    const text = await fetchRaw(owner, repo, branch, f.path);
+    if (text) contents[f.path] = text.slice(0, 50000);
+  }));
+ 
+  const dependencies = detectDependencies(fileSet, contents);
+ 
+  return {
+    owner, name: repo,
+    files: trimmed.map(f => f.path),
+    dependencies,
+    totalFiles: collected.totalFiles,
+    truncated: collected.truncated,
+    note: collected.note,
+  };
+}
+ 
+// =========================================================
+// Dependency detection (heuristic)
+// =========================================================
+const IMPORT_RE = /(?:from\s+['"]([^'"]+)['"])|(?:import\s+(?:[^'"]*?\s+from\s+)?['"]([^'"]+)['"])|(?:require\(['"]([^'"]+)['"]\))/g;
+const HREF_SRC_RE = /(?:href|src)=["']([^"']+)["']/g;
+const RESOLVABLE_EXT = ["", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs",
+  ".py", ".rb", ".go", ".vue", ".svelte", ".css", ".scss", ".html",
+  "/index.js", "/index.ts", "/index.jsx", "/index.tsx"];
+ 
+function resolveImport(sourceDir, importPath, fileSet) {
+  const parts = sourceDir ? sourceDir.split("/") : [];
+  for (const p of importPath.split("/")) {
+    if (p === "..") parts.pop();
+    else if (p !== "." && p !== "") parts.push(p);
+  }
+  const base = parts.join("/");
+  for (const ext of RESOLVABLE_EXT) {
+    if (fileSet.has(base + ext)) return base + ext;
+  }
+  return null;
+}
+ 
+function detectDependencies(fileSet, contents) {
+  const deps = [];
+  Object.entries(contents).forEach(([src, text]) => {
+    const dir = src.includes("/") ? src.substring(0, src.lastIndexOf("/")) : "";
+    const found = new Set();
+ 
+    let m;
+    const re1 = new RegExp(IMPORT_RE.source, "g");
+    while ((m = re1.exec(text)) !== null) {
+      const ip = m[1] || m[2] || m[3];
+      if (!ip || (!ip.startsWith(".") && !ip.startsWith("/"))) continue;
+      const r = resolveImport(dir, ip.replace(/^\//, ""), fileSet);
+      if (r && r !== src && !found.has(r)) {
+        found.add(r);
+        deps.push({ source: src, target: r });
+      }
+    }
+ 
+    if (/\.(html|css|scss)$/i.test(src)) {
+      const re2 = new RegExp(HREF_SRC_RE.source, "g");
+      while ((m = re2.exec(text)) !== null) {
+        const ip = m[1];
+        if (!ip || /^(https?:|\/\/|#|mailto:|data:)/.test(ip)) continue;
+        const cleaned = ip.split(/[?#]/)[0].replace(/^\.\//, "").replace(/^\//, "");
+        if (!cleaned) continue;
+        let r = fileSet.has(cleaned) ? cleaned : resolveImport(dir, ip, fileSet);
+        if (r && r !== src && !found.has(r)) {
+          found.add(r);
+          deps.push({ source: src, target: r });
+        }
+      }
+    }
+  });
+  return deps;
+}
+ 
+// =========================================================
+// RENDERER (shared by preloaded data + live-fetched data)
+// =========================================================
+let currentSim = null;
+ 
+function render(data) {
+  // Update header
+  elTitle.textContent = data.owner + " / " + data.name;
+  elSub.textContent = "repository mind map";
+  elGh.href = "https://github.com/" + data.owner + "/" + data.name;
+  elGh.style.display = "inline";
+ 
+  const truncNote = data.truncated && data.totalFiles > data.files.length
+    ? ` (top ${data.files.length} of ${data.totalFiles})` : "";
+  elStats.innerHTML =
+    `<span>${data.files.length} files${truncNote}</span>` +
+    `<span>${data.dependencies.length} deps</span>` +
+    `<span style="color:#9ca3af;">drag · pinch/scroll · tap a file</span>`;
+ 
+  if (data.note) showStatus(data.note, "warn");
+  else clearStatus();
+ 
+  elEmpty.style.display = "none";
+  elLegend.style.display = "block";
+ 
+  if (currentSim) currentSim.stop();
+  svg.selectAll("*").remove();
+ 
+  const main = document.querySelector("main");
+  let width = main.clientWidth;
+  let height = main.clientHeight;
+  const REPO_ID = "__REPO__";
+ 
+  const folders = new Set();
+  data.files.forEach(p => {
+    if (p.includes("/")) folders.add(p.substring(0, p.lastIndexOf("/")));
+  });
+ 
+  const nodes = [
+    { id: REPO_ID, label: data.name, type: "repo" },
+    ...Array.from(folders).map(f => ({ id: "__F__" + f, label: f, type: "folder" })),
+    ...data.files.map(p => ({ id: p, label: p.split("/").pop(), path: p, type: "file" })),
+  ];
+ 
+  const treeLinks = [];
+  folders.forEach(f => treeLinks.push({ source: REPO_ID, target: "__F__" + f, kind: "tree" }));
+  data.files.forEach(p => {
+    if (p.includes("/")) {
+      treeLinks.push({ source: "__F__" + p.substring(0, p.lastIndexOf("/")), target: p, kind: "tree" });
+    } else {
+      treeLinks.push({ source: REPO_ID, target: p, kind: "tree" });
+    }
+  });
+ 
+  // Filter dep links to only those between known nodes
+  const nodeIds = new Set(nodes.map(n => n.id));
+  const depLinks = data.dependencies
+    .filter(d => nodeIds.has(d.source) && nodeIds.has(d.target))
+    .map(d => ({ source: d.source, target: d.target, kind: "dep" }));
+ 
+  const links = [...treeLinks, ...depLinks];
+ 
+  const SIZE = isMobile
+    ? { repo: 38, folder: 11, file: 6, repoFont: 11, folderFont: 9, fileFont: 8.5, fileLabelDy: 17 }
+    : { repo: 50, folder: 14, file: 7, repoFont: 13, folderFont: 10, fileFont: 9.5, fileLabelDy: 20 };
+ 
+  const zoomLayer = svg.append("g");
+  const zoom = d3.zoom().scaleExtent([0.15, 4])
+    .on("zoom", e => zoomLayer.attr("transform", e.transform));
+  svg.call(zoom);
+  svg.on("dblclick.zoom", null);
+  svg.on("dblclick", () => svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity));
+ 
+  svg.append("defs").append("marker")
+    .attr("id", "arrow").attr("viewBox", "0 -5 10 10")
+    .attr("refX", 14).attr("refY", 0)
+    .attr("markerWidth", 7).attr("markerHeight", 7).attr("orient", "auto")
+    .append("path").attr("d", "M0,-5L10,0L0,5").attr("fill", "#1e63d6");
+ 
+  const sim = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d => d.id)
+      .distance(l => {
+        if (l.kind === "dep") return isMobile ? 50 : 70;
+        if (l.source.id === REPO_ID) return isMobile ? 80 : 110;
+        return isMobile ? 45 : 60;
+      })
+      .strength(l => l.kind === "tree" ? 0.4 : 0.5))
+    .force("charge", d3.forceManyBody().strength(d => {
+      if (d.type === "repo") return isMobile ? -900 : -1500;
+      if (d.type === "folder") return isMobile ? -250 : -400;
+      return isMobile ? -90 : -150;
+    }))
+    .force("center", d3.forceCenter(width / 2, height / 2))
+    .force("collide", d3.forceCollide().radius(d => {
+      if (d.type === "repo") return isMobile ? 50 : 70;
+      if (d.type === "folder") return isMobile ? 26 : 35;
+      return isMobile ? 18 : 24;
+    }));
+ 
+  currentSim = sim;
+ 
+  const treeSel = zoomLayer.append("g").selectAll("line").data(treeLinks).join("line")
+    .attr("stroke", "#d4d4d8").attr("stroke-width", 1).attr("stroke-opacity", 0.6);
+ 
+  const depSel = zoomLayer.append("g").selectAll("line").data(depLinks).join("line")
+    .attr("stroke", "#1e63d6").attr("stroke-width", 1.8).attr("stroke-opacity", 0.65)
+    .attr("marker-end", "url(#arrow)");
+ 
+  const nodeSel = zoomLayer.append("g").selectAll("g").data(nodes).join("g")
+    .style("cursor", "pointer")
+    .call(d3.drag()
+      .on("start", (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on("drag", (e, d) => { d.fx = e.x; d.fy = e.y; })
+      .on("end", (e, d) => { if (!e.active) sim.alphaTarget(0); if (d.type !== "repo") { d.fx = null; d.fy = null; } }));
+ 
+  nodeSel.filter(d => d.type === "repo").append("circle")
+    .attr("r", SIZE.repo).attr("fill", "#1e63d6").attr("stroke", "#0f3a85").attr("stroke-width", 2);
+  nodeSel.filter(d => d.type === "folder").append("circle")
+    .attr("r", SIZE.folder).attr("fill", "#e5e7eb").attr("stroke", "#9ca3af").attr("stroke-width", 1.5);
+  nodeSel.filter(d => d.type === "file").append("circle")
+    .attr("r", SIZE.file).attr("fill", "#9ca3af").attr("stroke", "#6b7280").attr("stroke-width", 1);
+ 
+  nodeSel.filter(d => d.type === "repo").append("text").text(d => d.label)
+    .attr("text-anchor", "middle").attr("dy", "0.35em").attr("fill", "#fff")
+    .attr("font-weight", "700").attr("font-size", SIZE.repoFont + "px").attr("pointer-events", "none");
+  nodeSel.filter(d => d.type === "folder").append("text").text(d => d.label)
+    .attr("text-anchor", "middle").attr("dy", "0.35em").attr("fill", "#374151")
+    .attr("font-size", SIZE.folderFont + "px").attr("font-weight", "600").attr("pointer-events", "none");
+  nodeSel.filter(d => d.type === "file").append("text").text(d => d.label)
+    .attr("text-anchor", "middle").attr("dy", SIZE.fileLabelDy).attr("fill", "#4b5563")
+    .attr("font-size", SIZE.fileFont + "px").attr("pointer-events", "none");
+ 
+  function showInfo(d) {
+    elTooltip.querySelector(".name").textContent = d.label;
+    elTooltip.querySelector(".path").textContent = d.path && d.path !== d.label ? d.path : "";
+    elTooltip.querySelector(".type").textContent = d.type;
+    elTooltip.style.display = "block";
+  }
+  function hideInfo() { elTooltip.style.display = "none"; }
+  function highlightNode(elem, d, on) {
+    if (d.type === "repo") return;
+    const baseFill = d.type === "folder" ? "#e5e7eb" : "#9ca3af";
+    const baseR = d.type === "folder" ? SIZE.folder : SIZE.file;
+    d3.select(elem).select("circle")
+      .attr("fill", on ? "#1e63d6" : baseFill)
+      .attr("r", on ? baseR + 2 : baseR);
+    if (on) {
+      depSel
+        .attr("stroke-opacity", l => (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.1)
+        .attr("stroke-width", l => (l.source.id === d.id || l.target.id === d.id) ? 2.8 : 1.8);
+    } else {
+      depSel.attr("stroke-opacity", 0.65).attr("stroke-width", 1.8);
+    }
+  }
+ 
+  if (isMobile) {
+    let activeElem = null, activeData = null;
+    nodeSel.on("click", function (e, d) {
+      e.stopPropagation();
+      if (d.type === "repo") return;
+      if (activeElem === this) {
+        highlightNode(activeElem, activeData, false);
+        hideInfo();
+        activeElem = null; activeData = null;
+      } else {
+        if (activeElem) highlightNode(activeElem, activeData, false);
+        activeElem = this; activeData = d;
+        highlightNode(this, d, true);
+        showInfo(d);
+      }
+    });
+    svg.on("click", () => {
+      if (activeElem) {
+        highlightNode(activeElem, activeData, false);
+        activeElem = null; activeData = null;
+      }
+      hideInfo();
+    });
+  } else {
+    nodeSel
+      .on("mouseenter", function (e, d) { highlightNode(this, d, true); if (d.type !== "repo") showInfo(d); })
+      .on("mouseleave", function (e, d) { highlightNode(this, d, false); hideInfo(); });
+  }
+ 
+  sim.on("tick", () => {
+    treeSel.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+           .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+    depSel.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+    nodeSel.attr("transform", d => `translate(${d.x},${d.y})`);
+  });
+ 
+  const repoNode = nodes.find(n => n.id === REPO_ID);
+  repoNode.fx = width / 2;
+  repoNode.fy = height / 2;
+ 
+  function handleResize() {
+    width = main.clientWidth;
+    height = main.clientHeight;
+    sim.force("center", d3.forceCenter(width / 2, height / 2));
+    repoNode.fx = width / 2;
+    repoNode.fy = height / 2;
+    sim.alpha(0.3).restart();
+  }
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("orientationchange", () => setTimeout(handleResize, 200));
+}
+ 
+// =========================================================
+// Main entry
+// =========================================================
+async function visualize(repoUrl) {
+  const parsed = parseRepoUrl(repoUrl);
+  if (!parsed) {
+    showStatus("Invalid GitHub URL. Try: https://github.com/owner/repo or owner/repo", "error");
+    return;
+  }
+  elBtn.disabled = true;
+  showStatus(`Fetching ${parsed.owner}/${parsed.repo}...`, "info");
+  try {
+    const data = await loadRepo(parsed.owner, parsed.repo);
+    render(data);
+  } catch (e) {
+    showStatus("Could not load repo: " + e.message, "error");
+  } finally {
+    elBtn.disabled = false;
+  }
+}
+ 
+// Wire up UI
+elBtn.addEventListener("click", () => visualize(elInput.value));
+elInput.addEventListener("keydown", e => { if (e.key === "Enter") visualize(elInput.value); });
+ 
+// On load: check ?repo=... query param, else show preloaded toriku_films
+const params = new URLSearchParams(window.location.search);
+const repoParam = params.get("repo");
+if (repoParam) {
+  elInput.value = repoParam;
+  visualize(repoParam);
+} else {
+  // Show the preloaded snapshot as the default view
+  elInput.value = `https://github.com/${PRELOADED.owner}/${PRELOADED.name}`;
+  render(PRELOADED);
+  showStatus(PRELOADED.note, "info");
+}
+</script>
+</body>
+</html>
